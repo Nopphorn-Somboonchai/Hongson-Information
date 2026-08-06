@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HONGSON Information Hub — ระบบรวบรวมและจัดทำรายงานสารสนเทศโรงเรียน</title>
+  <meta name="description" content="ระบบรวบรวม ตรวจสอบ และจัดทำรายงานสารสนเทศโรงเรียนห้องสอนศึกษา">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Navbar Navigation -->
+  <nav class="navbar" id="main-navbar">
+    <a href="#" class="brand" id="brand-logo-link">
+      <div class="brand-icon">HS</div>
+      <span>HONGSON Hub</span>
+    </a>
+    <div class="nav-actions">
+      <span class="hero-badge" id="academic-year-badge" style="margin-bottom: 0;">ปีการศึกษา 2569</span>
+      <button class="btn btn-secondary" id="btn-open-settings" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+        ⚙️ ตั้งค่า Web App
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main App Container -->
+  <main class="container">
+
+    <!-- Config Warning Banner -->
+    <div id="config-warning-banner" class="alert alert-danger" style="display: none; margin-bottom: 2rem;">
+      <strong>⚠️ ยังไม่ได้ตั้งค่า Apps Script URL:</strong> ระบบกำลังทำงานในโหมดออฟไลน์ กรุณาคลิกปุ่ม <strong>"⚙️ ตั้งค่า Web App"</strong> ด้านบนขวาเพื่อระบุ Web App Deployment URL
+    </div>
+
+    <!-- VIEW 1: Landing Page -->
+    <section id="view-landing" class="view-section active">
+      <div class="hero">
+        <span class="hero-badge">ระบบสารสนเทศโรงเรียนห้องสอนศึกษา</span>
+        <h1 class="hero-title">HONGSON Information Hub</h1>
+        <p class="hero-subtitle">
+          ศูนย์รวมการจัดเก็บ ตรวจสอบ และประมวลผลรายงานสารสนเทศโรงเรียน 11 หมวด สะดวก รวดเร็ว พร้อมระบบรวบรวมเอกสารและ Export PDF อัตโนมัติ
+        </p>
+      </div>
+
+      <div class="role-cards-grid">
+        <!-- Contributor Role Card -->
+        <div class="role-card contributor" id="card-role-contributor">
+          <div>
+            <div class="role-icon">📝</div>
+            <h3>ส่งข้อมูลสารสนเทศ</h3>
+            <p>สำหรับคณะครู บุคลากร และผู้รับผิดชอบหมวดสารสนเทศ กรอกข้อมูลและแนบไฟล์หลักฐาน 11 หมวด</p>
+          </div>
+          <button class="btn btn-accent" id="btn-open-contributor">
+            เข้าสู่ระบบส่งข้อมูล
+          </button>
+        </div>
+
+        <!-- Admin Role Card -->
+        <div class="role-card admin" id="card-role-admin">
+          <div>
+            <div class="role-icon">🛡️</div>
+            <h3>ผู้ดูแลระบบ (Admin)</h3>
+            <p>สำหรับทีมบริหารและผู้ดูแลสารสนเทศ ตรวจสอบ แก้ไข เลือกข้อมูล คัดออก และสร้างรายงาน PDF รวม</p>
+          </div>
+          <button class="btn btn-primary" id="btn-open-admin">
+            เข้าสู่ระบบผู้ดูแลระบบ
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: Contributor View Shell -->
+    <section id="view-contributor" class="view-section">
+      <div class="dashboard-header">
+        <div>
+          <h2>ระบบส่งข้อมูลสารสนเทศ (Contributor)</h2>
+          <span class="user-badge" id="contributor-user-status">บทบาท: ผู้กรอกข้อมูล</span>
+        </div>
+        <button class="btn btn-secondary btn-logout" id="btn-logout-contributor">ออกจากระบบ</button>
+      </div>
+      <div class="alert alert-success" style="display: block;">
+        <strong>✅ เข้าสู่ระบบสำเร็จ:</strong> ระบบ 2 รหัส (Contributor Auth) ผ่านการตรวจสอบเรียบร้อยแล้ว — พร้อมรองรับ Phase 2 Dynamic Form ในลำดับถัดไป
+      </div>
+    </section>
+
+    <!-- VIEW 3: Admin View Shell -->
+    <section id="view-admin" class="view-section">
+      <div class="dashboard-header">
+        <div>
+          <h2>ระบบผู้ดูแลระบบ (Admin Dashboard)</h2>
+          <span class="user-badge" id="admin-user-status">บทบาท: ผู้ดูแลระบบ</span>
+        </div>
+        <button class="btn btn-secondary btn-logout" id="btn-logout-admin">ออกจากระบบ</button>
+      </div>
+      <div class="alert alert-success" style="display: block; margin-bottom: 1.5rem;">
+        <strong>✅ เข้าสู่ระบบสำเร็จ:</strong> ระบบ 2 รหัส (Admin Auth) ผ่านการตรวจสอบเรียบร้อยแล้ว
+      </div>
+
+      <div style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 2rem;">
+        <h3>🛠️ การจัดการระบบและฐานข้อมูล (System Management)</h3>
+        <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.95rem;">
+          กดปุ่มด้านล่างเพื่อสั่งให้ Apps Script สร้างและตรวจสอบโครงสร้าง Google Sheets ทั้ง 6 Tab (CONFIG, CATEGORIES, SUBMISSIONS, DATA, FILES, EXPORTS)
+        </p>
+        <button class="btn btn-primary" id="btn-setup-sheets">
+          📊 สร้าง/ตั้งค่าโครงสร้าง Google Sheets 6 Tab
+        </button>
+        <div id="sheet-setup-result" style="margin-top: 1rem;"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: Auth Password Entry -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="auth-modal-title">เข้าสู่ระบบ</h3>
+        <button class="modal-close" id="btn-close-auth-modal">&times;</button>
+      </div>
+      <form id="auth-form">
+        <div id="auth-alert" class="alert"></div>
+        <div class="form-group">
+          <label for="input-auth-code" class="form-label">กรอกรหัสผ่านเข้าใช้งาน (Secret Code)</label>
+          <input type="password" id="input-auth-code" class="form-control" placeholder="ระบุรหัสผ่าน..." autocomplete="current-password" required>
+        </div>
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <button type="button" class="btn btn-secondary modal-cancel" id="btn-cancel-auth">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-auth">ยืนยันรหัสผ่าน</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Web App Settings -->
+  <div class="modal-overlay" id="settings-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>⚙️ ตั้งค่า Web App URL</h3>
+        <button class="modal-close" id="btn-close-settings-modal">&times;</button>
+      </div>
+      <form id="settings-form">
+        <div class="form-group">
+          <label for="input-webapp-url" class="form-label">Google Apps Script Web App URL</label>
+          <input type="url" id="input-webapp-url" class="form-control" placeholder="https://script.google.com/macros/s/.../exec" required>
+          <small style="color: var(--text-muted); display: block; margin-top: 0.5rem; font-size: 0.8rem;">
+            ระบุ URL ที่ได้จากการกด Deploy -> Web App ใน Google Apps Script
+          </small>
+        </div>
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+          <button type="button" class="btn btn-secondary modal-cancel">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary">บันทึกการตั้งค่า</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>© 2026 HONGSON Information Hub — โรงเรียนห้องสอนศึกษา. All rights reserved.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
