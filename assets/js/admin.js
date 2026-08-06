@@ -827,14 +827,15 @@ var AdminEngine = {
    * Handle Start Report Generation Trigger
    */
   startReportGeneration: async function() {
+    var self = this;
     var session = AuthManager.getSession();
     if (!session || session.role !== 'admin') {
       alert("กรุณาเข้าสู่ระบบด้วยสิทธิ์ Admin ก่อนทำรายการ");
       return;
     }
 
-    var reportTitle = document.getElementById('report-input-title')?.value || "รายงานสารสนเทศประจำปีการศึกษา 2569";
     var academicYear = document.getElementById('report-input-year')?.value || "2569";
+    var reportTitle = document.getElementById('report-input-title')?.value || ("รายงานสารสนเทศประจำปีการศึกษา " + academicYear);
     var includeCover = document.getElementById('report-opt-cover')?.checked !== false;
     var includeToc = document.getElementById('report-opt-toc')?.checked !== false;
     var includeImages = document.getElementById('report-opt-images')?.checked !== false;
@@ -903,7 +904,7 @@ var AdminEngine = {
             `;
           }
           // Reload export history
-          this.loadExportHistory();
+          self.loadExportHistory();
         }, 800);
 
       } else {
@@ -955,24 +956,29 @@ var AdminEngine = {
       return;
     }
 
+    var self = this;
     var html = exportsList.map(exp => {
       var statusBadge = exp.status === 'completed'
         ? `<span class="badge badge-success">สำเร็จ</span>`
         : `<span class="badge badge-danger">ล้มเหลว</span>`;
 
+      var safeExportId = self.escapeHtml(exp.export_id);
+      var safeYear = self.escapeHtml(exp.academic_year || '-');
+      var safeDate = exp.generated_at ? new Date(exp.generated_at).toLocaleString('th-TH') : '-';
+
       var pdfBtn = exp.pdf_url
-        ? `<a href="${exp.pdf_url}" target="_blank" class="btn btn-secondary btn-sm" style="font-size:0.75rem;">📥 เปิด PDF</a>`
+        ? `<a href="${self.escapeHtml(exp.pdf_url)}" target="_blank" class="btn btn-secondary btn-sm" style="font-size:0.75rem;">📥 เปิด PDF</a>`
         : `<span class="text-muted">-</span>`;
 
       var docBtn = exp.google_doc_id
-        ? `<a href="https://docs.google.com/document/d/${exp.google_doc_id}/edit" target="_blank" class="btn btn-secondary btn-sm" style="font-size:0.75rem;">📝 Google Doc</a>`
+        ? `<a href="https://docs.google.com/document/d/${self.escapeHtml(exp.google_doc_id)}/edit" target="_blank" class="btn btn-secondary btn-sm" style="font-size:0.75rem;">📝 Google Doc</a>`
         : '';
 
       return `
         <tr>
-          <td><strong style="font-size: 0.85rem; font-family: monospace;">${exp.export_id}</strong></td>
-          <td>${exp.academic_year || '-'}</td>
-          <td>${exp.generated_at ? new Date(exp.generated_at).toLocaleString('th-TH') : '-'}</td>
+          <td><strong style="font-size: 0.85rem; font-family: monospace;">${safeExportId}</strong></td>
+          <td>${safeYear}</td>
+          <td>${safeDate}</td>
           <td style="text-align: center;">${exp.source_submission_count || 0}</td>
           <td style="text-align: center;">${statusBadge}</td>
           <td style="text-align: center;">

@@ -80,14 +80,15 @@
 
 ## 4. Current Work
 
-งานปัจจุบัน (Phase 3 — Admin Dashboard และการตรวจแก้ข้อมูล):
+งานปัจจุบัน (Phase 4 — Report Builder และ Export PDF — Completed):
 
-1. สร้าง Admin Dashboard Overview 11 หมวด (จำนวน Submission, สถานะความครบถ้วน)
-2. สร้าง หน้ารายการ Submission (List View & Filter)
-3. สร้าง หน้าดูรายละเอียด Submission (Detail View & File Previews)
-4. เพิ่ม ฟังก์ชันแก้ไขข้อมูล (Text, Numbers, Dynamic Table)
-5. เพิ่ม ฟังก์ชัน Include / Exclude รายการเพื่อเตรียมสร้างรายงาน
-6. เพิ่ม Checklist ตรวจสอบความครบถ้วนของข้อมูล
+1. สร้าง ReportService.gs สำหรับสร้าง Google Docs และ Export PDF จากข้อมูลที่ Admin เลือก
+2. สร้างหน้าปก คำนำ สารบัญ และเนื้อหาทั้ง 11 หมวด
+3. แปลง Dynamic Table เป็นตารางใน Google Docs
+4. แทรกรูปภาพจาก Google Drive ตาม Photo Layout
+5. บันทึก Google Docs และ PDF ลง Drive Reports Folder
+6. บันทึกประวัติ Export ลงใน EXPORTS Sheet
+7. สร้าง Report Builder Modal ใน Admin Dashboard พร้อม Checklist 11 หมวด, Progress Bar และ Export History
 
 ---
 
@@ -192,6 +193,10 @@
 | 2026-08-06 | Phase 3 | Node Syntax Check (`assets/js/*.js` including `admin.js`) | PASS | ไวยากรณ์ JavaScript ของ Phase 3 ทั้งหมดถูกต้อง |
 | 2026-08-06 | Phase 3 | DOM Element IDs Verification (`index.html` vs `admin.js` & `app.js`) | PASS | ตรวจสอบแล้ว 16/16 Element IDs ฝั่ง Admin ตรงกัน 100% |
 | 2026-08-06 | Phase 3 | AdminService GAS Endpoint Logic Verification | PASS | ฟังก์ชัน getAdminDashboard, getSubmissionDetail, updateSubmission และ toggleReportSelection PASS |
+| 2026-08-06 | Phase 4 | Node Syntax Check (`assets/js/*.js` including Report Builder) | PASS | ไวยากรณ์ JavaScript ของ Phase 4 ทั้งหมดถูกต้อง |
+| 2026-08-06 | Phase 4 | DOM Element IDs Verification (`index.html` vs `admin.js` Report Builder) | PASS | ตรวจสอบ Element IDs ฝั่ง Report Builder ตรงกัน 100% |
+| 2026-08-06 | Phase 4 | ReportService GAS Endpoint Logic Verification | PASS | ฟังก์ชัน generateReport และ getExportHistory ตรวจสอบ Logic ถูกต้อง |
+| 2026-08-06 | Phase 4 | Code Review (7 Issues) | PASS | ตรวจพบ 2 Critical, 3 Medium, 2 Low — แก้ไขทั้งหมดแล้ว |
 
 ---
 
@@ -222,11 +227,11 @@
 
 AI หรือ Developer คนถัดไปให้ทำตามลำดับนี้
 
-1. อ่าน `progression_plan.md` (สถานะปัจจุบัน: Phase 3 Completed, Phase 4 Ready)
-2. เริ่มงาน Phase 4 ตาม `plan.md` (Report Builder และ Export PDF)
-3. พัฒนา Google Docs Template Generator ใน Apps Script (`apps-script/ReportService.gs`)
-4. พัฒนาปุ่มกดสร้างรายงานและพรีวิว PDF สำหรับ Admin Dashboard
-5. บันทึกประวัติการ Export ลงใน `EXPORTS` Sheet
+1. อ่าน `progression_plan.md` (สถานะปัจจุบัน: Phase 4 Completed, Phase 5 Ready)
+2. เริ่มงาน Phase 5 ตาม `plan.md` (UX Refinement และ Data Validation)
+3. ปรับ UI/UX ภาษาไทยให้เข้าใจง่ายสำหรับบุคลากรทางการศึกษา
+4. เพิ่ม Responsive Layout, Paste from Excel, Upload Progress
+5. เพิ่ม Data Validation (ผลรวม, ปีการศึกษา, ฟิลด์สำคัญ) และ Error Recovery
 
 ---
 
@@ -262,6 +267,12 @@ AI หรือ Developer คนถัดไปให้ทำตามลำด
 | 2026-08-06 | Phase 3 | assets/js/app.js | Connected AdminEngine.init() on Admin view activation |
 | 2026-08-06 | Phase 3 | index.html | Added Admin Dashboard UI Shell, Stats cards grid, Filter bar, Table & Edit Modal |
 | 2026-08-06 | Phase 3 | assets/css/style.css | Added Styles for Admin Stat cards, 11 Categories grid, Status badges & File edit cards |
+| 2026-08-06 | Phase 4 | apps-script/ReportService.gs | [NEW] Google Docs Template Engine, PDF Exporter, Drive Reports Storage & EXPORTS Log Writer |
+| 2026-08-06 | Phase 4 | apps-script/Code.gs | Added generateReport & getExportHistory API routes |
+| 2026-08-06 | Phase 4 | assets/js/api.js | Added generateReport & getExportHistory API methods |
+| 2026-08-06 | Phase 4 | assets/js/admin.js | Added Report Builder Modal (openReportModal, Checklist, startReportGeneration, Export History) |
+| 2026-08-06 | Phase 4 | index.html | Added Report Builder button & Report Builder Modal (#admin-report-modal) |
+| 2026-08-06 | Phase 4 | assets/css/style.css | Added Report Builder checklist grid, progress bar & result card styles |
 
 ---
 
@@ -333,5 +344,29 @@ AI หรือ Developer คนถัดไปให้ทำตามลำด
 **Next Action**
 
 - พร้อมเริ่ม Phase 5: UX Refinement และ Data Validation (ปรับแต่ง UI ภาษาไทย, Paste from Excel, Upload Progress & Data Validation)
+
+### Session 006 — 2026-08-06
+
+**ผู้ดำเนินการ:** AI Assistant  
+**Phase:** Phase 4 — Code Review & Quality Assurance  
+**สถานะ:** Completed (100%)
+
+**งานที่ทำ**
+
+- ทำการ Code Review โค้ด Phase 4 ทั้งหมดอย่างละเอียด พบ 7 Issues (2 Critical, 3 Medium, 2 Low)
+- **Issue #1 (Critical):** อัปเดต `progression_plan.md` Section 4, 6, 9, 10 ให้ตรงกับสถานะ Phase 4 Completed
+- **Issue #2 (Critical):** เพิ่ม `escapeHtml()` ป้องกัน XSS Injection ในตารางประวัติ Export (`admin.js`)
+- **Issue #3 (Medium):** เพิ่ม CSS `.badge-danger` สำหรับ badge สถานะล้มเหลว (`style.css`)
+- **Issue #4 (Medium):** ใช้ `var self = this;` ป้องกัน scope/this context ใน `startReportGeneration()`
+- **Issue #5 (Medium):** ปรับโครงสร้าง `renderCategoryContent` ใน `ReportService.gs` แยก render หัวข้อหมวดไว้นอก loop ป้องกันหัวข้อซ้ำเมื่อมีหลาย Submission ในหมวดเดียวกัน
+- **Issue #6 (Low):** ลบตัวแปร `pTopSpace` ที่ไม่ได้ใช้งานใน `ReportService.gs`
+- **Issue #7 (Low):** เปลี่ยน fallback report title ใน `admin.js` ให้ dynamic ตามปีการศึกษา
+
+**ผลทดสอบ**
+
+- JavaScript Syntax Check via Node.js: PASS ทุกไฟล์ 100%
+- DOM Element IDs Verification: PASS ตรงกัน 100%
+- Code Review Re-audit: All 7 issues verified resolved
+
 
 

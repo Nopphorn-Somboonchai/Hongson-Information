@@ -70,6 +70,14 @@ var ReportService = {
         var cat = categories[i];
         var catSubmissions = submissions[cat.category_id] || [];
 
+        // Render category heading once
+        var pHead = body.appendParagraph(cat.category_name);
+        pHead.setFontSize(16);
+        pHead.setBold(true);
+        pHead.setForegroundColor("#1e293b");
+        pHead.setSpacingBefore(16);
+        pHead.setSpacingAfter(8);
+
         if (catSubmissions.length > 0) {
           totalIncludedSubmissions += catSubmissions.length;
           for (var s = 0; s < catSubmissions.length; s++) {
@@ -77,11 +85,15 @@ var ReportService = {
             var subData = allData[sub.submission_id] || [];
             var subFiles = allFiles[sub.submission_id] || [];
 
-            this.renderCategoryChapter(body, cat, sub, subData, subFiles);
+            this.renderCategoryContent(body, sub, subData, subFiles);
           }
         } else {
           // Render placeholder for category with no selected submission
-          this.renderEmptyCategoryChapter(body, cat);
+          var pEmpty = body.appendParagraph("\u26a0\ufe0f \u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e01\u0e32\u0e23\u0e04\u0e31\u0e14\u0e40\u0e25\u0e37\u0e2d\u0e01\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e43\u0e19\u0e2b\u0e21\u0e27\u0e14\u0e19\u0e35\u0e49\u0e2a\u0e33\u0e2b\u0e23\u0e31\u0e1a\u0e01\u0e32\u0e23\u0e08\u0e31\u0e14\u0e17\u0e33\u0e23\u0e32\u0e22\u0e07\u0e32\u0e19\u0e1b\u0e23\u0e30\u0e08\u0e33\u0e1b\u0e35");
+          pEmpty.setFontSize(10);
+          pEmpty.setItalic(true);
+          pEmpty.setForegroundColor("#94a3b8");
+          pEmpty.setSpacingAfter(12);
         }
 
         if (i < categories.length - 1) {
@@ -312,7 +324,7 @@ var ReportService = {
    * Render Cover Page
    */
   renderCoverPage: function(body, reportTitle, academicYear, schoolName) {
-    var pTopSpace = body.appendParagraph("\n\n\n");
+    body.appendParagraph("\n\n\n");
     
     var pSchool = body.appendParagraph(schoolName);
     pSchool.setAlignment(DocumentApp.HorizontalAlignment.CENTER);
@@ -375,17 +387,9 @@ var ReportService = {
   },
 
   /**
-   * Render Category Chapter with data and files
+   * Render category content (submission data and files) — heading is rendered separately
    */
-  renderCategoryChapter: function(body, cat, sub, dataItems, fileItems) {
-    // Heading 1: Category Name
-    var pHead = body.appendParagraph(cat.category_name);
-    pHead.setFontSize(16);
-    pHead.setBold(true);
-    pHead.setForegroundColor("#1e293b");
-    pHead.setSpacingBefore(16);
-    pHead.setSpacingAfter(8);
-
+  renderCategoryContent: function(body, sub, dataItems, fileItems) {
     // Metadata Banner Box
     var pMeta = body.appendParagraph(
       "📌 รหัสอ้างอิง: " + sub.submission_id + " | ผู้จัดทำ: " + (sub.sender_name || "ไม่ระบุ") + 
@@ -419,6 +423,21 @@ var ReportService = {
     if (fileItems && fileItems.length > 0) {
       this.renderImageAttachments(body, fileItems);
     }
+  },
+
+  /**
+   * Render Category Chapter with data and files
+   */
+  renderCategoryChapter: function(body, cat, sub, dataItems, fileItems) {
+    // Heading 1: Category Name
+    var pHead = body.appendParagraph(cat.category_name);
+    pHead.setFontSize(16);
+    pHead.setBold(true);
+    pHead.setForegroundColor("#1e293b");
+    pHead.setSpacingBefore(16);
+    pHead.setSpacingAfter(8);
+
+    this.renderCategoryContent(body, sub, dataItems, fileItems);
   },
 
   /**
