@@ -177,7 +177,7 @@ const App = {
       const badge = document.getElementById('contributor-user-status');
       if (badge) badge.textContent = 'บทบาท: ผู้กรอกข้อมูล (Contributor)';
       // Initialize Dynamic Form Engine
-      if (window.FormEngine) {
+      if (typeof FormEngine !== 'undefined') {
         FormEngine.init();
       }
     }

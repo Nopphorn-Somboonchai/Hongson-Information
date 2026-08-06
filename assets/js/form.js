@@ -2,7 +2,7 @@
  * HONGSON Information Hub — Dynamic Form Engine & File Upload Handler
  */
 
-const FormEngine = {
+var FormEngine = {
   activeCategory: null,
   categories: [],
   attachedFiles: [],
