@@ -6,6 +6,7 @@ var FormEngine = {
   activeCategory: null,
   categories: [],
   attachedFiles: [],
+  dragAndDropBound: false,
 
   // Default 11 Categories Schema Fallback
   defaultCategories: [
@@ -304,9 +305,13 @@ var FormEngine = {
   },
 
   setupDragAndDrop() {
+    if (this.dragAndDropBound) return;
+
     const dropZone = document.getElementById('file-drop-zone');
     const fileInput = document.getElementById('file-input-hidden');
     if (!dropZone || !fileInput) return;
+
+    this.dragAndDropBound = true;
 
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
       dropZone.addEventListener(eventName, (e) => {
@@ -329,8 +334,15 @@ var FormEngine = {
       this.handleFilesSelect(files);
     });
 
-    dropZone.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', (e) => this.handleFilesSelect(e.target.files));
+    dropZone.addEventListener('click', (e) => {
+      if (e.target !== fileInput) {
+        fileInput.click();
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      this.handleFilesSelect(e.target.files);
+    });
   },
 
   async handleFilesSelect(files) {
@@ -344,6 +356,13 @@ var FormEngine = {
         continue;
       }
 
+      // Check if file is already added to attachedFiles
+      const isDuplicate = this.attachedFiles.some(f => f.name === file.name && f.size === file.size);
+      if (isDuplicate) {
+        console.warn(`ไฟล์ ${file.name} ถูกเพิ่มในรายการแล้ว`);
+        continue;
+      }
+
       const base64Data = await this.fileToBase64(file);
       this.attachedFiles.push({
         id: 'file-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
@@ -354,6 +373,10 @@ var FormEngine = {
         caption: ''
       });
     }
+
+    // Reset file input value so re-selecting same file triggers change event properly
+    const fileInput = document.getElementById('file-input-hidden');
+    if (fileInput) fileInput.value = '';
 
     this.renderAttachedFilesList();
   },

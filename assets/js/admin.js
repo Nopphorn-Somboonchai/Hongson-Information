@@ -405,7 +405,7 @@ var AdminEngine = {
             </div>
             <div class="form-group">
               <label class="form-label">ข้อมูล ณ วันที่</label>
-              <input type="date" id="edit-data-date" class="form-control" value="${sub.dataAsOfDate || ''}">
+              <input type="date" id="edit-data-date" class="form-control" value="${this.formatDateForInput(sub.dataAsOfDate)}">
             </div>
           </div>
 
@@ -733,5 +733,24 @@ var AdminEngine = {
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
+  },
+
+  formatDateForInput: function(dateVal) {
+    if (!dateVal) return '';
+    var str = String(dateVal).trim();
+    if (str.includes('T')) {
+      return str.split('T')[0];
+    }
+    if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+      return str;
+    }
+    var d = new Date(str);
+    if (!isNaN(d.getTime())) {
+      var year = d.getFullYear();
+      var month = String(d.getMonth() + 1).padStart(2, '0');
+      var day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+    return str;
   }
 };

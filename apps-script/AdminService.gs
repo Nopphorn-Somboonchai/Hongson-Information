@@ -72,13 +72,13 @@ var AdminService = {
           senderName: row[3],
           senderDepartment: row[4],
           senderPhone: row[5],
-          dataAsOfDate: row[6],
+          dataAsOfDate: this.formatDateValue(row[6]),
           senderNote: row[7],
-          submittedAt: row[8],
+          submittedAt: this.formatDateTimeValue(row[8]),
           status: row[9] || "submitted",
           adminNote: row[10] || "",
           selectedForReport: row[11] === true || String(row[11]).toUpperCase() === "TRUE",
-          lastUpdatedAt: row[12] || row[8],
+          lastUpdatedAt: this.formatDateTimeValue(row[12] || row[8]),
           fileCount: fileCountMap[row[0]] || 0,
           dataCount: dataCountMap[row[0]] || 0
         };
@@ -170,13 +170,13 @@ var AdminService = {
             senderName: row[3],
             senderDepartment: row[4],
             senderPhone: row[5],
-            dataAsOfDate: row[6],
+            dataAsOfDate: this.formatDateValue(row[6]),
             senderNote: row[7],
-            submittedAt: row[8],
+            submittedAt: this.formatDateTimeValue(row[8]),
             status: row[9] || "submitted",
             adminNote: row[10] || "",
             selectedForReport: row[11] === true || String(row[11]).toUpperCase() === "TRUE",
-            lastUpdatedAt: row[12]
+            lastUpdatedAt: this.formatDateTimeValue(row[12])
           };
           break;
         }
@@ -428,5 +428,28 @@ var AdminService = {
     }
 
     return { success: false, message: "ไม่พบข้อมูล Submission ID: " + submissionId };
+  },
+
+  /**
+   * Date & DateTime Formatting Helpers
+   */
+  formatDateValue: function(val) {
+    if (!val) return "";
+    if (Object.prototype.toString.call(val) === "[object Date]") {
+      return Utilities.formatDate(val, "Asia/Bangkok", "yyyy-MM-dd");
+    }
+    var str = String(val).trim();
+    if (str.indexOf("T") !== -1) {
+      str = str.split("T")[0];
+    }
+    return str;
+  },
+
+  formatDateTimeValue: function(val) {
+    if (!val) return "";
+    if (Object.prototype.toString.call(val) === "[object Date]") {
+      return Utilities.formatDate(val, "Asia/Bangkok", "yyyy-MM-dd HH:mm:ss");
+    }
+    return String(val);
   }
 };
