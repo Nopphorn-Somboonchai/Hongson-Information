@@ -16,6 +16,10 @@ function doGet(e) {
       response = { success: true, config: CONFIG.getPublicConfig() };
       break;
 
+    case "getCategories":
+      response = { success: true, categories: SubmissionService.getCategories() };
+      break;
+
     case "setupSheets":
       response = SheetService.setupSheets();
       break;
@@ -45,6 +49,18 @@ function doPost(e) {
   switch (action) {
     case "verifyCode":
       response = Auth.verifyCode(data.code);
+      break;
+
+    case "getCategories":
+      response = { success: true, categories: SubmissionService.getCategories() };
+      break;
+
+    case "submitData":
+      if (!Auth.verifySessionToken(data.sessionToken, "contributor")) {
+        response = { success: false, message: "สิทธิ์การเข้าถึงไม่ถูกต้อง หรือ Session หมดอายุ กรุณาเข้าสู่ระบบใหม่" };
+      } else {
+        response = SubmissionService.submitData(data);
+      }
       break;
 
     case "setupSheets":

@@ -207,6 +207,206 @@ body {
   flex-grow: 1;
 }
 
+/* Category Grid & Cards */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.category-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.category-card:hover {
+  border-color: var(--accent-light);
+  transform: translateY(-3px);
+  background: rgba(30, 41, 59, 0.9);
+}
+
+.category-card-icon {
+  font-size: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.category-card h4 {
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-main);
+}
+
+.category-status-badge {
+  font-size: 0.8rem;
+  color: var(--accent-light);
+  font-weight: 500;
+}
+
+/* Dynamic Form Components */
+.form-section-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.form-group-card {
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-help-text {
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+/* Dynamic Table Styling */
+.dynamic-table-wrapper {
+  overflow-x: auto;
+  margin-top: 0.75rem;
+}
+
+.dynamic-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.dynamic-table th {
+  background: rgba(15, 23, 42, 0.8);
+  color: var(--text-muted);
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  text-align: left;
+}
+
+.dynamic-table td {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+}
+
+.table-input {
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.btn-remove-row {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--danger);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.btn-remove-row:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+/* Drag & Drop Dropzone */
+.file-drop-zone {
+  border: 2px dashed rgba(59, 130, 246, 0.4);
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: var(--radius-md);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-bottom: 1rem;
+}
+
+.file-drop-zone.drag-over, .file-drop-zone:hover {
+  border-color: var(--primary-light);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.files-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.file-preview-card {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem;
+}
+
+.file-preview-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.file-type-icon {
+  font-size: 1.5rem;
+}
+
+.file-name-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-remove-file {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.25rem;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.btn-remove-file:hover {
+  color: var(--danger);
+}
+
+/* Submission Summary Modal Details */
+.summary-details-card {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.summary-detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.95rem;
+}
+
+.summary-detail-row:last-child {
+  border-bottom: none;
+}
+
+.summary-detail-row span:first-child {
+  color: var(--text-muted);
+}
+
 /* Buttons */
 .btn {
   display: inline-flex;
@@ -222,6 +422,11 @@ body {
   cursor: pointer;
   transition: var(--transition);
   text-decoration: none;
+}
+
+.btn-sm {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
 }
 
 .btn-primary {
@@ -284,7 +489,7 @@ body {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   width: 90%;
-  max-width: 440px;
+  max-width: 500px;
   padding: 2rem;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
   transform: scale(0.95);

@@ -77,8 +77,82 @@
         </div>
         <button class="btn btn-secondary btn-logout" id="btn-logout-contributor">ออกจากระบบ</button>
       </div>
-      <div class="alert alert-success" style="display: block;">
-        <strong>✅ เข้าสู่ระบบสำเร็จ:</strong> ระบบ 2 รหัส (Contributor Auth) ผ่านการตรวจสอบเรียบร้อยแล้ว — พร้อมรองรับ Phase 2 Dynamic Form ในลำดับถัดไป
+
+      <!-- Step A: Category Selection -->
+      <div id="category-select-section">
+        <h3>📂 เลือกหมวดสารสนเทศที่ต้องการกรอกข้อมูล (11 หมวด)</h3>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">กรุณาคลิกเลือกหมวดสารสนเทศที่คุณรับผิดชอบเพื่อเริ่มกรอกข้อมูลและแนบไฟล์หลักฐาน</p>
+        <div id="category-grid-container"></div>
+      </div>
+
+      <!-- Step B: Dynamic Form & File Upload -->
+      <div id="form-render-section" style="display: none;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="FormEngine.backToCategorySelect()">
+            ⬅️ ย้อนกลับไปเลือกหมวด
+          </button>
+          <h3 id="selected-category-title" style="margin: 0; color: var(--accent-light);">ชื่อหมวด</h3>
+        </div>
+
+        <form id="contributor-submit-form" onsubmit="FormEngine.handleSubmit(event)">
+          <div id="contributor-form-alert" class="alert"></div>
+
+          <!-- Sender Information Section -->
+          <div class="form-section-card">
+            <h4>👤 ข้อมูลผู้ส่งและหน่วยงาน</h4>
+            <p class="form-help-text">กรอกข้อมูลผู้รับผิดชอบสำหรับอ้างอิงและสอบถามข้อมูลเพิ่มเติม</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem;">
+              <div class="form-group">
+                <label for="sender_name" class="form-label">ชื่อ-นามสกุล ผู้กรอก <span style="color:var(--danger)">*</span></label>
+                <input type="text" id="sender_name" class="form-control" placeholder="เช่น นายสมชาย ใจดี" required>
+              </div>
+              <div class="form-group">
+                <label for="sender_department" class="form-label">ฝ่าย / งาน / กลุ่มสาระ <span style="color:var(--danger)">*</span></label>
+                <input type="text" id="sender_department" class="form-control" placeholder="เช่น กลุ่มสาระการเรียนรู้วิทยาศาสตร์" required>
+              </div>
+              <div class="form-group">
+                <label for="sender_phone" class="form-label">เบอร์โทรศัพท์ติดต่อ</label>
+                <input type="tel" id="sender_phone" class="form-control" placeholder="081-XXXXXXX">
+              </div>
+              <div class="form-group">
+                <label for="data_as_of_date" class="form-label">ข้อมูล ณ วันที่</label>
+                <input type="date" id="data_as_of_date" class="form-control">
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="sender_note" class="form-label">หมายเหตุเพิ่มเติมถึง Admin (ถ้ามี)</label>
+              <input type="text" id="sender_note" class="form-control" placeholder="ระบุข้อความอธิบายเพิ่มเติม...">
+            </div>
+          </div>
+
+          <!-- Dynamic Category Fields Container -->
+          <div class="form-section-card">
+            <h4>📋 รายละเอียดข้อมูลสารสนเทศตามหมวด</h4>
+            <div id="dynamic-fields-container" style="margin-top: 1rem;"></div>
+          </div>
+
+          <!-- File Upload Section -->
+          <div class="form-section-card">
+            <h4>📎 แนบไฟล์เอกสารและรูปภาพหลักฐาน</h4>
+            <p class="form-help-text">รองรับไฟล์รูปภาพ (JPG, PNG) เอกสาร (PDF, DOCX, XLSX) ขนาดไม่เกิน 25MB ต่อไฟล์</p>
+            
+            <div class="file-drop-zone" id="file-drop-zone">
+              <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📁</div>
+              <p>ลากไฟล์มาวางที่นี่ หรือ <strong>คลิกเพื่อเลือกไฟล์</strong></p>
+              <small class="text-muted">เลือกได้หลายไฟล์พร้อมกัน</small>
+              <input type="file" id="file-input-hidden" multiple style="display: none;" accept="image/*,.pdf,.docx,.xlsx,.doc,.xls,.csv">
+            </div>
+
+            <div id="attached-files-list"></div>
+          </div>
+
+          <!-- Form Action Submit -->
+          <div style="text-align: right; margin-top: 2rem;">
+            <button type="submit" class="btn btn-accent btn-lg" id="btn-submit-contributor-data" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+              💾 บันทึกและส่งข้อมูลสารสนเทศ
+            </button>
+          </div>
+        </form>
       </div>
     </section>
 
@@ -108,6 +182,18 @@
     </section>
 
   </main>
+
+  <!-- MODAL: Submission Success Summary -->
+  <div class="modal-overlay" id="submission-summary-modal">
+    <div class="modal">
+      <div id="summary-modal-body"></div>
+      <div style="text-align: center; margin-top: 1.5rem;">
+        <button type="button" class="btn btn-primary" onclick="FormEngine.closeSummaryAndReset()">
+          ตกลง และกลับไปเลือกหมวด
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- MODAL: Auth Password Entry -->
   <div class="modal-overlay" id="auth-modal">
@@ -160,6 +246,7 @@
   <!-- Scripts -->
   <script src="assets/js/api.js"></script>
   <script src="assets/js/auth.js"></script>
+  <script src="assets/js/form.js"></script>
   <script src="assets/js/app.js"></script>
 </body>
 </html>

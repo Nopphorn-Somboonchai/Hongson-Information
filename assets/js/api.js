@@ -31,7 +31,6 @@ const API = {
    */
   async request(action, payload = {}, method = 'POST') {
     if (!this.isConfigured()) {
-      // Return clear error if Web App URL is missing
       return {
         success: false,
         message: "ยังไม่ได้ตั้งค่า Apps Script Web App URL กรุณาตั้งค่า URL ในระบบก่อนใช้งาน"
@@ -73,6 +72,20 @@ const API = {
    */
   async verifyCode(code) {
     return await this.request('verifyCode', { code }, 'POST');
+  },
+
+  /**
+   * Fetch categories list and schema
+   */
+  async getCategories() {
+    return await this.request('getCategories', {}, 'GET');
+  },
+
+  /**
+   * Submit submission data and attached files
+   */
+  async submitData(payload) {
+    return await this.request('submitData', payload, 'POST');
   },
 
   /**

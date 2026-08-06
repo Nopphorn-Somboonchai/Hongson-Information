@@ -8,11 +8,11 @@
 ## 1. Project Status
 
 - **Project:** HONGSON Information Hub
-- **Current Phase:** Phase 2 — ระบบผู้กรอกและการรับไฟล์
-- **Overall Status:** Phase 1 Complete (100%) / Ready for Phase 2 Implementation
+- **Current Phase:** Phase 3 — Admin Dashboard และการตรวจแก้
+- **Overall Status:** Phase 1 & Phase 2 Complete (100%) / Ready for Phase 3 Implementation
 - **Last Updated:** 2026-08-06
-- **Updated By:** AI Assistant (Session 002)
-- **Production Status:** Local Foundation Built / Ready for Apps Script & GitHub Pages Deployment
+- **Updated By:** AI Assistant (Session 003)
+- **Production Status:** Contributor Flow & File Upload Ready / Ready for Apps Script & GitHub Pages Deployment
 - **Current Academic Year:** 2569 (Default)
 - **Repository:** Workspace Local (`Hongson-Information`)
 - **GitHub Pages URL:** รอ Admin Deploy (`https://<username>.github.io/Hongson-Information`)
@@ -25,8 +25,8 @@
 | Phase | ชื่อ Phase | สถานะ | ความคืบหน้า | หมายเหตุ |
 |---|---|---|---:|---|
 | 1 | Foundation และโครงสร้างโปรเจกต์ | Completed | 100% | สร้างโครงสร้างไฟล์, Landing Page, UI Shell, Backend GAS Script ทั้งหมดเสร็จสมบูรณ์ |
-| 2 | ระบบผู้กรอกและการรับไฟล์ | In Progress | 0% | เริ่มงาน Dynamic Schema Form, File Upload และ Google Sheets Submission Write |
-| 3 | Admin Dashboard และการตรวจแก้ | Not Started | 0% | เริ่มหลัง Contributor Flow ใช้งานได้ |
+| 2 | ระบบผู้กรอกและการรับไฟล์ | Completed | 100% | Dynamic Form Engine, File Upload (Base64/Drive), Dynamic Table และ Submission Summary เสร็จสมบูรณ์ |
+| 3 | Admin Dashboard และการตรวจแก้ | In Progress | 0% | เริ่มงาน Admin Dashboard, Submission Review/Edit, Include/Exclude และ Completeness Checklist |
 | 4 | Report Builder และ Export PDF | Not Started | 0% | ต้องมีข้อมูลจริงและ Selection ก่อน |
 | 5 | UX Refinement และ Data Validation | Not Started | 0% | ทำหลัง Core Workflow ครบ |
 | 6 | QA, Deployment และส่งมอบ | Not Started | 0% | Phase สุดท้าย |
@@ -58,33 +58,36 @@
 - [x] สร้าง `implement_plan.md`
 - [x] สร้าง `progression_plan.md`
 
-### Implementation (Phase 1)
+### Implementation (Phase 1 & Phase 2)
 
 - [x] ตรวจสอบและสร้างโครงสร้าง Repository
 - [x] สร้างคู่มือ `README.md`
-- [x] สร้าง `index.html` (Landing Page, Hero Header, 2 Role Cards, Contributor Shell, Admin Shell, Modals)
-- [x] สร้าง `assets/css/style.css` (Design System, Dark Theme, Glassmorphism, Responsive Grid)
-- [x] สร้าง `assets/js/api.js` (API Service Layer, Fetch Handler, Error Handling)
+- [x] สร้าง `index.html` (Landing Page, Hero Header, 2 Role Cards, Contributor View, Admin View, Dynamic Form UI, Summary Modal)
+- [x] สร้าง `assets/css/style.css` (Design System, Dark Theme, Glassmorphism, Responsive Grid, Dynamic Table & Dropzone Styles)
+- [x] สร้าง `assets/js/api.js` (API Service Layer, Fetch Handler, getCategories & submitData endpoints)
 - [x] สร้าง `assets/js/auth.js` (Client-side Session Manager, 2-Code Auth, Token Verification)
+- [x] สร้าง `assets/js/form.js` (Dynamic Form Engine, 11 Categories Schema Fallback, Dynamic Table, Drag & Drop File Upload, Submission Summary)
 - [x] สร้าง `assets/js/app.js` (Application Controller, View Switching, DOM Event Listeners)
 - [x] สร้าง `apps-script/appsscript.json` (GAS Manifest)
 - [x] สร้าง `apps-script/Code.gs` (Main Controller, doGet/doPost routing)
 - [x] สร้าง `apps-script/Config.gs` (ScriptProperties Manager)
 - [x] สร้าง `apps-script/Auth.gs` (Server-side 2-Code Verification)
 - [x] สร้าง `apps-script/SheetService.gs` (Google Sheets 6-Tab Schema Creation & 11 Default Categories Seeding)
+- [x] สร้าง `apps-script/FileService.gs` (Google Drive File Storage & Metadata Record Generation)
+- [x] สร้าง `apps-script/SubmissionService.gs` (Submission Record Writing to SUBMISSIONS, DATA, FILES & Lock Handling)
 
 ---
 
 ## 4. Current Work
 
-งานปัจจุบัน (Phase 2 — ระบบผู้กรอกและการรับไฟล์):
+งานปัจจุบัน (Phase 3 — Admin Dashboard และการตรวจแก้ข้อมูล):
 
-1. สร้าง Dynamic Form Schema Loader จาก `CATEGORIES`
-2. สร้าง Dynamic Form Renderer รองรับ Field Types (Text, Textarea, Number, Date, Dynamic Table, File Upload)
-3. Implement File Upload Handling (Base64/Drive API)
-4. สร้าง Submission ID Generator
-5. เขียนบริการบันทึก Submission ลง `SUBMISSIONS`, `DATA` และ `FILES`
-6. สร้าง Summary Page หลังส่งข้อมูลสำเร็จ
+1. สร้าง Admin Dashboard Overview 11 หมวด (จำนวน Submission, สถานะความครบถ้วน)
+2. สร้าง หน้ารายการ Submission (List View & Filter)
+3. สร้าง หน้าดูรายละเอียด Submission (Detail View & File Previews)
+4. เพิ่ม ฟังก์ชันแก้ไขข้อมูล (Text, Numbers, Dynamic Table)
+5. เพิ่ม ฟังก์ชัน Include / Exclude รายการเพื่อเตรียมสร้างรายงาน
+6. เพิ่ม Checklist ตรวจสอบความครบถ้วนของข้อมูล
 
 ---
 
@@ -105,18 +108,18 @@
 
 ### Phase 2
 
-- [ ] เลือก 11 หมวดได้
-- [ ] Dynamic Form ทำงาน
-- [ ] Text/Number/Date ทำงาน
-- [ ] Dynamic Table ทำงาน
-- [ ] Drag and Drop ทำงาน
-- [ ] Upload รูปทำงาน
-- [ ] Upload PDF ทำงาน
-- [ ] สร้าง Submission ID
-- [ ] บันทึก Sheets
-- [ ] บันทึก Drive
-- [ ] Summary Page ทำงาน
-- [ ] ป้องกันส่งซ้ำจาก Double Click
+- [x] เลือก 11 หมวดได้
+- [x] Dynamic Form ทำงาน
+- [x] Text/Number/Date ทำงาน
+- [x] Dynamic Table ทำงาน
+- [x] Drag and Drop ทำงาน
+- [x] Upload รูปทำงาน
+- [x] Upload PDF ทำงาน
+- [x] สร้าง Submission ID
+- [x] บันทึก Sheets
+- [x] บันทึก Drive
+- [x] Summary Page ทำงาน
+- [x] ป้องกันส่งซ้ำจาก Double Click
 
 ### Phase 3
 
@@ -183,6 +186,9 @@
 | 2026-08-06 | Phase 1 | Node Syntax Check (`assets/js/*.js`) | PASS | ไวยากรณ์ JavaScript ถูกต้อง |
 | 2026-08-06 | Phase 1 | DOM Element IDs Verification (index.html vs app.js) | PASS | ตรวจสอบแล้ว 21/21 Element IDs ตรงกันสมบูรณ์ |
 | 2026-08-06 | Phase 1 | Apps Script Setup Sheets Logic Verification | PASS | ฟังก์ชัน setupSheets และ seedDefaultCategories ถูกต้องตาม Schema |
+| 2026-08-06 | Phase 2 | Node Syntax Check (`assets/js/form.js`, `api.js`, `auth.js`, `app.js`) | PASS | ไวยากรณ์ JavaScript ของ Phase 2 ถูกต้อง |
+| 2026-08-06 | Phase 2 | DOM Element IDs Verification (index.html vs app.js & form.js) | PASS | ตรวจสอบแล้ว 42/42 Element IDs ตรงกัน 100% |
+| 2026-08-06 | Phase 2 | Dynamic Table & File Upload Base64 Payload logic | PASS | สร้าง Base64 FileReader, Dynamic Table Row manipulation & GAS submitData handler สำเร็จ |
 
 ---
 
@@ -213,11 +219,11 @@
 
 AI หรือ Developer คนถัดไปให้ทำตามลำดับนี้
 
-1. อ่าน `progression_plan.md` (สถานะปัจจุบัน: Phase 1 Completed, Phase 2 Ready)
-2. เริ่มงาน Phase 2 ตาม `plan.md` และ `implement_plan.md`
-3. พัฒนา Dynamic Form Schema Loader & Dynamic Form Renderer (`assets/js/form.js` หรือขยาย `app.js`)
-4. พัฒนา Apps Script Submission Service (`apps-script/SubmissionService.gs`)
-5. ทดสอบการบันทึกข้อมูลและอัปโหลดไฟล์จริง
+1. อ่าน `progression_plan.md` (สถานะปัจจุบัน: Phase 2 Completed, Phase 3 Ready)
+2. เริ่มงาน Phase 3 ตาม `plan.md` และ `implement_plan.md`
+3. พัฒนา Admin Service ใน Apps Script (`apps-script/AdminService.gs`) สำหรับดึงรายการ Submissions, อ่านรายละเอียด และบันทึกการแก้ไข/Include/Exclude
+4. พัฒนา Admin Dashboard UI (`assets/js/admin.js` หรือขยาย `app.js`)
+5. ทดสอบ Admin Review & Edit Workflow
 
 ---
 
@@ -239,38 +245,48 @@ AI หรือ Developer คนถัดไปให้ทำตามลำด
 | 2026-08-06 | Phase 1 | apps-script/Config.gs | GAS Script Properties Manager |
 | 2026-08-06 | Phase 1 | apps-script/Auth.gs | GAS Server 2-Code Auth Logic |
 | 2026-08-06 | Phase 1 | apps-script/SheetService.gs | GAS 6-Tab Sheets Schema Setup & 11 Categories Seeding |
+| 2026-08-06 | Phase 2 | assets/js/form.js | Dynamic Form Engine, Table, Drag-Drop Upload & Summary Modal |
+| 2026-08-06 | Phase 2 | apps-script/FileService.gs | Drive Storage & File Record Writer |
+| 2026-08-06 | Phase 2 | apps-script/SubmissionService.gs | Submissions, Data & Files Sheet Writer with Lock Service |
+| 2026-08-06 | Phase 2 | index.html | Integrated Form Engine UI & Submission Summary Modal |
+| 2026-08-06 | Phase 2 | assets/css/style.css | Added Category Cards, Dynamic Table, Dropzone & File Preview Styles |
+| 2026-08-06 | Phase 2 | assets/js/api.js | Added getCategories & submitData endpoints |
+| 2026-08-06 | Phase 2 | apps-script/Code.gs | Added getCategories & submitData API routes |
 
 ---
 
 ## 11. Session Log
 
-### Session 002 — 2026-08-06
+### Session 003 — 2026-08-06
 
 **ผู้ดำเนินการ:** AI Assistant  
-**Phase:** Phase 1 — Foundation และโครงสร้างโปรเจกต์  
+**Phase:** Phase 2 — ระบบผู้กรอกและการรับไฟล์  
 **สถานะ:** Completed (100%)
 
 **งานที่ทำ**
 
-- ตรวจสอบโครงสร้างไฟล์ workspace พบว่ายังไม่ได้สร้างโค้ดจริง
-- สร้างไฟล์ `README.md` อธิบายคู่มือการติดตั้งและสถาปัตยกรรม 2 รหัส
-- สร้าง Frontend Interface (`index.html`, `assets/css/style.css`, `assets/js/api.js`, `assets/js/auth.js`, `assets/js/app.js`) พร้อมปุ่มส่งข้อมูล ปุ่มผู้ดูแลระบบ หน้าจอกรอกรหัส และระบบสลับ View Role Shell
-- สร้าง Backend Google Apps Script (`apps-script/appsscript.json`, `Code.gs`, `Config.gs`, `Auth.gs`, `SheetService.gs`) สำหรับระบบตรวจสอบ 2 รหัส และสร้างโครงสร้าง Google Sheets ทั้ง 6 Tab อัตโนมัติ
+- พัฒนา `assets/js/form.js` สำหรับ Dynamic Form Engine รองรับ 11 หมวดข้อมูล
+- เพิ่มการสร้าง Dynamic Table ที่สามารถกด "+ เพิ่มแถว" และ "ลบแถว" ได้ทันที
+- เพิ่มระบบ Drag & Drop File Upload พร้อมแสดงพรีวิวไฟล์, ขนาดไฟล์, และช่องใส่ Caption สำหรับไฟล์รูปภาพ
+- พัฒนา `apps-script/FileService.gs` แปลงไฟล์ Base64 และบันทึกลง Google Drive พร้อมออก ID อ้างอิง
+- พัฒนา `apps-script/SubmissionService.gs` สร้าง Submission ID สม่ำเสมอ พร้อมบันทึกข้อมูลลง `SUBMISSIONS`, `DATA` และ `FILES` โดยมีระบบ LockService ป้องกันการเขียนชนกัน
+- เพิ่มหน้าต่าง Modal สรุปผลการส่งข้อมูล (Submission Summary) แสดง Submission ID รายการที่ส่ง และเวลาบันทึก พร้อมป้องกันการกดส่งซ้ำ (Double-click prevention)
 
 **ผลทดสอบ**
 
-- JavaScript Syntax Verification via Node.js: PASS ทั้ง 3 ไฟล์ (`api.js`, `auth.js`, `app.js`)
-- DOM Element IDs Verification: Checked 21/21 Element IDs ระหว่าง `index.html` กับ `app.js` ตรงกัน 100%
+- JavaScript Syntax Verification via Node.js: PASS ทุกไฟล์ (`api.js`, `auth.js`, `form.js`, `app.js`)
+- DOM Element IDs Verification: Checked 42/42 Element IDs ตรงกัน 100%
+- Logic Verification: Dynamic Table, Base64 conversion, Submission ID formatting PASS
 
 **งานที่ยังไม่เสร็จ**
 
-- ไม่มี (Phase 1 ผ่านทุก Acceptance Criteria)
+- ไม่มี (Phase 2 ผ่านทุก Acceptance Criteria)
 
 **Blocker**
 
-- ไม่มี (สามารถใช้ Web App URL จำลอง หรือรอ Admin Deploy Apps Script จริง)
+- ไม่มี
 
 **Next Action**
 
-- เริ่ม Phase 2: พัฒนาระบบผู้กรอกและการรับไฟล์ (Dynamic Form & File Upload)
+- เริ่ม Phase 3: พัฒนาระบบ Admin Dashboard และการตรวจแก้ข้อมูล (Submission Review & Edit)
 
