@@ -163,7 +163,8 @@
           <h2>ระบบผู้ดูแลระบบ (Admin Dashboard)</h2>
           <span class="user-badge" id="admin-user-status">บทบาท: ผู้ดูแลระบบ</span>
         </div>
-        <div style="display: flex; gap: 0.5rem;">
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <button class="btn btn-accent" id="btn-open-report-builder">📄 สร้างรายงาน & Export PDF</button>
           <button class="btn btn-secondary" id="btn-admin-refresh">🔄 รีเฟรชข้อมูล</button>
           <button class="btn btn-secondary btn-logout" id="btn-logout-admin">ออกจากระบบ</button>
         </div>
@@ -260,6 +261,113 @@
         <button class="modal-close" onclick="AdminEngine.closeDetailModal()">&times;</button>
       </div>
       <div id="admin-edit-modal-body" style="padding-top: 0.5rem;"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: Report Builder & Export PDF -->
+  <div class="modal-overlay" id="admin-report-modal">
+    <div class="modal modal-lg" style="max-width: 920px; max-height: 90vh; overflow-y: auto;">
+      <div class="modal-header">
+        <h3>📄 Report Builder — สร้างรายงานและ Export PDF</h3>
+        <button class="modal-close" onclick="AdminEngine.closeReportModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="padding-top: 0.5rem;">
+        
+        <!-- Report Configuration Controls -->
+        <div style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+          <h4 style="margin-bottom: 1rem;">⚙️ ตั้งค่ารายละเอียดเอกสารรายงาน</h4>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="report-input-title" class="form-label">ชื่อหัวข้อรายงาน</label>
+              <input type="text" id="report-input-title" class="form-control" value="รายงานสารสนเทศประจำปีการศึกษา 2569">
+            </div>
+            <div class="form-group">
+              <label for="report-input-year" class="form-label">ปีการศึกษา</label>
+              <select id="report-input-year" class="form-control">
+                <option value="2569" selected>ปีการศึกษา 2569</option>
+                <option value="2568">ปีการศึกษา 2568</option>
+                <option value="2567">ปีการศึกษา 2567</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 0.75rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.9rem;">
+              <input type="checkbox" id="report-opt-cover" checked> 📘 รวมหน้าปก (Cover Page)
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.9rem;">
+              <input type="checkbox" id="report-opt-toc" checked> 📑 รวมคำนำและสารบัญ (Preface & TOC)
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.9rem;">
+              <input type="checkbox" id="report-opt-images" checked> 🖼️ แทรกรูปภาพกิจกรรมและ Caption
+            </label>
+          </div>
+        </div>
+
+        <!-- 11 Categories Completeness Summary Card -->
+        <div style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <h4>📊 สรุปความพร้อมข้อมูล 11 หมวดสำหรับรายงาน</h4>
+            <span id="report-completeness-badge" class="badge badge-info">กำลังคำนวณ...</span>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+            ระบบจะรวบรวมเฉพาะ Submission ที่ถูกเลือก (selected_for_report) ในแต่ละหมวดเข้าสู่รายงาน
+          </p>
+          <div id="report-categories-checklist" class="report-cat-checklist-grid"></div>
+        </div>
+
+        <!-- Generate Progress Section -->
+        <div id="report-progress-box" style="display: none; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; text-align: center;">
+          <div style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+            <span class="spinner"></span>
+            <strong id="report-status-text" style="color: var(--color-primary-light);">กำลังเตรียมการสร้างรายงาน...</strong>
+          </div>
+          <div class="progress-bar-container">
+            <div id="report-progress-bar" class="progress-bar-fill" style="width: 15%;"></div>
+          </div>
+        </div>
+
+        <!-- Result Card Box -->
+        <div id="report-result-box" style="display: none; margin-bottom: 1.5rem;"></div>
+
+        <!-- Action Button -->
+        <div style="text-align: right; margin-bottom: 2rem;">
+          <button type="button" class="btn btn-secondary" onclick="AdminEngine.closeReportModal()" style="margin-right: 0.5rem;">ปิดหน้าต่าง</button>
+          <button type="button" class="btn btn-accent btn-lg" id="btn-start-generate-report" onclick="AdminEngine.startReportGeneration()">
+            🚀 เริ่มสร้าง Google Docs & Export PDF
+          </button>
+        </div>
+
+        <!-- Export History Accordion -->
+        <div style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h4>📜 ประวัติการสร้างรายงาน PDF ย้อนหลัง (EXPORTS Log)</h4>
+            <button class="btn btn-secondary btn-sm" onclick="AdminEngine.loadExportHistory()">🔄 โหลดประวัติ</button>
+          </div>
+          <div class="table-responsive" style="max-height: 240px; overflow-y: auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Export ID</th>
+                  <th>ปีการศึกษา</th>
+                  <th>สร้างเมื่อ</th>
+                  <th style="text-align: center;">จำนวนหมวด</th>
+                  <th style="text-align: center;">สถานะ</th>
+                  <th style="text-align: center;">ดาวน์โหลด / เปิดดู</th>
+                </tr>
+              </thead>
+              <tbody id="report-history-tbody">
+                <tr>
+                  <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">
+                    ยังไม่มีประวัติการ Export
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 

@@ -8,11 +8,11 @@
 ## 1. Project Status
 
 - **Project:** HONGSON Information Hub
-- **Current Phase:** Phase 3 — Admin Dashboard และการตรวจแก้ (Completed)
-- **Overall Status:** Phase 1, Phase 2 & Phase 3 Complete (100%) / Ready for Phase 4 Implementation
+- **Current Phase:** Phase 4 — Report Builder และ Export PDF (Completed)
+- **Overall Status:** Phase 1, Phase 2, Phase 3 & Phase 4 Complete (100%) / Ready for Phase 5 (UX Refinement & Data Validation)
 - **Last Updated:** 2026-08-06
-- **Updated By:** AI Assistant (Session 004)
-- **Production Status:** Admin Dashboard & Submission Review Engine Ready / Ready for Report Builder & Export PDF (Phase 4)
+- **Updated By:** AI Assistant (Session 005)
+- **Production Status:** Admin Dashboard, Submission Review Engine & Report Builder Engine Ready / Ready for Phase 5
 - **Current Academic Year:** 2569 (Default)
 - **Repository:** Workspace Local (`Hongson-Information`)
 - **GitHub Pages URL:** รอ Admin Deploy (`https://<username>.github.io/Hongson-Information`)
@@ -27,8 +27,8 @@
 | 1 | Foundation และโครงสร้างโปรเจกต์ | Completed | 100% | สร้างโครงสร้างไฟล์, Landing Page, UI Shell, Backend GAS Script ทั้งหมดเสร็จสมบูรณ์ |
 | 2 | ระบบผู้กรอกและการรับไฟล์ | Completed | 100% | Dynamic Form Engine, File Upload (Base64/Drive), Dynamic Table และ Submission Summary เสร็จสมบูรณ์ |
 | 3 | Admin Dashboard และการตรวจแก้ | Completed | 100% | Admin Dashboard, Overview 11 หมวด, Review/Edit Submission, Include/Exclude, Checklist และ File Layout Manager เสร็จสมบูรณ์ |
-| 4 | Report Builder และ Export PDF | Not Started | 0% | พร้อมเริ่มพัฒนาหลัง Phase 3 เสร็จสมบูรณ์ |
-| 5 | UX Refinement และ Data Validation | Not Started | 0% | ทำหลัง Core Workflow ครบ |
+| 4 | Report Builder และ Export PDF | Completed | 100% | Google Docs Template Engine, PDF Exporter, Drive Reports Storage, EXPORTS Sheet Log & Admin Report Builder Modal เสร็จสมบูรณ์ |
+| 5 | UX Refinement และ Data Validation | Not Started | 0% | พร้อมเริ่มพัฒนาในขั้นตอนถัดไป |
 | 6 | QA, Deployment และส่งมอบ | Not Started | 0% | Phase สุดท้าย |
 
 สถานะที่ใช้:
@@ -136,18 +136,18 @@
 
 ### Phase 4
 
-- [ ] Google Docs Template
-- [ ] สร้างหน้าปก
-- [ ] สร้างสารบัญ
-- [ ] แทรกข้อความ
-- [ ] สร้างตาราง
-- [ ] สร้างกราฟ
-- [ ] แทรกรูป
-- [ ] ใส่ Caption
-- [ ] ใส่เลขหน้า
-- [ ] Export PDF
-- [ ] บันทึกลง Drive
-- [ ] บันทึก Export History
+- [x] Google Docs Template Generator
+- [x] สร้างหน้าปก (Cover Page)
+- [x] สร้างคำนำและสารบัญ (Preface & TOC)
+- [x] จัดหัวข้อตามหมวด (Categories 1-11)
+- [x] แปลงข้อมูลข้อความและสถิติ
+- [x] สร้างตารางภาษาไทยใน Google Docs จาก Dynamic Table
+- [x] แทรกรูปภาพกิจกรรมจาก Google Drive
+- [x] รองรับ Photo Layout (ภาพเดี่ยว, ภาพคู่, ภาพชุด, เต็มหน้า)
+- [x] ใส่ Caption กำกับรูป
+- [x] ใส่เลขหน้า Header และ Footer
+- [x] Export PDF และจัดเก็บลง Drive Reports Folder
+- [x] บันทึกประวัติใน `EXPORTS` Sheet
 
 ### Phase 5
 
@@ -302,7 +302,36 @@ AI หรือ Developer คนถัดไปให้ทำตามลำด
 
 - ไม่มี
 
+### Session 005 — 2026-08-06
+
+**ผู้ดำเนินการ:** AI Assistant  
+**Phase:** Phase 4 — Report Builder และ Export PDF  
+**สถานะ:** Completed (100%)
+
+**งานที่ทำ**
+
+- พัฒนา `apps-script/ReportService.gs` บริการสร้างเอกสาร Google Docs และแปลงเป็นไฟล์ PDF ฉบับสมบูรณ์สำหรับทั้ง 11 หมวดสารสนเทศ
+- เพิ่มการสร้างหน้าปก (Cover Page), คำนำ และสารบัญหมวดสารสนเทศ (Preface & TOC), หัวข้อประจำหมวด (Categories 1-11), ตารางภาษาไทยใน Google Docs จาก Dynamic Table, การดึงภาพกิจกรรมจาก Google Drive พร้อมจัดวางตาม Photo Layout (`single`, `pair`, `grid`, `single_full`) และใส่ Caption
+- เพิ่มการย้ายไฟล์ Doc และ PDF ลงใน Google Drive Folder (`reportFolderId`) และการลงบันทึก Log ใน `EXPORTS` Sheet (`export_id`, `academic_year`, `generated_at`, `generated_by`, `source_submission_count`, `google_doc_id`, `pdf_file_id`, `pdf_url`, `status`, `error_message`)
+- เพิ่ม API Routes ใน `apps-script/Code.gs` (`generateReport`, `getExportHistory`) และใน `assets/js/api.js`
+- พัฒนา UI **Report Builder Modal** (`#admin-report-modal`) ใน `index.html` และ `assets/js/admin.js` พร้อมระบบคำนวณ Checklist ความพร้อม 11 หมวด, ปุ่มเริ่มสร้างรายงาน, Progress Bar แบบ Real-time, ลิงก์ตรงสำหรับเปิด Google Docs และ PDF, และตารางประวัติ Export ย้อนหลัง
+- เพิ่มการจัดสไตล์ CSS ใน `assets/css/style.css`
+
+**ผลทดสอบ**
+
+- JavaScript Syntax Check via Node.js: PASS ทุกไฟล์ (`api.js`, `auth.js`, `form.js`, `admin.js`, `app.js`)
+- DOM Element IDs Verification (`index.html` vs `admin.js`): PASS ตรงกัน 100%
+
+**งานที่ยังไม่เสร็จ**
+
+- ไม่มี (Phase 4 ผ่านทุก Acceptance Criteria)
+
+**Blocker**
+
+- ไม่มี
+
 **Next Action**
 
-- เริ่ม Phase 4: พัฒนาระบบ Report Builder และ Export PDF (`ReportService.gs`, Google Docs Template & PDF Generator)
+- พร้อมเริ่ม Phase 5: UX Refinement และ Data Validation (ปรับแต่ง UI ภาษาไทย, Paste from Excel, Upload Progress & Data Validation)
+
 

@@ -53,6 +53,14 @@ var AdminEngine = {
         self.fetchDashboard();
       });
     }
+
+    // Open Report Builder Modal button
+    var reportBtn = document.getElementById('btn-open-report-builder');
+    if (reportBtn) {
+      reportBtn.addEventListener('click', function() {
+        self.openReportModal();
+      });
+    }
   },
 
   /**
@@ -723,6 +731,261 @@ var AdminEngine = {
     var modal = document.getElementById('admin-edit-modal');
     if (modal) modal.classList.remove('active');
     this.activeSubmissionDetail = null;
+  },
+
+  /**
+   * Open Report Builder Modal and Initialize Status
+   */
+  openReportModal: function() {
+    var modal = document.getElementById('admin-report-modal');
+    if (!modal) return;
+
+    modal.classList.add('active');
+
+    // Reset Result Box & Progress Box
+    var resultBox = document.getElementById('report-result-box');
+    var progressBox = document.getElementById('report-progress-box');
+    if (resultBox) resultBox.style.display = 'none';
+    if (progressBox) progressBox.style.display = 'none';
+
+    // Render 11 Categories Completeness Checklist
+    this.renderReportCompletenessChecklist();
+
+    // Load Export History Logs
+    this.loadExportHistory();
+  },
+
+  /**
+   * Close Report Builder Modal
+   */
+  closeReportModal: function() {
+    var modal = document.getElementById('admin-report-modal');
+    if (modal) modal.classList.remove('active');
+  },
+
+  /**
+   * Calculate and Render 11 Categories Completeness Checklist
+   */
+  renderReportCompletenessChecklist: function() {
+    var container = document.getElementById('report-categories-checklist');
+    var badge = document.getElementById('report-completeness-badge');
+    if (!container) return;
+
+    var defaultCategories = [
+      { id: "cat_01", name: "1. ข้อมูลแม่บทและอัตลักษณ์สถานศึกษา" },
+      { id: "cat_02", name: "2. ธรรมาภิบาล เครือข่าย และชุมชน" },
+      { id: "cat_03", name: "3. ทะเบียนนักเรียนและโครงสร้างชั้นเรียน" },
+      { id: "cat_04", name: "4. ผลการเรียนและคุณภาพผู้เรียน" },
+      { id: "cat_05", name: "5. การทดสอบภายนอก การศึกษาต่อ และรางวัลนักเรียน" },
+      { id: "cat_06", name: "6. หลักสูตร แผนการเรียน และเวลาเรียน" },
+      { id: "cat_07", name: "7. นิเทศ การประเมิน และงานวิจัย" },
+      { id: "cat_08", name: "8. บุคลากรและการพัฒนาวิชาชีพ" },
+      { id: "cat_09", name: "9. อาคาร สถานที่ และสภาพแวดล้อม" },
+      { id: "cat_10", name: "10. ห้องสมุดและแหล่งเรียนรู้" },
+      { id: "cat_11", name: "11. ระบบดิจิทัลและหลักฐานสารสนเทศ" }
+    ];
+
+    var selectedCount = 0;
+    var totalCat = defaultCategories.length;
+
+    var html = defaultCategories.map(cat => {
+      // Find selected submissions for this category
+      var catSubmissions = (this.submissions || []).filter(s => {
+        var isCat = s.categoryId === cat.id;
+        var isSelected = (s.selectedForReport === true || s.selectedForReport === 'true' || s.selectedForReport === '1');
+        var isNotExcluded = s.status !== 'excluded';
+        return isCat && isSelected && isNotExcluded;
+      });
+
+      var hasSelected = catSubmissions.length > 0;
+      if (hasSelected) selectedCount++;
+
+      var statusText = hasSelected
+        ? `<span class="badge badge-success">✓ เลือกแล้ว (${catSubmissions.length})</span>`
+        : `<span class="badge badge-warning">⚠️ ยังไม่เลือก</span>`;
+
+      return `
+        <div class="report-checklist-card ${hasSelected ? 'ready' : 'empty'}">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
+            <strong style="font-size: 0.85rem; color: var(--text-heading);">${cat.name}</strong>
+            ${statusText}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    container.innerHTML = html;
+
+    if (badge) {
+      var completenessPct = Math.round((selectedCount / totalCat) * 100);
+      badge.textContent = `พร้อมแล้ว ${selectedCount} จาก ${totalCat} หมวด (${completenessPct}%)`;
+      badge.className = selectedCount === totalCat ? 'badge badge-success' : 'badge badge-warning';
+    }
+  },
+
+  /**
+   * Handle Start Report Generation Trigger
+   */
+  startReportGeneration: async function() {
+    var session = AuthManager.getSession();
+    if (!session || session.role !== 'admin') {
+      alert("กรุณาเข้าสู่ระบบด้วยสิทธิ์ Admin ก่อนทำรายการ");
+      return;
+    }
+
+    var reportTitle = document.getElementById('report-input-title')?.value || "รายงานสารสนเทศประจำปีการศึกษา 2569";
+    var academicYear = document.getElementById('report-input-year')?.value || "2569";
+    var includeCover = document.getElementById('report-opt-cover')?.checked !== false;
+    var includeToc = document.getElementById('report-opt-toc')?.checked !== false;
+    var includeImages = document.getElementById('report-opt-images')?.checked !== false;
+
+    var startBtn = document.getElementById('btn-start-generate-report');
+    var progressBox = document.getElementById('report-progress-box');
+    var progressBar = document.getElementById('report-progress-bar');
+    var statusText = document.getElementById('report-status-text');
+    var resultBox = document.getElementById('report-result-box');
+
+    if (startBtn) startBtn.disabled = true;
+    if (resultBox) resultBox.style.display = 'none';
+
+    if (progressBox) progressBox.style.display = 'block';
+    if (progressBar) progressBar.style.width = '20%';
+    if (statusText) statusText.textContent = "กำลังรวบรวมข้อมูลสารสนเทศที่ถูกเลือกทั้ง 11 หมวด...";
+
+    var progressInterval;
+    var currentPct = 20;
+
+    progressInterval = setInterval(() => {
+      if (currentPct < 85) {
+        currentPct += 5;
+        if (progressBar) progressBar.style.width = `${currentPct}%`;
+        if (currentPct === 40 && statusText) statusText.textContent = "กำลังสร้างโครงสร้างเอกสาร Google Docs และฟอร์แมตหัวข้อ...";
+        if (currentPct === 60 && statusText) statusText.textContent = "กำลังสร้างตารางข้อมูลภาษาไทย และดึงรูปภาพจาก Google Drive...";
+        if (currentPct === 80 && statusText) statusText.textContent = "กำลังแปลงเอกสารเป็น PDF และบันทึกลง Drive Folder...";
+      }
+    }, 1500);
+
+    try {
+      var payload = {
+        reportTitle: reportTitle,
+        academicYear: academicYear,
+        includeCover: includeCover,
+        includeToc: includeToc,
+        includeImages: includeImages
+      };
+
+      var res = await API.generateReport(session.sessionToken, payload);
+      clearInterval(progressInterval);
+
+      if (res && res.success) {
+        if (progressBar) progressBar.style.width = '100%';
+        if (statusText) statusText.textContent = "✓ การสร้างรายงานและ Export PDF เสร็จสมบูรณ์!";
+
+        setTimeout(() => {
+          if (progressBox) progressBox.style.display = 'none';
+          if (resultBox) {
+            resultBox.style.display = 'block';
+            resultBox.innerHTML = `
+              <div class="alert alert-success" style="padding: 1.25rem;">
+                <h4 style="margin-bottom: 0.5rem; color: #166534;">🎉 สร้างเอกสารและ Export PDF เรียบร้อยแล้ว!</h4>
+                <p style="margin-bottom: 1rem; font-size: 0.9rem;">
+                  รายงานสารสนเทศถูกบันทึกลงใน Google Drive Folder เรียบร้อยแล้ว (ประกอบด้วย ${res.sourceSubmissionCount || 0} รายการส่งข้อมูล)
+                </p>
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                  <a href="${res.docUrl}" target="_blank" class="btn btn-secondary btn-sm" style="background: #ffffff; color: #1e293b;">
+                    📝 เปิดดู/แก้ไขใน Google Docs
+                  </a>
+                  <a href="${res.pdfUrl}" target="_blank" class="btn btn-accent btn-sm">
+                    📥 เปิดดู / ดาวน์โหลดไฟล์ PDF
+                  </a>
+                </div>
+              </div>
+            `;
+          }
+          // Reload export history
+          this.loadExportHistory();
+        }, 800);
+
+      } else {
+        if (progressBox) progressBox.style.display = 'none';
+        alert("ไม่สามารถสร้างรายงานได้: " + (res ? res.message : "เกิดข้อผิดพลาดในการประมวลผล"));
+      }
+
+    } catch (err) {
+      clearInterval(progressInterval);
+      if (progressBox) progressBox.style.display = 'none';
+      console.error("Generate Report Error:", err);
+      alert("เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์เพื่อสร้างรายงาน");
+    } finally {
+      if (startBtn) startBtn.disabled = false;
+    }
+  },
+
+  /**
+   * Load Export History records from EXPORTS sheet
+   */
+  loadExportHistory: async function() {
+    var session = AuthManager.getSession();
+    if (!session || session.role !== 'admin') return;
+
+    var tbody = document.getElementById('report-history-tbody');
+    if (!tbody) return;
+
+    try {
+      var res = await API.getExportHistory(session.sessionToken);
+      if (res && res.success) {
+        this.renderExportHistory(res.exports || []);
+      } else {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--danger); padding:1rem;">ไม่สามารถดึงประวัติได้: ${res ? res.message : ''}</td></tr>`;
+      }
+    } catch(err) {
+      console.error("Fetch Export History Error:", err);
+    }
+  },
+
+  /**
+   * Render Export History Table
+   */
+  renderExportHistory: function(exportsList) {
+    var tbody = document.getElementById('report-history-tbody');
+    if (!tbody) return;
+
+    if (!exportsList || exportsList.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:1.5rem;">ยังไม่มีประวัติการ Export รายงาน</td></tr>`;
+      return;
+    }
+
+    var html = exportsList.map(exp => {
+      var statusBadge = exp.status === 'completed'
+        ? `<span class="badge badge-success">สำเร็จ</span>`
+        : `<span class="badge badge-danger">ล้มเหลว</span>`;
+
+      var pdfBtn = exp.pdf_url
+        ? `<a href="${exp.pdf_url}" target="_blank" class="btn btn-secondary btn-sm" style="font-size:0.75rem;">📥 เปิด PDF</a>`
+        : `<span class="text-muted">-</span>`;
+
+      var docBtn = exp.google_doc_id
+        ? `<a href="https://docs.google.com/document/d/${exp.google_doc_id}/edit" target="_blank" class="btn btn-secondary btn-sm" style="font-size:0.75rem;">📝 Google Doc</a>`
+        : '';
+
+      return `
+        <tr>
+          <td><strong style="font-size: 0.85rem; font-family: monospace;">${exp.export_id}</strong></td>
+          <td>${exp.academic_year || '-'}</td>
+          <td>${exp.generated_at ? new Date(exp.generated_at).toLocaleString('th-TH') : '-'}</td>
+          <td style="text-align: center;">${exp.source_submission_count || 0}</td>
+          <td style="text-align: center;">${statusBadge}</td>
+          <td style="text-align: center;">
+            <div style="display: flex; gap: 0.25rem; justify-content: center;">
+              ${docBtn}
+              ${pdfBtn}
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    tbody.innerHTML = html;
   },
 
   escapeHtml: function(str) {

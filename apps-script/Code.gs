@@ -103,6 +103,22 @@ function doPost(e) {
       }
       break;
 
+    case "generateReport":
+      if (!Auth.verifySessionToken(data.sessionToken, "admin")) {
+        response = { success: false, message: "สิทธิ์การเข้าถึงไม่ถูกต้อง หรือ Session หมดอายุ" };
+      } else {
+        response = ReportService.generateReport(data);
+      }
+      break;
+
+    case "getExportHistory":
+      if (!Auth.verifySessionToken(data.sessionToken, "admin")) {
+        response = { success: false, message: "สิทธิ์การเข้าถึงไม่ถูกต้อง หรือ Session หมดอายุ" };
+      } else {
+        response = ReportService.getExportHistory();
+      }
+      break;
+
     case "getPublicConfig":
       response = { success: true, config: CONFIG.getPublicConfig() };
       break;

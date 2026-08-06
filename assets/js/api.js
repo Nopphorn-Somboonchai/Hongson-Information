@@ -128,5 +128,19 @@ const API = {
    */
   async toggleReportSelection(sessionToken, submissionId, selected) {
     return await this.request('toggleReportSelection', { sessionToken, submissionId, selected }, 'POST');
+  },
+
+  /**
+   * Generate PDF & Google Docs Report
+   */
+  async generateReport(sessionToken, reportOptions = {}) {
+    return await this.request('generateReport', { sessionToken, ...reportOptions }, 'POST');
+  },
+
+  /**
+   * Fetch Export History Records from EXPORTS Sheet
+   */
+  async getExportHistory(sessionToken) {
+    return await this.request('getExportHistory', { sessionToken }, 'POST');
   }
 };
