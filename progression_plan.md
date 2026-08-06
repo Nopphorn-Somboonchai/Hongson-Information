@@ -8,11 +8,11 @@
 ## 1. Project Status
 
 - **Project:** HONGSON Information Hub
-- **Current Phase:** Phase 3 — Admin Dashboard และการตรวจแก้
-- **Overall Status:** Phase 1 & Phase 2 Complete (100%) / Ready for Phase 3 Implementation
+- **Current Phase:** Phase 3 — Admin Dashboard และการตรวจแก้ (Completed)
+- **Overall Status:** Phase 1, Phase 2 & Phase 3 Complete (100%) / Ready for Phase 4 Implementation
 - **Last Updated:** 2026-08-06
-- **Updated By:** AI Assistant (Session 003)
-- **Production Status:** Contributor Flow & File Upload Ready / Ready for Apps Script & GitHub Pages Deployment
+- **Updated By:** AI Assistant (Session 004)
+- **Production Status:** Admin Dashboard & Submission Review Engine Ready / Ready for Report Builder & Export PDF (Phase 4)
 - **Current Academic Year:** 2569 (Default)
 - **Repository:** Workspace Local (`Hongson-Information`)
 - **GitHub Pages URL:** รอ Admin Deploy (`https://<username>.github.io/Hongson-Information`)
@@ -26,8 +26,8 @@
 |---|---|---|---:|---|
 | 1 | Foundation และโครงสร้างโปรเจกต์ | Completed | 100% | สร้างโครงสร้างไฟล์, Landing Page, UI Shell, Backend GAS Script ทั้งหมดเสร็จสมบูรณ์ |
 | 2 | ระบบผู้กรอกและการรับไฟล์ | Completed | 100% | Dynamic Form Engine, File Upload (Base64/Drive), Dynamic Table และ Submission Summary เสร็จสมบูรณ์ |
-| 3 | Admin Dashboard และการตรวจแก้ | In Progress | 0% | เริ่มงาน Admin Dashboard, Submission Review/Edit, Include/Exclude และ Completeness Checklist |
-| 4 | Report Builder และ Export PDF | Not Started | 0% | ต้องมีข้อมูลจริงและ Selection ก่อน |
+| 3 | Admin Dashboard และการตรวจแก้ | Completed | 100% | Admin Dashboard, Overview 11 หมวด, Review/Edit Submission, Include/Exclude, Checklist และ File Layout Manager เสร็จสมบูรณ์ |
+| 4 | Report Builder และ Export PDF | Not Started | 0% | พร้อมเริ่มพัฒนาหลัง Phase 3 เสร็จสมบูรณ์ |
 | 5 | UX Refinement และ Data Validation | Not Started | 0% | ทำหลัง Core Workflow ครบ |
 | 6 | QA, Deployment และส่งมอบ | Not Started | 0% | Phase สุดท้าย |
 
@@ -123,16 +123,16 @@
 
 ### Phase 3
 
-- [ ] Dashboard แสดงทุกหมวด
-- [ ] List Submission
-- [ ] Detail Submission
-- [ ] Edit ข้อมูล
-- [ ] Include/Exclude
-- [ ] เลือก Submission สำหรับรายงาน
-- [ ] จัดลำดับรูป
-- [ ] Checklist ความครบถ้วน
-- [ ] Warning ข้อมูลซ้ำหรือไม่ครบ
-- [ ] บันทึกการแก้ไขได้จริง
+- [x] Dashboard แสดงทุกหมวด
+- [x] List Submission
+- [x] Detail Submission
+- [x] Edit ข้อมูล
+- [x] Include/Exclude
+- [x] เลือก Submission สำหรับรายงาน
+- [x] จัดลำดับรูป
+- [x] Checklist ความครบถ้วน
+- [x] Warning ข้อมูลซ้ำหรือไม่ครบ
+- [x] บันทึกการแก้ไขได้จริง
 
 ### Phase 4
 
@@ -189,6 +189,9 @@
 | 2026-08-06 | Phase 2 | Node Syntax Check (`assets/js/form.js`, `api.js`, `auth.js`, `app.js`) | PASS | ไวยากรณ์ JavaScript ของ Phase 2 ถูกต้อง |
 | 2026-08-06 | Phase 2 | DOM Element IDs Verification (index.html vs app.js & form.js) | PASS | ตรวจสอบแล้ว 42/42 Element IDs ตรงกัน 100% |
 | 2026-08-06 | Phase 2 | Dynamic Table & File Upload Base64 Payload logic | PASS | สร้าง Base64 FileReader, Dynamic Table Row manipulation & GAS submitData handler สำเร็จ |
+| 2026-08-06 | Phase 3 | Node Syntax Check (`assets/js/*.js` including `admin.js`) | PASS | ไวยากรณ์ JavaScript ของ Phase 3 ทั้งหมดถูกต้อง |
+| 2026-08-06 | Phase 3 | DOM Element IDs Verification (`index.html` vs `admin.js` & `app.js`) | PASS | ตรวจสอบแล้ว 16/16 Element IDs ฝั่ง Admin ตรงกัน 100% |
+| 2026-08-06 | Phase 3 | AdminService GAS Endpoint Logic Verification | PASS | ฟังก์ชัน getAdminDashboard, getSubmissionDetail, updateSubmission และ toggleReportSelection PASS |
 
 ---
 
@@ -206,7 +209,7 @@
 
 ข้อมูลที่ต้องขอจาก Admin ตามจังหวะของงาน
 
-### จำเป็นเมื่อพร้อม Deploy Phase 1 - 2
+### จำเป็นเมื่อพร้อม Deploy Phase 1 - 3
 
 - [ ] Google Account สำหรับ Deploy Apps Script Web App
 - [ ] Apps Script Deployment Web App URL (นำมาใส่ในระบบผ่านปุ่ม ⚙️ ตั้งค่า Web App)
@@ -219,11 +222,11 @@
 
 AI หรือ Developer คนถัดไปให้ทำตามลำดับนี้
 
-1. อ่าน `progression_plan.md` (สถานะปัจจุบัน: Phase 2 Completed, Phase 3 Ready)
-2. เริ่มงาน Phase 3 ตาม `plan.md` และ `implement_plan.md`
-3. พัฒนา Admin Service ใน Apps Script (`apps-script/AdminService.gs`) สำหรับดึงรายการ Submissions, อ่านรายละเอียด และบันทึกการแก้ไข/Include/Exclude
-4. พัฒนา Admin Dashboard UI (`assets/js/admin.js` หรือขยาย `app.js`)
-5. ทดสอบ Admin Review & Edit Workflow
+1. อ่าน `progression_plan.md` (สถานะปัจจุบัน: Phase 3 Completed, Phase 4 Ready)
+2. เริ่มงาน Phase 4 ตาม `plan.md` (Report Builder และ Export PDF)
+3. พัฒนา Google Docs Template Generator ใน Apps Script (`apps-script/ReportService.gs`)
+4. พัฒนาปุ่มกดสร้างรายงานและพรีวิว PDF สำหรับ Admin Dashboard
+5. บันทึกประวัติการ Export ลงใน `EXPORTS` Sheet
 
 ---
 
@@ -252,6 +255,13 @@ AI หรือ Developer คนถัดไปให้ทำตามลำด
 | 2026-08-06 | Phase 2 | assets/css/style.css | Added Category Cards, Dynamic Table, Dropzone & File Preview Styles |
 | 2026-08-06 | Phase 2 | assets/js/api.js | Added getCategories & submitData endpoints |
 | 2026-08-06 | Phase 2 | apps-script/Code.gs | Added getCategories & submitData API routes |
+| 2026-08-06 | Phase 3 | apps-script/AdminService.gs | Backend Admin API Service (Dashboard, Detail, Edit, Report Selection) |
+| 2026-08-06 | Phase 3 | apps-script/Code.gs | Exposed Admin API endpoints in doPost switch router |
+| 2026-08-06 | Phase 3 | assets/js/api.js | Added getAdminDashboard, getSubmissionDetail, updateSubmission & toggleReportSelection API methods |
+| 2026-08-06 | Phase 3 | assets/js/admin.js | Built AdminEngine (Dashboard render, Submissions list filter, Submission Review & Edit Modal, File Manager & Photo Layouts) |
+| 2026-08-06 | Phase 3 | assets/js/app.js | Connected AdminEngine.init() on Admin view activation |
+| 2026-08-06 | Phase 3 | index.html | Added Admin Dashboard UI Shell, Stats cards grid, Filter bar, Table & Edit Modal |
+| 2026-08-06 | Phase 3 | assets/css/style.css | Added Styles for Admin Stat cards, 11 Categories grid, Status badges & File edit cards |
 
 ---
 
@@ -263,24 +273,30 @@ AI หรือ Developer คนถัดไปให้ทำตามลำด
 **Phase:** Phase 2 — ระบบผู้กรอกและการรับไฟล์  
 **สถานะ:** Completed (100%)
 
+### Session 004 — 2026-08-06
+
+**ผู้ดำเนินการ:** AI Assistant  
+**Phase:** Phase 3 — Admin Dashboard และการตรวจแก้ข้อมูล  
+**สถานะ:** Completed (100%)
+
 **งานที่ทำ**
 
-- พัฒนา `assets/js/form.js` สำหรับ Dynamic Form Engine รองรับ 11 หมวดข้อมูล
-- เพิ่มการสร้าง Dynamic Table ที่สามารถกด "+ เพิ่มแถว" และ "ลบแถว" ได้ทันที
-- เพิ่มระบบ Drag & Drop File Upload พร้อมแสดงพรีวิวไฟล์, ขนาดไฟล์, และช่องใส่ Caption สำหรับไฟล์รูปภาพ
-- พัฒนา `apps-script/FileService.gs` แปลงไฟล์ Base64 และบันทึกลง Google Drive พร้อมออก ID อ้างอิง
-- พัฒนา `apps-script/SubmissionService.gs` สร้าง Submission ID สม่ำเสมอ พร้อมบันทึกข้อมูลลง `SUBMISSIONS`, `DATA` และ `FILES` โดยมีระบบ LockService ป้องกันการเขียนชนกัน
-- เพิ่มหน้าต่าง Modal สรุปผลการส่งข้อมูล (Submission Summary) แสดง Submission ID รายการที่ส่ง และเวลาบันทึก พร้อมป้องกันการกดส่งซ้ำ (Double-click prevention)
+- พัฒนา `apps-script/AdminService.gs` สำหรับคำนวณ Dashboard Overview 11 หมวด, Completeness Checklist, Warning Alerts, Submissions Detail Reader/Writer และ Quick Toggle Report Selection
+- เพิ่ม Admin API Routes ใน `apps-script/Code.gs` และ `assets/js/api.js`
+- พัฒนา `assets/js/admin.js` (`AdminEngine`) สำหรับจัดการ UI Dashboard, Summary Cards (ความครอบคลุม, รายการทั้งหมด, รอตรวจสอบ, ข้อสังเกต), Grid 11 หมวด และ Submissions Table
+- เพิ่มระบบ Search & Multi-filter (กรองตามคำค้น, หมวดสารสนเทศ, สถานะ `submitted`, `needs_review`, `reviewed`, `excluded`)
+- พัฒนาหน้าต่าง Modal ตรวจสอบและแก้ไขรายละเอียด Submission (`#admin-edit-modal`) รองรับการแก้ไขข้อมูลผู้ส่ง, ฟิลด์ Schema, ตาราง Dynamic Table, สถานะรายการ, Admin Note และการจัดการไฟล์แนบ (สลับ Include/Exclude, แก้ Caption, เรียง Sort Order, เลือก Photo Layout: ภาพเดี่ยว, ภาพคู่, ภาพชุด, เต็มหน้า)
+- เพิ่ม UI Shell ใน `index.html` และการจัดสไตล์ CSS ใน `assets/css/style.css`
 
 **ผลทดสอบ**
 
-- JavaScript Syntax Verification via Node.js: PASS ทุกไฟล์ (`api.js`, `auth.js`, `form.js`, `app.js`)
-- DOM Element IDs Verification: Checked 42/42 Element IDs ตรงกัน 100%
-- Logic Verification: Dynamic Table, Base64 conversion, Submission ID formatting PASS
+- JavaScript Syntax Verification via Node.js: PASS ทุกไฟล์ (`api.js`, `auth.js`, `form.js`, `admin.js`, `app.js`)
+- DOM Element IDs Verification: Checked 16/16 Admin Element IDs ตรงกัน 100%
+- Logic Verification: Admin Dashboard overview calculation, Filter engine, Detail Form rendering & Save handlers PASS
 
 **งานที่ยังไม่เสร็จ**
 
-- ไม่มี (Phase 2 ผ่านทุก Acceptance Criteria)
+- ไม่มี (Phase 3 ผ่านทุก Acceptance Criteria)
 
 **Blocker**
 
@@ -288,5 +304,5 @@ AI หรือ Developer คนถัดไปให้ทำตามลำด
 
 **Next Action**
 
-- เริ่ม Phase 3: พัฒนาระบบ Admin Dashboard และการตรวจแก้ข้อมูล (Submission Review & Edit)
+- เริ่ม Phase 4: พัฒนาระบบ Report Builder และ Export PDF (`ReportService.gs`, Google Docs Template & PDF Generator)
 

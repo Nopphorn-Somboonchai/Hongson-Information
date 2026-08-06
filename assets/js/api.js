@@ -100,5 +100,33 @@ const API = {
    */
   async setupSheets(sessionToken) {
     return await this.request('setupSheets', { sessionToken }, 'POST');
+  },
+
+  /**
+   * Fetch Admin Dashboard Overview Data
+   */
+  async getAdminDashboard(sessionToken) {
+    return await this.request('getAdminDashboard', { sessionToken }, 'POST');
+  },
+
+  /**
+   * Fetch Detailed Submission Data
+   */
+  async getSubmissionDetail(sessionToken, submissionId) {
+    return await this.request('getSubmissionDetail', { sessionToken, submissionId }, 'POST');
+  },
+
+  /**
+   * Update Submission Details, Data Fields & File Settings
+   */
+  async updateSubmission(sessionToken, payload) {
+    return await this.request('updateSubmission', { sessionToken, ...payload }, 'POST');
+  },
+
+  /**
+   * Toggle Submission Report Selection Boolean
+   */
+  async toggleReportSelection(sessionToken, submissionId, selected) {
+    return await this.request('toggleReportSelection', { sessionToken, submissionId, selected }, 'POST');
   }
 };

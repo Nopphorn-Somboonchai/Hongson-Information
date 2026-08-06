@@ -172,6 +172,10 @@ const App = {
       this.showView('view-admin');
       const badge = document.getElementById('admin-user-status');
       if (badge) badge.textContent = 'บทบาท: ผู้ดูแลระบบ (Admin)';
+      // Initialize Admin Engine
+      if (typeof AdminEngine !== 'undefined') {
+        AdminEngine.init();
+      }
     } else if (role === 'contributor') {
       this.showView('view-contributor');
       const badge = document.getElementById('contributor-user-status');

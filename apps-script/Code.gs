@@ -71,6 +71,38 @@ function doPost(e) {
       }
       break;
 
+    case "getAdminDashboard":
+      if (!Auth.verifySessionToken(data.sessionToken, "admin")) {
+        response = { success: false, message: "สิทธิ์การเข้าถึงไม่ถูกต้อง หรือ Session หมดอายุ" };
+      } else {
+        response = AdminService.getAdminDashboard();
+      }
+      break;
+
+    case "getSubmissionDetail":
+      if (!Auth.verifySessionToken(data.sessionToken, "admin")) {
+        response = { success: false, message: "สิทธิ์การเข้าถึงไม่ถูกต้อง หรือ Session หมดอายุ" };
+      } else {
+        response = AdminService.getSubmissionDetail(data.submissionId);
+      }
+      break;
+
+    case "updateSubmission":
+      if (!Auth.verifySessionToken(data.sessionToken, "admin")) {
+        response = { success: false, message: "สิทธิ์การเข้าถึงไม่ถูกต้อง หรือ Session หมดอายุ" };
+      } else {
+        response = AdminService.updateSubmission(data);
+      }
+      break;
+
+    case "toggleReportSelection":
+      if (!Auth.verifySessionToken(data.sessionToken, "admin")) {
+        response = { success: false, message: "สิทธิ์การเข้าถึงไม่ถูกต้อง หรือ Session หมดอายุ" };
+      } else {
+        response = AdminService.toggleReportSelection(data.submissionId, data.selected);
+      }
+      break;
+
     case "getPublicConfig":
       response = { success: true, config: CONFIG.getPublicConfig() };
       break;

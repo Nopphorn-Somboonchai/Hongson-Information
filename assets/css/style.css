@@ -635,3 +635,107 @@ body {
     padding: 1rem;
   }
 }
+
+/* ==========================================================================
+   Admin Dashboard & Review Styles (Phase 3)
+   ========================================================================== */
+
+/* Stats Overview Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card.accent { border-top: 4px solid var(--accent); }
+.stat-card.primary { border-top: 4px solid var(--primary); }
+.stat-card.warning { border-top: 4px solid var(--warning); }
+.stat-card.info { border-top: 4px solid #3b82f6; }
+
+.stat-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+/* Admin Category Grid */
+.admin-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.admin-cat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.admin-cat-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-cat-card.submitted {
+  border-left: 4px solid var(--success);
+}
+
+.admin-cat-card.missing {
+  border-left: 4px solid var(--warning);
+}
+
+/* Data Table Badges */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-success { background: rgba(34, 197, 94, 0.15); color: var(--success); border: 1px solid rgba(34, 197, 94, 0.3); }
+.badge-warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+.badge-info { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+.badge-muted { background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3); }
+.badge-secondary { background: rgba(255, 255, 255, 0.1); color: var(--text-heading); }
+
+/* Form & File Edit Item Card */
+.file-edit-item-card {
+  transition: var(--transition);
+}
+
+.file-edit-item-card:hover {
+  border-color: var(--primary-light) !important;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+

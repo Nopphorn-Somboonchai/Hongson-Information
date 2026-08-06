@@ -11,7 +11,7 @@
 
   <!-- Navbar Navigation -->
   <nav class="navbar" id="main-navbar">
-    <a href="#" class="brand" id="brand-logo-link">
+    <a href="javascript:void(0)" class="brand" id="brand-logo-link">
       <div class="brand-icon">HS</div>
       <span>HONGSON Hub</span>
     </a>
@@ -163,25 +163,105 @@
           <h2>ระบบผู้ดูแลระบบ (Admin Dashboard)</h2>
           <span class="user-badge" id="admin-user-status">บทบาท: ผู้ดูแลระบบ</span>
         </div>
-        <button class="btn btn-secondary btn-logout" id="btn-logout-admin">ออกจากระบบ</button>
-      </div>
-      <div class="alert alert-success" style="display: block; margin-bottom: 1.5rem;">
-        <strong>✅ เข้าสู่ระบบสำเร็จ:</strong> ระบบ 2 รหัส (Admin Auth) ผ่านการตรวจสอบเรียบร้อยแล้ว
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary" id="btn-admin-refresh">🔄 รีเฟรชข้อมูล</button>
+          <button class="btn btn-secondary btn-logout" id="btn-logout-admin">ออกจากระบบ</button>
+        </div>
       </div>
 
+      <!-- Loading Indicator -->
+      <div id="admin-loading-indicator" class="alert alert-info" style="display: none; margin-bottom: 1.5rem;">
+        <span class="spinner"></span> กำลังดึงข้อมูลสารสนเทศล่าสุดจาก Google Sheets...
+      </div>
+
+      <!-- Top Stats Overview Grid -->
+      <div class="stats-grid" id="admin-stats-overview" style="margin-bottom: 1.5rem;"></div>
+
+      <!-- Completeness Warning Box -->
+      <div id="admin-warnings-box" style="display: none;"></div>
+
+      <!-- 11 Categories Overview Grid -->
+      <div style="margin-bottom: 2rem;">
+        <h3 style="margin-bottom: 1rem;">📂 ภาพรวมสถานะการส่งข้อมูล 11 หมวด</h3>
+        <div class="admin-cat-grid" id="admin-category-cards-grid"></div>
+      </div>
+
+      <!-- Submissions List & Filter Section -->
       <div style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 2rem;">
-        <h3>🛠️ การจัดการระบบและฐานข้อมูล (System Management)</h3>
-        <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.95rem;">
-          กดปุ่มด้านล่างเพื่อสั่งให้ Apps Script สร้างและตรวจสอบโครงสร้าง Google Sheets ทั้ง 6 Tab (CONFIG, CATEGORIES, SUBMISSIONS, DATA, FILES, EXPORTS)
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3>📥 รายการข้อมูลที่ถูกส่งเข้ามา (Submissions List)</h3>
+          <span id="admin-filtered-count" style="color: var(--text-muted); font-size: 0.9rem;">แสดง 0 รายการ</span>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="admin-filter-bar" style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem;">
+          <input type="text" id="admin-search-input" class="form-control" placeholder="🔍 ค้นหา Submission ID, ชื่อผู้ส่ง, หรือหน่วยงาน..." style="flex: 2; min-width: 240px;">
+          
+          <select id="admin-filter-category" class="form-control" style="flex: 1; min-width: 180px;">
+            <option value="all">📂 ทุกหมวดสารสนเทศ (11 หมวด)</option>
+          </select>
+
+          <select id="admin-filter-status" class="form-control" style="flex: 1; min-width: 150px;">
+            <option value="all">🏷️ ทุกสถานะ</option>
+            <option value="submitted">📥 submitted (ส่งแล้ว)</option>
+            <option value="needs_review">⚠️ needs_review (ต้องแก้ไข)</option>
+            <option value="reviewed">✓ reviewed (ตรวจแล้ว)</option>
+            <option value="excluded">🚫 excluded (คัดออก)</option>
+          </select>
+        </div>
+
+        <!-- Submissions Table -->
+        <div class="table-responsive" style="overflow-x: auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 40px;">#</th>
+                <th>Submission ID</th>
+                <th>หมวดสารสนเทศ</th>
+                <th>ผู้ส่ง & หน่วยงาน</th>
+                <th>วันที่ส่ง</th>
+                <th style="text-align: center;">ไฟล์</th>
+                <th style="text-align: center;">เลือกใช้</th>
+                <th style="text-align: center;">สถานะ</th>
+                <th style="text-align: center; width: 140px;">การจัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="admin-submissions-tbody">
+              <tr>
+                <td colspan="9" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                  กำลังโหลดรายการข้อมูล...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- System Management Accordion -->
+      <div style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 2rem;">
+        <h4 style="margin-bottom: 0.5rem;">🛠️ ตั้งค่าโครงสร้างระบบ (System Admin)</h4>
+        <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.85rem;">
+          สร้างหรือรีเซ็ตหัวตาราง Google Sheets ทั้ง 6 Tab (CONFIG, CATEGORIES, SUBMISSIONS, DATA, FILES, EXPORTS)
         </p>
-        <button class="btn btn-primary" id="btn-setup-sheets">
-          📊 สร้าง/ตั้งค่าโครงสร้าง Google Sheets 6 Tab
+        <button class="btn btn-secondary btn-sm" id="btn-setup-sheets">
+          📊 รีเซ็ต/ตั้งค่าโครงสร้าง Google Sheets
         </button>
         <div id="sheet-setup-result" style="margin-top: 1rem;"></div>
       </div>
     </section>
 
   </main>
+
+  <!-- MODAL: Admin Review & Edit Submission -->
+  <div class="modal-overlay" id="admin-edit-modal">
+    <div class="modal modal-lg" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+      <div class="modal-header">
+        <h3>🔍 ตรวจสอบและแก้ไขข้อมูลสารสนเทศ</h3>
+        <button class="modal-close" onclick="AdminEngine.closeDetailModal()">&times;</button>
+      </div>
+      <div id="admin-edit-modal-body" style="padding-top: 0.5rem;"></div>
+    </div>
+  </div>
 
   <!-- MODAL: Submission Success Summary -->
   <div class="modal-overlay" id="submission-summary-modal">
@@ -247,6 +327,7 @@
   <script src="assets/js/api.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/form.js"></script>
+  <script src="assets/js/admin.js"></script>
   <script src="assets/js/app.js"></script>
 </body>
 </html>
