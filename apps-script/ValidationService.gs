@@ -71,17 +71,23 @@ var ValidationService = {
     if (Array.isArray(payload.files)) {
       var allowedTypes = [
         "image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif",
-        "application/pdf"
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "text/csv",
+        "application/csv"
       ];
-      var maxSizeBytes = 20 * 1024 * 1024; // 20 MB Base64 limit per file
+      var maxSizeBytes = 25 * 1024 * 1024; // 25 MB Base64 limit per file
 
       for (var f = 0; f < payload.files.length; f++) {
         var fileObj = payload.files[f];
         if (fileObj.mimeType && allowedTypes.indexOf(fileObj.mimeType.toLowerCase()) === -1) {
-          errors.push("ไฟล์ '" + (fileObj.name || ("ไฟล์ที่ " + (f + 1))) + "' ไม่รองรับประเภทชนิดไฟล์นี้ (รองรับเฉพาะ JPG, PNG, WEBP และ PDF)");
+          errors.push("ไฟล์ '" + (fileObj.name || ("ไฟล์ที่ " + (f + 1))) + "' ไม่รองรับประเภทชนิดไฟล์นี้ (รองรับเฉพาะ JPG, PNG, WEBP และเอกสาร PDF, DOCX, XLSX, DOC, XLS, CSV)");
         }
         if (fileObj.base64Data && fileObj.base64Data.length * 0.75 > maxSizeBytes) {
-          errors.push("ไฟล์ '" + (fileObj.name || ("ไฟล์ที่ " + (f + 1))) + "' มีขนาดใหญ่เกินกำหนด (สูงสุด 20 MB)");
+          errors.push("ไฟล์ '" + (fileObj.name || ("ไฟล์ที่ " + (f + 1))) + "' มีขนาดใหญ่เกินกำหนด (สูงสุด 25 MB)");
         }
       }
     }

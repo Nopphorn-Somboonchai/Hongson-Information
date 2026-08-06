@@ -174,15 +174,15 @@ invalidPercentPayload.data.student_pass_percent = '150';
 const invalidPercentRes = sandbox.ValidationService.validateSubmission(invalidPercentPayload);
 assert(invalidPercentRes.valid === false && invalidPercentRes.errors.some(e => e.includes('100')), 'Validation rejects percentage > 100%');
 
-// Edge Case 4: Oversized file simulation (> 20MB Base64)
+// Edge Case 4: Oversized file simulation (> 25MB Base64)
 const oversizedFilePayload = JSON.parse(JSON.stringify(validPayload));
 oversizedFilePayload.files = [{
   name: 'huge_document.pdf',
   mimeType: 'application/pdf',
-  base64Data: 'A'.repeat(28 * 1024 * 1024) // ~28MB
+  base64Data: 'A'.repeat(35 * 1024 * 1024) // ~35MB
 }];
 const oversizedRes = sandbox.ValidationService.validateSubmission(oversizedFilePayload);
-assert(oversizedRes.valid === false && oversizedRes.errors.some(e => e.includes('ใหญ่เกินกำหนด')), 'Validation rejects oversized file (> 20MB Base64)');
+assert(oversizedRes.valid === false && oversizedRes.errors.some(e => e.includes('ใหญ่เกินกำหนด')), 'Validation rejects oversized file (> 25MB Base64)');
 
 // Edge Case 5: Invalid File Type
 const invalidMimePayload = JSON.parse(JSON.stringify(validPayload));
@@ -193,6 +193,16 @@ invalidMimePayload.files = [{
 }];
 const invalidMimeRes = sandbox.ValidationService.validateSubmission(invalidMimePayload);
 assert(invalidMimeRes.valid === false && invalidMimeRes.errors.some(e => e.includes('ไม่รองรับประเภทชนิดไฟล์นี้')), 'Validation rejects unallowed MIME type (.exe)');
+
+// Valid File Case: Office documents (.xlsx, .docx)
+const excelFilePayload = JSON.parse(JSON.stringify(validPayload));
+excelFilePayload.files = [{
+  name: 'รายชื่อ.xlsx',
+  mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  base64Data: 'A'.repeat(1024)
+}];
+const excelRes = sandbox.ValidationService.validateSubmission(excelFilePayload);
+assert(excelRes.valid === true, 'Validation accepts valid .xlsx Excel document');
 
 // ------------------------------------------------------------------
 // 5. Admin & Report Builder Logic Verification

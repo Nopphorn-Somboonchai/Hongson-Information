@@ -431,16 +431,25 @@ var FormEngine = {
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      // File size limit: 20MB
-      if (file.size > 20 * 1024 * 1024) {
-        alert(`ไฟล์ "${file.name}" มีขนาดใหญ่เกิน 20MB กรุณาเลือกไฟล์ที่ขนาดเล็กกว่านี้`);
+      // File size limit: 25MB
+      if (file.size > 25 * 1024 * 1024) {
+        alert(`ไฟล์ "${file.name}" มีขนาดใหญ่เกิน 25MB กรุณาเลือกไฟล์ที่ขนาดเล็กกว่านี้`);
         continue;
       }
 
-      // Check mime type (Images and PDF)
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'];
+      // Check mime type (Images, PDF, and Office Documents)
+      const allowedTypes = [
+        'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif',
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'text/csv',
+        'application/csv'
+      ];
       if (file.type && !allowedTypes.includes(file.type.toLowerCase())) {
-        alert(`ไฟล์ "${file.name}" ไม่รองรับ (รองรับเฉพาะไฟล์รูปภาพ JPG, PNG, WEBP และเอกสาร PDF)`);
+        alert(`ไฟล์ "${file.name}" ไม่รองรับ (รองรับเฉพาะไฟล์รูปภาพ JPG, PNG, WEBP และเอกสาร PDF, DOCX, XLSX, DOC, XLS, CSV)`);
         continue;
       }
 
