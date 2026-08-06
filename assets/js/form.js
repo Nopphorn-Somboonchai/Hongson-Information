@@ -114,10 +114,22 @@ const FormEngine = {
   },
 
   async loadCategories() {
-    const res = await API.getCategories();
-    if (res && res.success && Array.isArray(res.categories) && res.categories.length > 0) {
-      this.categories = res.categories;
-    } else {
+    try {
+      const res = await API.getCategories();
+      if (res && res.success && Array.isArray(res.categories) && res.categories.length > 0) {
+        // Merge with default schema if fields are missing from API categories
+        this.categories = res.categories.map(cat => {
+          if (!cat.fields || cat.fields.length === 0) {
+            const def = this.defaultCategories.find(d => d.id === cat.id);
+            if (def && def.fields) cat.fields = def.fields;
+          }
+          return cat;
+        });
+      } else {
+        this.categories = this.defaultCategories;
+      }
+    } catch (err) {
+      console.warn("Could not load categories from API, using default categories fallback:", err);
       this.categories = this.defaultCategories;
     }
   },
@@ -129,10 +141,10 @@ const FormEngine = {
     let html = '<div class="category-grid">';
     this.categories.forEach(cat => {
       html += `
-        <div class="category-card" onclick="FormEngine.selectCategory('${cat.id}')">
+        <div class="category-card" role="button" tabindex="0" onclick="FormEngine.selectCategory('${cat.id}')">
           <div class="category-card-icon">📂</div>
           <h4>${cat.name}</h4>
-          <span class="category-status-badge">เลือกเพื่อกรอกข้อมูล</span>
+          <span class="category-status-badge">คลิกเพื่อเลือกกรอกข้อมูล ➔</span>
         </div>
       `;
     });
@@ -141,26 +153,60 @@ const FormEngine = {
   },
 
   selectCategory(catId) {
-    const cat = this.categories.find(c => c.id === catId);
-    if (!cat) return;
+    if (!catId) return;
+
+    let cat = this.categories.find(c => String(c.id) === String(catId));
+    
+    // Fallback if not found in active categories
+    if (!cat) {
+      cat = this.defaultCategories.find(c => String(c.id) === String(catId));
+    }
+
+    if (!cat) {
+      console.error("Category not found:", catId);
+      return;
+    }
+
+    // Ensure fields array is populated
+    if (!cat.fields || !Array.isArray(cat.fields) || cat.fields.length === 0) {
+      const defCat = this.defaultCategories.find(d => String(d.id) === String(cat.id));
+      if (defCat && defCat.fields) {
+        cat.fields = defCat.fields;
+      } else {
+        cat.fields = [
+          { fieldId: "field_general_description", label: "รายละเอียดข้อมูลสารสนเทศ", type: "textarea", required: true, helpText: "กรอกข้อมูลสารสนเทศประจำหมวด" }
+        ];
+      }
+    }
 
     this.activeCategory = cat;
     this.attachedFiles = [];
 
-    document.getElementById('category-select-section').style.display = 'none';
-    document.getElementById('form-render-section').style.display = 'block';
+    // Switch View Section
+    const selectSec = document.getElementById('category-select-section');
+    const formSec = document.getElementById('form-render-section');
+
+    if (selectSec) selectSec.style.display = 'none';
+    if (formSec) formSec.style.display = 'block';
 
     const headerTitle = document.getElementById('selected-category-title');
     if (headerTitle) headerTitle.textContent = cat.name;
 
+    // Render Dynamic Form Fields
     this.renderFormFields(cat);
+
+    // Scroll to top of form smoothly
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   },
 
   backToCategorySelect() {
     this.activeCategory = null;
     this.attachedFiles = [];
-    document.getElementById('form-render-section').style.display = 'none';
-    document.getElementById('category-select-section').style.display = 'block';
+    const selectSec = document.getElementById('category-select-section');
+    const formSec = document.getElementById('form-render-section');
+
+    if (formSec) formSec.style.display = 'none';
+    if (selectSec) selectSec.style.display = 'block';
   },
 
   renderFormFields(cat) {
