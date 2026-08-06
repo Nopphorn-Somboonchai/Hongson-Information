@@ -250,28 +250,34 @@ var FormEngine = {
 
     formContainer.innerHTML = html;
     this.setupDragAndDrop();
+    this.setupExcelPaste();
   },
 
   renderDynamicTableHTML(field) {
     const columns = field.columns || ["รายการ / หัวข้อ", "จำนวน / รายละเอียด", "หมายเหตุ"];
     let html = `
       <div class="dynamic-table-wrapper" id="wrapper-${field.fieldId}">
-        <table class="dynamic-table" id="table-${field.fieldId}">
-          <thead>
-            <tr>
-              ${columns.map(c => `<th>${c}</th>`).join('')}
-              <th style="width: 70px; text-align: center;">จัดการ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              ${columns.map(() => `<td><input type="text" class="form-control table-input"></td>`).join('')}
-              <td style="text-align: center;">
-                <button type="button" class="btn-remove-row" onclick="FormEngine.removeTableRow(this)">&times;</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="excel-paste-hint" style="margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--accent); background: rgba(59, 130, 246, 0.1); padding: 0.4rem 0.75rem; border-radius: 6px; display: inline-flex; align-items: center; gap: 0.4rem;">
+          <span>📋 <strong>คำแนะนำ:</strong> คัดลอก (Copy) ตารางจาก Excel หรือ Google Sheets แล้วคลิกวาง (Paste) ในช่องตารางได้ทันที</span>
+        </div>
+        <div class="table-responsive" style="overflow-x: auto;">
+          <table class="dynamic-table" id="table-${field.fieldId}">
+            <thead>
+              <tr>
+                ${columns.map(c => `<th>${c}</th>`).join('')}
+                <th style="width: 70px; text-align: center;">จัดการ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                ${columns.map(() => `<td><input type="text" class="form-control table-input" placeholder="พิมพ์หรือวาง..." onpaste="FormEngine.handleExcelPaste(event, this)"></td>`).join('')}
+                <td style="text-align: center;">
+                  <button type="button" class="btn-remove-row" onclick="FormEngine.removeTableRow(this)">&times;</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <button type="button" class="btn btn-secondary btn-sm" style="margin-top: 0.75rem;" onclick="FormEngine.addTableRow('${field.fieldId}', ${columns.length})">
           ➕ เพิ่มแถว
         </button>
@@ -287,7 +293,7 @@ var FormEngine = {
     const tr = document.createElement('tr');
     let cells = '';
     for (let i = 0; i < colCount; i++) {
-      cells += `<td><input type="text" class="form-control table-input"></td>`;
+      cells += `<td><input type="text" class="form-control table-input" placeholder="พิมพ์หรือวาง..." onpaste="FormEngine.handleExcelPaste(event, this)"></td>`;
     }
     cells += `<td style="text-align: center;"><button type="button" class="btn-remove-row" onclick="FormEngine.removeTableRow(this)">&times;</button></td>`;
     tr.innerHTML = cells;
@@ -302,6 +308,81 @@ var FormEngine = {
     } else {
       alert('ต้องมีอย่างน้อย 1 แถวในตาราง');
     }
+  },
+
+  setupExcelPaste() {
+    // Dynamic table paste listener attached via inline onpaste attribute
+  },
+
+  /**
+   * Handle clipboard paste from Excel / CSV into dynamic table
+   */
+  handleExcelPaste(e, targetInput) {
+    const clipboardData = e.clipboardData || window.clipboardData;
+    if (!clipboardData) return;
+
+    const pastedText = clipboardData.getData('text');
+    if (!pastedText || (!pastedText.includes('\t') && !pastedText.includes('\n'))) {
+      return; // Normal single text paste
+    }
+
+    e.preventDefault();
+
+    const targetCell = targetInput.closest('td');
+    const targetRow = targetInput.closest('tr');
+    const tbody = targetRow.closest('tbody');
+    const table = tbody.closest('table');
+    const colIndex = Array.from(targetRow.children).indexOf(targetCell);
+
+    const rows = pastedText.split(/\r\n|\n|\r/).filter(r => r.trim() !== '');
+    if (rows.length === 0) return;
+
+    let currentRow = targetRow;
+    let pastedRowsCount = 0;
+    const colCount = table.querySelectorAll('thead th').length - 1; // Exclude action col
+
+    rows.forEach((rowText, rIdx) => {
+      if (rIdx > 0) {
+        // Create new row if needed
+        if (!currentRow.nextElementSibling) {
+          const fieldId = table.id.replace('table-', '');
+          this.addTableRow(fieldId, colCount);
+        }
+        currentRow = currentRow.nextElementSibling;
+      }
+
+      if (!currentRow) return;
+
+      const cells = rowText.split('\t');
+      const inputs = currentRow.querySelectorAll('.table-input');
+
+      cells.forEach((val, cIdx) => {
+        const destIdx = colIndex + cIdx;
+        if (inputs[destIdx]) {
+          inputs[destIdx].value = val.trim();
+          inputs[destIdx].classList.add('paste-highlight');
+          setTimeout(() => inputs[destIdx].classList.remove('paste-highlight'), 1200);
+        }
+      });
+
+      pastedRowsCount++;
+    });
+
+    // Toast feedback
+    this.showToast(`📋 วางข้อมูลจาก Excel สำเร็จ (${pastedRowsCount} แถว)`);
+  },
+
+  showToast(msg) {
+    let toast = document.getElementById('form-toast-notice');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'form-toast-notice';
+      toast.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: var(--surface); color: var(--text-heading); border: 1px solid var(--accent); padding: 0.75rem 1.25rem; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 9999; font-size: 0.9rem; transition: opacity 0.3s ease;';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.style.opacity = '1';
+    setTimeout(() => { toast.style.opacity = '0'; }, 3000);
   },
 
   setupDragAndDrop() {
@@ -350,9 +431,16 @@ var FormEngine = {
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      // File size limit: 25MB
-      if (file.size > 25 * 1024 * 1024) {
-        alert(`ไฟล์ ${file.name} มีขนาดเกิน 25MB ระบบไม่สามารถอัปโหลดได้`);
+      // File size limit: 20MB
+      if (file.size > 20 * 1024 * 1024) {
+        alert(`ไฟล์ "${file.name}" มีขนาดใหญ่เกิน 20MB กรุณาเลือกไฟล์ที่ขนาดเล็กกว่านี้`);
+        continue;
+      }
+
+      // Check mime type (Images and PDF)
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'];
+      if (file.type && !allowedTypes.includes(file.type.toLowerCase())) {
+        alert(`ไฟล์ "${file.name}" ไม่รองรับ (รองรับเฉพาะไฟล์รูปภาพ JPG, PNG, WEBP และเอกสาร PDF)`);
         continue;
       }
 
@@ -399,26 +487,34 @@ var FormEngine = {
     if (!listContainer) return;
 
     if (this.attachedFiles.length === 0) {
-      listContainer.innerHTML = '<p class="text-muted" style="font-size:0.875rem;">ยังไม่มีไฟล์ที่เลือก</p>';
+      listContainer.innerHTML = '<p class="text-muted" style="font-size:0.875rem;">ยังไม่มีไฟล์แนบที่เลือก</p>';
       return;
     }
 
-    let html = '<div class="files-preview-grid">';
+    let html = '<div class="files-preview-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem;">';
     this.attachedFiles.forEach((f, idx) => {
       const sizeMB = (f.size / (1024 * 1024)).toFixed(2);
       const isImg = f.mimeType.startsWith('image/');
+      const imgSrc = isImg ? `data:${f.mimeType};base64,${f.base64Data}` : '';
 
       html += `
-        <div class="file-preview-card">
-          <div class="file-preview-info">
-            <span class="file-type-icon">${isImg ? '🖼️' : '📄'}</span>
-            <div style="overflow:hidden;">
-              <div class="file-name-text">${f.name}</div>
-              <small class="text-muted">${sizeMB} MB</small>
+        <div class="file-preview-card" style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; position: relative;">
+          ${isImg 
+            ? `<div class="thumbnail-box" style="height: 110px; border-radius: 6px; overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center;">
+                 <img src="${imgSrc}" alt="${f.name}" style="width: 100%; height: 100%; object-fit: cover;">
+               </div>`
+            : `<div class="thumbnail-box" style="height: 90px; border-radius: 6px; background: rgba(239, 68, 68, 0.1); color: var(--danger); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 600;">
+                 <span style="font-size: 2rem;">📄</span> PDF DOCUMENT
+               </div>`
+          }
+          <div class="file-preview-info" style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 80%;">
+              <div class="file-name-text" title="${f.name}" style="font-size: 0.85rem; font-weight: 600; color: var(--text-heading); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${f.name}</div>
+              <small class="text-muted" style="font-size: 0.75rem;">${sizeMB} MB</small>
             </div>
-            <button type="button" class="btn-remove-file" onclick="FormEngine.removeFile(${idx})">&times;</button>
+            <button type="button" class="btn-remove-file" onclick="FormEngine.removeFile(${idx})" style="background: none; border: none; color: var(--danger); font-size: 1.2rem; cursor: pointer;">&times;</button>
           </div>
-          ${isImg ? `<input type="text" class="form-control form-control-sm" placeholder="คำบรรยายรูปภาพ (Caption)..." value="${f.caption}" onchange="FormEngine.updateCaption(${idx}, this.value)" style="margin-top:0.5rem;">` : ''}
+          ${isImg ? `<input type="text" class="form-control form-control-sm" placeholder="คำบรรยายรูปภาพ (Caption)..." value="${f.caption}" onchange="FormEngine.updateCaption(${idx}, this.value)" style="margin-top: auto; font-size: 0.8rem;">` : ''}
         </div>
       `;
     });
@@ -435,6 +531,43 @@ var FormEngine = {
   removeFile(index) {
     this.attachedFiles.splice(index, 1);
     this.renderAttachedFilesList();
+  },
+
+  /**
+   * Client Data Validation helper before submission
+   */
+  validateFormData(senderName, senderDepartment, fieldValues) {
+    if (!senderName.trim()) return "กรุณาระบุชื่อ-นามสกุล ผู้ส่งข้อมูล";
+    if (!senderDepartment.trim()) return "กรุณาระบุกลุ่มงาน/ฝ่าย/โรงเรียน ผู้ส่งข้อมูล";
+
+    // Validate percentage ranges (0-100%) in input fields & dynamic tables
+    for (let fId in fieldValues) {
+      const val = fieldValues[fId];
+      if (fId.toLowerCase().includes('percent') || fId.toLowerCase().includes('percentage')) {
+        const num = parseFloat(val);
+        if (!isNaN(num) && (num < 0 || num > 100)) {
+          return `ค่าร้อยละในช่อง (${fId}) ต้องอยู่ระหว่าง 0 ถึง 100`;
+        }
+      }
+
+      if (Array.isArray(val)) {
+        for (let r = 0; r < val.length; r++) {
+          const row = val[r];
+          if (Array.isArray(row)) {
+            row.forEach((cellVal, cIdx) => {
+              if (cellVal.includes('%')) {
+                const pNum = parseFloat(cellVal.replace('%', ''));
+                if (!isNaN(pNum) && (pNum < 0 || pNum > 100)) {
+                  return `แถวที่ ${r + 1} คอลัมน์ที่ ${cIdx + 1} ค่าร้อยละต้องไม่เกิน 100%`;
+                }
+              }
+            });
+          }
+        }
+      }
+    }
+
+    return null; // All valid
   },
 
   async handleSubmit(e) {
@@ -460,11 +593,6 @@ var FormEngine = {
     const dataAsOfDate = document.getElementById('data_as_of_date')?.value || '';
     const senderNote = document.getElementById('sender_note')?.value || '';
 
-    if (!senderName || !senderDepartment) {
-      alert('กรุณากรอกชื่อผู้ส่ง และ ฝ่าย/กลุ่มสาระ');
-      return;
-    }
-
     // Collect field values
     const fieldValues = {};
     this.activeCategory.fields.forEach(field => {
@@ -488,6 +616,19 @@ var FormEngine = {
       }
     });
 
+    // Client-side Validation
+    const valError = this.validateFormData(senderName, senderDepartment, fieldValues);
+    if (valError) {
+      if (alertBox) {
+        alertBox.className = 'alert alert-warning';
+        alertBox.style.display = 'block';
+        alertBox.innerHTML = `<strong>⚠️ ข้อมูลไม่ผ่านการตรวจสอบ:</strong> ${valError}`;
+      } else {
+        alert(`⚠️ ข้อมูลไม่ผ่านการตรวจสอบ:\n${valError}`);
+      }
+      return;
+    }
+
     const payload = {
       sessionToken: session.sessionToken,
       academicYear: session.academicYear || '2569',
@@ -501,9 +642,9 @@ var FormEngine = {
       files: this.attachedFiles
     };
 
-    // Double submission prevention
+    // Double submission prevention & progress feedback
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="spinner"></span> กำลังบันทึกข้อมูลและอัปโหลดไฟล์...';
+    submitBtn.innerHTML = '<span class="spinner"></span> ⏳ กำลังตรวจสอบและบันทึกข้อมูลเข้าสู่ Google Sheets & Drive...';
     if (alertBox) alertBox.style.display = 'none';
 
     try {
@@ -512,10 +653,24 @@ var FormEngine = {
       if (result && result.success) {
         this.showSuccessSummary(result);
       } else {
-        alert(result ? result.message : 'การบันทึกข้อมูลล้มเหลว');
+        const errMsg = result ? result.message : 'การบันทึกข้อมูลล้มเหลว';
+        if (alertBox) {
+          alertBox.className = 'alert alert-danger';
+          alertBox.style.display = 'block';
+          alertBox.innerHTML = `<strong>❌ ไม่สามารถบันทึกข้อมูลได้:</strong> ${errMsg}<br><small>ข้อมูลและไฟล์แนบของคุณยังคงอยู่ในฟอร์ม กรุณาตรวจสอบแล้วลองใหม่อีกครั้ง</small>`;
+        } else {
+          alert(`❌ ไม่สามารถบันทึกข้อมูลได้:\n${errMsg}`);
+        }
       }
     } catch (err) {
-      alert('เกิดข้อผิดพลาดในการส่งข้อมูล: ' + err.message);
+      console.error("Submit Error:", err);
+      if (alertBox) {
+        alertBox.className = 'alert alert-danger';
+        alertBox.style.display = 'block';
+        alertBox.innerHTML = `<strong>❌ เกิดข้อผิดพลาดในการเชื่อมต่อ:</strong> ${err.message}<br><small>ข้อมูลในฟอร์มของท่านไม่สูญหาย กรุณากดลองส่งอีกครั้ง</small>`;
+      } else {
+        alert(`เกิดข้อผิดพลาดในการส่งข้อมูล: ${err.message}`);
+      }
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = '💾 บันทึกและส่งข้อมูลสารสนเทศ';

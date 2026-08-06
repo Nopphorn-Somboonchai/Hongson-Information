@@ -461,6 +461,34 @@ body {
   background: rgba(255, 255, 255, 0.15);
 }
 
+@keyframes pasteFlash {
+  0% { background: rgba(59, 130, 246, 0.4); border-color: var(--accent); }
+  100% { background: rgba(15, 23, 42, 0.6); }
+}
+
+.table-input.paste-highlight {
+  animation: pasteFlash 1.2s ease-out;
+}
+
+.excel-paste-hint {
+  user-select: none;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+  .dynamic-table th, .dynamic-table td {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .dynamic-table-wrapper {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+  }
+  .file-preview-card {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Modals */
 .modal-overlay {
   position: fixed;

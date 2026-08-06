@@ -75,6 +75,12 @@ var SubmissionService = {
     }
 
     try {
+      // Validate submission payload
+      var valResult = ValidationService.validateSubmission(payload);
+      if (!valResult.valid) {
+        return { success: false, message: valResult.message, errors: valResult.errors };
+      }
+
       var ss = SheetService.getSpreadsheet();
       if (!ss) throw new Error("ไม่สามารถเปิด Google Spreadsheet ได้");
 
