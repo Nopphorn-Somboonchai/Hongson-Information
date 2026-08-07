@@ -244,7 +244,7 @@ assert(!hardcodedSecretsFound, 'No hardcoded contributor/admin secrets found in 
 // Summary Report
 // ------------------------------------------------------------------
 console.log('\n====================================================');
-console.log(`📊 Phase 6 Verification Summary: ${passedTests}/${totalTests} Tests Passed (${Math.round((passedTests/totalTests)*100)}%)`);
+console.log(`📊 Phase 6 Verification Summary: ${passedTests}/${totalTests} Tests Passed (${Math.round((passedTests / totalTests) * 100)}%)`);
 console.log('====================================================\n');
 
 if (passedTests === totalTests) {

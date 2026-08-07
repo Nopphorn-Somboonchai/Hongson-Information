@@ -18,8 +18,8 @@ var ReportService = {
     
     var lock = LockService.getScriptLock();
     try {
-      if (!lock.waitLock(30000)) {
-        return { success: false, message: "ระบบกำลังสร้างรายงานโดยผู้ใช้อื่นอยู่ในขณะนี้ กรุณาลองใหม่อีกครั้ง" };
+      if (!lock.tryLock(60000)) {
+        return { success: false, message: "ระบบกำลังสร้างรายงานโดยผู้ใช้อื่นอยู่ในขณะนี้ หรือกระบวนการก่อนหน้ายังไม่เสร็จสิ้น กรุณารอ 1 นาทีแล้วลองใหม่อีกครั้ง" };
       }
 
       var ss = SheetService.getSpreadsheet();

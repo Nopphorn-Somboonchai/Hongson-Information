@@ -29,10 +29,10 @@ var FormEngine = {
       id: "cat_03",
       name: "3. ทะเบียนนักเรียนและโครงสร้างชั้นเรียน",
       fields: [
-        { 
-          fieldId: "field_student_counts", 
-          label: "ตารางสถิติจำนวนนักเรียนแยกตามระดับชั้น", 
-          type: "dynamic_table", 
+        {
+          fieldId: "field_student_counts",
+          label: "ตารางสถิติจำนวนนักเรียนแยกตามระดับชั้น",
+          type: "dynamic_table",
           required: true,
           columns: ["ระดับชั้น", "ชาย (คน)", "หญิง (คน)", "รวม (คน)"]
         }
@@ -42,10 +42,10 @@ var FormEngine = {
       id: "cat_04",
       name: "4. ผลการเรียนและคุณภาพผู้เรียน",
       fields: [
-        { 
-          fieldId: "field_academic_performance", 
-          label: "ตารางผลสัมฤทธิ์ทางการเรียนจำแนกตามกลุ่มสาระ", 
-          type: "dynamic_table", 
+        {
+          fieldId: "field_academic_performance",
+          label: "ตารางผลสัมฤทธิ์ทางการเรียนจำแนกตามกลุ่มสาระ",
+          type: "dynamic_table",
           required: true,
           columns: ["กลุ่มสาระการเรียนรู้", "จำนวนนักเรียน", "ร้อยละระดับ 3 ขึ้นไป"]
         }
@@ -77,10 +77,10 @@ var FormEngine = {
       id: "cat_08",
       name: "8. บุคลากรและการพัฒนาวิชาชีพ",
       fields: [
-        { 
-          fieldId: "field_staff_stats", 
-          label: "ตารางสถิติจำนวนครูและบุคลากร", 
-          type: "dynamic_table", 
+        {
+          fieldId: "field_staff_stats",
+          label: "ตารางสถิติจำนวนครูและบุคลากร",
+          type: "dynamic_table",
           required: true,
           columns: ["ประเภทบุคลากร", "ชาย", "หญิง", "รวม"]
         }
@@ -157,7 +157,7 @@ var FormEngine = {
     if (!catId) return;
 
     let cat = this.categories.find(c => String(c.id) === String(catId));
-    
+
     // Fallback if not found in active categories
     if (!cat) {
       cat = this.defaultCategories.find(c => String(c.id) === String(catId));
@@ -508,14 +508,14 @@ var FormEngine = {
 
       html += `
         <div class="file-preview-card" style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; position: relative;">
-          ${isImg 
-            ? `<div class="thumbnail-box" style="height: 110px; border-radius: 6px; overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center;">
+          ${isImg
+          ? `<div class="thumbnail-box" style="height: 110px; border-radius: 6px; overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center;">
                  <img src="${imgSrc}" alt="${f.name}" style="width: 100%; height: 100%; object-fit: cover;">
                </div>`
-            : `<div class="thumbnail-box" style="height: 90px; border-radius: 6px; background: rgba(239, 68, 68, 0.1); color: var(--danger); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 600;">
+          : `<div class="thumbnail-box" style="height: 90px; border-radius: 6px; background: rgba(239, 68, 68, 0.1); color: var(--danger); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 600;">
                  <span style="font-size: 2rem;">📄</span> PDF DOCUMENT
                </div>`
-          }
+        }
           <div class="file-preview-info" style="display: flex; justify-content: space-between; align-items: flex-start;">
             <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 80%;">
               <div class="file-name-text" title="${f.name}" style="font-size: 0.85rem; font-weight: 600; color: var(--text-heading); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${f.name}</div>

@@ -846,7 +846,11 @@ var AdminEngine = {
     var statusText = document.getElementById('report-status-text');
     var resultBox = document.getElementById('report-result-box');
 
-    if (startBtn) startBtn.disabled = true;
+    var originalBtnText = startBtn ? startBtn.innerHTML : '';
+    if (startBtn) {
+      startBtn.disabled = true;
+      startBtn.innerHTML = '⏳ กำลังประมวลผลการสร้างรายงาน...';
+    }
     if (resultBox) resultBox.style.display = 'none';
 
     if (progressBox) progressBox.style.display = 'block';
@@ -918,7 +922,10 @@ var AdminEngine = {
       console.error("Generate Report Error:", err);
       alert("เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์เพื่อสร้างรายงาน");
     } finally {
-      if (startBtn) startBtn.disabled = false;
+      if (startBtn) {
+        startBtn.disabled = false;
+        startBtn.innerHTML = originalBtnText;
+      }
     }
   },
 
