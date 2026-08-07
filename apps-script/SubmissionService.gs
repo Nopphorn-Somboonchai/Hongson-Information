@@ -104,6 +104,9 @@ var SubmissionService = {
       // Generate unique submission ID
       var submissionId = "SUB-" + academicYear + "-" + (payload.categoryId || "CAT").toUpperCase() + "-" + timeId + "-" + Math.floor(Math.random() * 1000);
 
+      var rawPhone = payload.senderPhone ? String(payload.senderPhone).trim() : "";
+      var phoneVal = (rawPhone && rawPhone.startsWith("0")) ? "'" + rawPhone : rawPhone;
+
       // 1. Insert row into SUBMISSIONS sheet
       var subRow = [
         submissionId,
@@ -111,7 +114,7 @@ var SubmissionService = {
         payload.categoryId || "",
         payload.senderName || "",
         payload.senderDepartment || "",
-        payload.senderPhone || "",
+        phoneVal,
         payload.dataAsOfDate || Utilities.formatDate(new Date(), "Asia/Bangkok", "yyyy-MM-dd"),
         payload.senderNote || "",
         nowStr,

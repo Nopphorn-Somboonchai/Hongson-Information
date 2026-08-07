@@ -52,7 +52,7 @@
 
 ### ขั้นตอนที่ 1: เตรียม Google Sheets และ Google Drive Folders
 1. เข้าสู่ [Google Drive](https://drive.google.com) ด้วยบัญชี Google Workspace ของโรงเรียน
-2. สร้างโฟลเดอร์หลักชื่อ `HONGSON Information System 2569`
+2. สร้างโฟลเดอร์หลักชื่อ `HONGSON Information System 2568`
 3. สร้างโฟลเดอร์ย่อย 2 โฟลเดอร์:
    - `Uploaded Files` (สำหรับเก็บไฟล์แนบจากผู้กรอก) -> **คัดลอก Folder ID**
    - `Generated Reports` (สำหรับเก็บไฟล์ PDF รายงาน) -> **คัดลอก Folder ID**

@@ -11,18 +11,18 @@ var AdminEngine = {
   filterStatus: 'all',
   searchQuery: '',
 
-  init: function() {
+  init: function () {
     this.bindEvents();
     this.fetchDashboard();
   },
 
-  bindEvents: function() {
+  bindEvents: function () {
     var self = this;
 
     // Search input handler
     var searchInput = document.getElementById('admin-search-input');
     if (searchInput) {
-      searchInput.addEventListener('input', function(e) {
+      searchInput.addEventListener('input', function (e) {
         self.searchQuery = e.target.value.toLowerCase().trim();
         self.applyFilters();
       });
@@ -31,7 +31,7 @@ var AdminEngine = {
     // Category filter dropdown
     var catSelect = document.getElementById('admin-filter-category');
     if (catSelect) {
-      catSelect.addEventListener('change', function(e) {
+      catSelect.addEventListener('change', function (e) {
         self.filterCategory = e.target.value;
         self.applyFilters();
       });
@@ -40,7 +40,7 @@ var AdminEngine = {
     // Status filter dropdown
     var statusSelect = document.getElementById('admin-filter-status');
     if (statusSelect) {
-      statusSelect.addEventListener('change', function(e) {
+      statusSelect.addEventListener('change', function (e) {
         self.filterStatus = e.target.value;
         self.applyFilters();
       });
@@ -49,7 +49,7 @@ var AdminEngine = {
     // Refresh Dashboard button
     var refreshBtn = document.getElementById('btn-admin-refresh');
     if (refreshBtn) {
-      refreshBtn.addEventListener('click', function() {
+      refreshBtn.addEventListener('click', function () {
         self.fetchDashboard();
       });
     }
@@ -57,7 +57,7 @@ var AdminEngine = {
     // Open Report Builder Modal button
     var reportBtn = document.getElementById('btn-open-report-builder');
     if (reportBtn) {
-      reportBtn.addEventListener('click', function() {
+      reportBtn.addEventListener('click', function () {
         self.openReportModal();
       });
     }
@@ -66,7 +66,7 @@ var AdminEngine = {
   /**
    * Fetch complete Dashboard overview from Apps Script Backend
    */
-  fetchDashboard: async function() {
+  fetchDashboard: async function () {
     var session = AuthManager.getSession();
     if (!session || session.role !== 'admin') {
       return;
@@ -89,7 +89,7 @@ var AdminEngine = {
         // Render empty/offline fallback view if API fails
         this.renderFallbackView(res ? res.message : "ไม่สามารถโหลดข้อมูลจากเซิร์ฟเวอร์ได้");
       }
-    } catch(err) {
+    } catch (err) {
       console.error("Fetch Dashboard Error:", err);
       this.renderFallbackView("เกิดข้อผิดพลาดในการโหลดข้อมูล Admin Dashboard");
     } finally {
@@ -97,7 +97,7 @@ var AdminEngine = {
     }
   },
 
-  renderFallbackView: function(msg) {
+  renderFallbackView: function (msg) {
     var container = document.getElementById('admin-dashboard-container');
     if (container) {
       container.innerHTML = `
@@ -112,7 +112,7 @@ var AdminEngine = {
   /**
    * Render Top Statistics Overview Cards & Warnings
    */
-  renderStatsOverview: function(metrics, warnings) {
+  renderStatsOverview: function (metrics, warnings) {
     var statsContainer = document.getElementById('admin-stats-overview');
     if (!statsContainer) return;
 
@@ -166,7 +166,7 @@ var AdminEngine = {
   /**
    * Render Grid Cards for 11 Categories
    */
-  renderCategoryCards: function(categoryStats) {
+  renderCategoryCards: function (categoryStats) {
     var container = document.getElementById('admin-category-cards-grid');
     if (!container) return;
 
@@ -188,9 +188,9 @@ var AdminEngine = {
             ${statusBadge}
           </div>
           <div style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-muted);">
-            ${isSubmitted 
-              ? `ผู้ส่งล่าสุด: <strong>${cat.lastSenderName || '-'}</strong><br>ส่งเมื่อ: ${cat.lastSubmittedAt || '-'}`
-              : `ยังไม่มีผู้รับผิดชอบส่งข้อมูลหมวดนี้`}
+            ${isSubmitted
+          ? `ผู้ส่งล่าสุด: <strong>${cat.lastSenderName || '-'}</strong><br>ส่งเมื่อ: ${cat.lastSubmittedAt || '-'}`
+          : `ยังไม่มีผู้รับผิดชอบส่งข้อมูลหมวดนี้`}
           </div>
         </div>
       `;
@@ -199,7 +199,7 @@ var AdminEngine = {
     container.innerHTML = html;
   },
 
-  populateCategoryFilterDropdown: function(categoryStats) {
+  populateCategoryFilterDropdown: function (categoryStats) {
     var catSelect = document.getElementById('admin-filter-category');
     if (!catSelect) return;
 
@@ -210,7 +210,7 @@ var AdminEngine = {
     catSelect.value = currentVal;
   },
 
-  filterByCategory: function(catId) {
+  filterByCategory: function (catId) {
     this.filterCategory = catId;
     var catSelect = document.getElementById('admin-filter-category');
     if (catSelect) catSelect.value = catId;
@@ -220,7 +220,7 @@ var AdminEngine = {
   /**
    * Apply Search & Category/Status Filters to Submissions List
    */
-  applyFilters: function() {
+  applyFilters: function () {
     var self = this;
     var filtered = this.submissions.filter(sub => {
       // Category filter
@@ -248,7 +248,7 @@ var AdminEngine = {
   /**
    * Render Submissions Data Table
    */
-  renderSubmissionsTable: function(submissionsList) {
+  renderSubmissionsTable: function (submissionsList) {
     var tbody = document.getElementById('admin-submissions-tbody');
     var countEl = document.getElementById('admin-filtered-count');
 
@@ -269,7 +269,7 @@ var AdminEngine = {
     var self = this;
     tbody.innerHTML = submissionsList.map((sub, idx) => {
       var statusBadge = '';
-      switch(sub.status) {
+      switch (sub.status) {
         case 'reviewed':
           statusBadge = `<span class="badge badge-success">✓ ตรวจแล้ว</span>`;
           break;
@@ -283,7 +283,7 @@ var AdminEngine = {
           statusBadge = `<span class="badge badge-info">📥 ส่งแล้ว</span>`;
       }
 
-      var selectedCheck = sub.selectedForReport 
+      var selectedCheck = sub.selectedForReport
         ? `<input type="checkbox" checked onchange="AdminEngine.handleToggleReport('${sub.submissionId}', this.checked)" title="เลือกสำหรับสร้างรายงาน">`
         : `<input type="checkbox" onchange="AdminEngine.handleToggleReport('${sub.submissionId}', this.checked)" title="เลือกสำหรับสร้างรายงาน">`;
 
@@ -296,7 +296,8 @@ var AdminEngine = {
           <td><strong>${sub.categoryName || sub.categoryId}</strong></td>
           <td>
             <div>${sub.senderName || '-'}</div>
-            <small style="color: var(--text-muted); display: block;">${sub.senderDepartment || ''}</small>
+            <small style="color: var(--text-muted); display: block;">${sub.senderDepartment || ''} ${sub.senderPhone ? '📞 ' + this.formatPhone(sub.senderPhone) : ''}</small>
+            ${sub.senderNote ? `<small style="color: var(--color-accent-light, #3b82f6); display: block;" title="หมายเหตุผู้ส่ง">💬 หมายเหตุผู้ส่ง: <strong>${this.escapeHtml(sub.senderNote)}</strong></small>` : ''}
           </td>
           <td style="font-size: 0.85rem;">${sub.submittedAt || '-'}</td>
           <td style="text-align: center;">
@@ -317,7 +318,7 @@ var AdminEngine = {
   /**
    * Handle Quick Checkbox Toggle for Report Selection
    */
-  handleToggleReport: async function(submissionId, selected) {
+  handleToggleReport: async function (submissionId, selected) {
     var session = AuthManager.getSession();
     if (!session || session.role !== 'admin') return;
 
@@ -334,7 +335,7 @@ var AdminEngine = {
   /**
    * Open Submission Review & Edit Modal
    */
-  openDetailModal: async function(submissionId) {
+  openDetailModal: async function (submissionId) {
     var session = AuthManager.getSession();
     if (!session || session.role !== 'admin') return;
 
@@ -362,7 +363,7 @@ var AdminEngine = {
           </div>
         `;
       }
-    } catch(err) {
+    } catch (err) {
       console.error("Open Detail Modal Error:", err);
       modalBody.innerHTML = `
         <div class="alert alert-danger">
@@ -375,7 +376,7 @@ var AdminEngine = {
   /**
    * Render Edit Form inside Admin Detail Modal
    */
-  renderEditForm: function(detailData) {
+  renderEditForm: function (detailData) {
     var modalBody = document.getElementById('admin-edit-modal-body');
     if (!modalBody) return;
 
@@ -409,7 +410,7 @@ var AdminEngine = {
             </div>
             <div class="form-group">
               <label class="form-label">เบอร์โทรศัพท์</label>
-              <input type="text" id="edit-sender-phone" class="form-control" value="${this.escapeHtml(sub.senderPhone || '')}">
+              <input type="text" id="edit-sender-phone" class="form-control" value="${this.escapeHtml(this.formatPhone(sub.senderPhone || ''))}">
             </div>
             <div class="form-group">
               <label class="form-label">ข้อมูล ณ วันที่</label>
@@ -436,9 +437,15 @@ var AdminEngine = {
             </div>
           </div>
 
-          <div class="form-group" style="margin-bottom: 0;">
-            <label class="form-label">หมายเหตุ Admin (Admin Note)</label>
-            <input type="text" id="edit-admin-note" class="form-control" placeholder="บันทึกข้อความสำหรับ Admin เช่น ข้อมูลปรับแก้ตัวเลขแล้ว..." value="${this.escapeHtml(sub.adminNote || '')}">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 0.5rem;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" style="color: var(--accent-light); font-weight: 600;">💬 หมายเหตุจากผู้ส่ง (Contributor Note)</label>
+              <input type="text" id="edit-sender-note" class="form-control" placeholder="ไม่มีหมายเหตุจากผู้ส่ง" value="${this.escapeHtml(sub.senderNote || '')}">
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" style="font-weight: 600;">📝 หมายเหตุ Admin (Admin Note)</label>
+              <input type="text" id="edit-admin-note" class="form-control" placeholder="บันทึกข้อความสำหรับ Admin เช่น ข้อมูลปรับแก้ตัวเลขแล้ว..." value="${this.escapeHtml(sub.adminNote || '')}">
+            </div>
           </div>
         </div>
 
@@ -475,7 +482,7 @@ var AdminEngine = {
   /**
    * Helper to render editable schema fields & dynamic tables
    */
-  renderEditableFields: function(schemaFields, currentValues) {
+  renderEditableFields: function (schemaFields, currentValues) {
     if (!schemaFields || schemaFields.length === 0) {
       // Fallback if schema not pre-defined: render raw keys
       var keys = Object.keys(currentValues);
@@ -521,7 +528,7 @@ var AdminEngine = {
   /**
    * Helper to render editable dynamic table
    */
-  renderEditableTable: function(fieldId, label, tableRows) {
+  renderEditableTable: function (fieldId, label, tableRows) {
     var sampleObj = tableRows.length > 0 ? tableRows[0] : { "รายการ/หัวข้อ": "", "จำนวน/รายละเอียด": "" };
     var headers = Object.keys(sampleObj);
 
@@ -562,7 +569,7 @@ var AdminEngine = {
   /**
    * Helper to render Files Manager List in Admin Modal
    */
-  renderFilesManager: function(filesList) {
+  renderFilesManager: function (filesList) {
     if (!filesList || filesList.length === 0) {
       return `<p class="text-muted">ไม่มีไฟล์เอกสารหรือรูปภาพแนบใน Submission นี้</p>`;
     }
@@ -573,8 +580,8 @@ var AdminEngine = {
         ? `<div class="file-icon" style="background: var(--bg-card-hover); display:flex; align-items:center; justify-content:center; font-size:1.5rem;">🖼️</div>`
         : `<div class="file-icon" style="background: var(--bg-card-hover); display:flex; align-items:center; justify-content:center; font-size:1.5rem;">📄</div>`;
 
-      var driveLink = file.driveViewUrl 
-        ? `<a href="${file.driveViewUrl}" target="_blank" class="btn btn-secondary btn-sm" style="font-size:0.8rem;">🔗 เปิดใน Google Drive</a>` 
+      var driveLink = file.driveViewUrl
+        ? `<a href="${file.driveViewUrl}" target="_blank" class="btn btn-secondary btn-sm" style="font-size:0.8rem;">🔗 เปิดใน Google Drive</a>`
         : '';
 
       return `
@@ -624,7 +631,7 @@ var AdminEngine = {
   /**
    * Handle Save Changes from Admin Detail Modal
    */
-  handleSaveEdit: async function(e) {
+  handleSaveEdit: async function (e) {
     e.preventDefault();
     if (!this.activeSubmissionDetail) return;
 
@@ -646,6 +653,7 @@ var AdminEngine = {
     var dataDate = document.getElementById('edit-data-date')?.value;
     var status = document.getElementById('edit-status')?.value;
     var selectedForReport = document.getElementById('edit-selected-report')?.value === 'true';
+    var senderNote = document.getElementById('edit-sender-note')?.value;
     var adminNote = document.getElementById('edit-admin-note')?.value;
 
     // Gather Field Values
@@ -661,7 +669,7 @@ var AdminEngine = {
       var fid = tbl.id.replace('admin-table-', '');
       var rowsData = [];
       var headers = Array.from(tbl.querySelectorAll('thead th')).map(th => th.textContent.trim()).filter(h => h !== 'ลบ');
-      
+
       tbl.querySelectorAll('tbody tr').forEach(tr => {
         var rowObj = {};
         var cells = tr.querySelectorAll('.admin-table-cell');
@@ -702,6 +710,7 @@ var AdminEngine = {
       dataAsOfDate: dataDate,
       status: status,
       selectedForReport: selectedForReport,
+      senderNote: senderNote,
       adminNote: adminNote,
       fieldValues: fieldValues,
       filesMeta: filesMeta
@@ -716,7 +725,7 @@ var AdminEngine = {
       } else {
         alert("ไม่สามารถบันทึกได้: " + (res ? res.message : "เกิดข้อผิดพลาด"));
       }
-    } catch(err) {
+    } catch (err) {
       console.error("Save Edit Error:", err);
       alert("เกิดข้อผิดพลาดในการเชื่อมต่อเพื่อบันทึกข้อมูล");
     } finally {
@@ -727,7 +736,7 @@ var AdminEngine = {
     }
   },
 
-  closeDetailModal: function() {
+  closeDetailModal: function () {
     var modal = document.getElementById('admin-edit-modal');
     if (modal) modal.classList.remove('active');
     this.activeSubmissionDetail = null;
@@ -736,7 +745,7 @@ var AdminEngine = {
   /**
    * Open Report Builder Modal and Initialize Status
    */
-  openReportModal: function() {
+  openReportModal: function () {
     var modal = document.getElementById('admin-report-modal');
     if (!modal) return;
 
@@ -758,7 +767,7 @@ var AdminEngine = {
   /**
    * Close Report Builder Modal
    */
-  closeReportModal: function() {
+  closeReportModal: function () {
     var modal = document.getElementById('admin-report-modal');
     if (modal) modal.classList.remove('active');
   },
@@ -766,13 +775,13 @@ var AdminEngine = {
   /**
    * Calculate and Render 11 Categories Completeness Checklist
    */
-  renderReportCompletenessChecklist: function() {
+  renderReportCompletenessChecklist: function () {
     var container = document.getElementById('report-categories-checklist');
     var badge = document.getElementById('report-completeness-badge');
     if (!container) return;
 
     var defaultCategories = [
-      { id: "cat_01", name: "1. ข้อมูลแม่บทและอัตลักษณ์สถานศึกษา" },
+      { id: "cat_01", name: "1. ข้อมูลพื้นฐานและอัตลักษณ์สถานศึกษา" },
       { id: "cat_02", name: "2. ธรรมาภิบาล เครือข่าย และชุมชน" },
       { id: "cat_03", name: "3. ทะเบียนนักเรียนและโครงสร้างชั้นเรียน" },
       { id: "cat_04", name: "4. ผลการเรียนและคุณภาพผู้เรียน" },
@@ -826,7 +835,7 @@ var AdminEngine = {
   /**
    * Handle Start Report Generation Trigger
    */
-  startReportGeneration: async function() {
+  startReportGeneration: async function () {
     var self = this;
     var session = AuthManager.getSession();
     if (!session || session.role !== 'admin') {
@@ -834,7 +843,7 @@ var AdminEngine = {
       return;
     }
 
-    var academicYear = document.getElementById('report-input-year')?.value || "2569";
+    var academicYear = document.getElementById('report-input-year')?.value || "2568";
     var reportTitle = document.getElementById('report-input-title')?.value || ("รายงานสารสนเทศประจำปีการศึกษา " + academicYear);
     var includeCover = document.getElementById('report-opt-cover')?.checked !== false;
     var includeToc = document.getElementById('report-opt-toc')?.checked !== false;
@@ -932,7 +941,7 @@ var AdminEngine = {
   /**
    * Load Export History records from EXPORTS sheet
    */
-  loadExportHistory: async function() {
+  loadExportHistory: async function () {
     var session = AuthManager.getSession();
     if (!session || session.role !== 'admin') return;
 
@@ -946,7 +955,7 @@ var AdminEngine = {
       } else {
         tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--danger); padding:1rem;">ไม่สามารถดึงประวัติได้: ${res ? res.message : ''}</td></tr>`;
       }
-    } catch(err) {
+    } catch (err) {
       console.error("Fetch Export History Error:", err);
     }
   },
@@ -954,7 +963,7 @@ var AdminEngine = {
   /**
    * Render Export History Table
    */
-  renderExportHistory: function(exportsList) {
+  renderExportHistory: function (exportsList) {
     var tbody = document.getElementById('report-history-tbody');
     if (!tbody) return;
 
@@ -1001,7 +1010,7 @@ var AdminEngine = {
     tbody.innerHTML = html;
   },
 
-  escapeHtml: function(str) {
+  escapeHtml: function (str) {
     if (typeof str !== 'string') return str || '';
     return str
       .replace(/&/g, "&amp;")
@@ -1011,7 +1020,7 @@ var AdminEngine = {
       .replace(/'/g, "&#039;");
   },
 
-  formatDateForInput: function(dateVal) {
+  formatDateForInput: function (dateVal) {
     if (!dateVal) return '';
     var str = String(dateVal).trim();
     if (str.includes('T')) {
@@ -1026,6 +1035,15 @@ var AdminEngine = {
       var month = String(d.getMonth() + 1).padStart(2, '0');
       var day = String(d.getDate()).padStart(2, '0');
       return `${year}-${month}-${day}`;
+    }
+    return str;
+  },
+
+  formatPhone: function (val) {
+    if (val === null || val === undefined) return '';
+    var str = String(val).trim();
+    if (str && !str.startsWith('0') && /^\d{9}$/.test(str)) {
+      return '0' + str;
     }
     return str;
   }

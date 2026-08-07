@@ -71,7 +71,7 @@ var AdminService = {
           categoryName: catMap[row[2]] || row[2],
           senderName: row[3],
           senderDepartment: row[4],
-          senderPhone: row[5],
+          senderPhone: this.formatPhone(row[5]),
           dataAsOfDate: this.formatDateValue(row[6]),
           senderNote: row[7],
           submittedAt: this.formatDateTimeValue(row[8]),
@@ -109,7 +109,7 @@ var AdminService = {
     // Calculate completeness metrics & warnings
     var submittedCats = 0;
     var warnings = [];
-    var currentYear = CONFIG.getScriptProps().academicYear || "2569";
+    var currentYear = CONFIG.getScriptProps().academicYear || "2568";
 
     for (var catIdKey in catStats) {
       var cs = catStats[catIdKey];
@@ -169,7 +169,7 @@ var AdminService = {
             categoryId: row[2],
             senderName: row[3],
             senderDepartment: row[4],
-            senderPhone: row[5],
+            senderPhone: this.formatPhone(row[5]),
             dataAsOfDate: this.formatDateValue(row[6]),
             senderNote: row[7],
             submittedAt: this.formatDateTimeValue(row[8]),
@@ -287,7 +287,11 @@ var AdminService = {
             var rowNum = i + 1;
             if (payload.senderName !== undefined) subSheet.getRange(rowNum, 4).setValue(payload.senderName);
             if (payload.senderDepartment !== undefined) subSheet.getRange(rowNum, 5).setValue(payload.senderDepartment);
-            if (payload.senderPhone !== undefined) subSheet.getRange(rowNum, 6).setValue(payload.senderPhone);
+            if (payload.senderPhone !== undefined) {
+              var pStr = String(payload.senderPhone).trim();
+              var phoneVal = (pStr && pStr.startsWith("0")) ? "'" + pStr : pStr;
+              subSheet.getRange(rowNum, 6).setValue(phoneVal);
+            }
             if (payload.dataAsOfDate !== undefined) subSheet.getRange(rowNum, 7).setValue(payload.dataAsOfDate);
             if (payload.senderNote !== undefined) subSheet.getRange(rowNum, 8).setValue(payload.senderNote);
             if (payload.status !== undefined) subSheet.getRange(rowNum, 10).setValue(payload.status);
@@ -451,5 +455,14 @@ var AdminService = {
       return Utilities.formatDate(val, "Asia/Bangkok", "yyyy-MM-dd HH:mm:ss");
     }
     return String(val);
+  },
+
+  formatPhone: function(val) {
+    if (val === null || val === undefined) return "";
+    var str = String(val).trim();
+    if (str && !str.startsWith("0") && /^\d{9}$/.test(str)) {
+      return "0" + str;
+    }
+    return str;
   }
 };

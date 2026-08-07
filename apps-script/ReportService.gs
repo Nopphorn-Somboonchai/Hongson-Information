@@ -199,7 +199,7 @@ var ReportService = {
    */
   getCategoriesList: function(catSheet) {
     var defaultCategories = [
-      { category_id: "cat_01", category_name: "1. ข้อมูลแม่บทและอัตลักษณ์สถานศึกษา" },
+      { category_id: "cat_01", category_name: "1. ข้อมูลพื้นฐานและอัตลักษณ์สถานศึกษา" },
       { category_id: "cat_02", category_name: "2. ธรรมาภิบาล เครือข่าย และชุมชน" },
       { category_id: "cat_03", category_name: "3. ทะเบียนนักเรียนและโครงสร้างชั้นเรียน" },
       { category_id: "cat_04", category_name: "4. ผลการเรียนและคุณภาพผู้เรียน" },

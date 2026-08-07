@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,17 @@
   <meta name="description" content="ระบบรวบรวม ตรวจสอบ และจัดทำรายงานสารสนเทศโรงเรียนห้องสอนศึกษา">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body>
 
   <!-- Navbar Navigation -->
   <nav class="navbar" id="main-navbar">
     <a href="javascript:void(0)" class="brand" id="brand-logo-link">
       <div class="brand-icon">HS</div>
-      <span>HONGSON Hub</span>
+      <span>HONGSON Information</span>
     </a>
     <div class="nav-actions">
-      <span class="hero-badge" id="academic-year-badge" style="margin-bottom: 0;">ปีการศึกษา 2569</span>
+      <span class="hero-badge" id="academic-year-badge" style="margin-bottom: 0;">ปีการศึกษา 2568</span>
       <button class="btn btn-secondary" id="btn-open-settings" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
         ⚙️ ตั้งค่า Web App
       </button>
@@ -28,7 +30,8 @@
 
     <!-- Config Warning Banner -->
     <div id="config-warning-banner" class="alert alert-danger" style="display: none; margin-bottom: 2rem;">
-      <strong>⚠️ ยังไม่ได้ตั้งค่า Apps Script URL:</strong> ระบบกำลังทำงานในโหมดออฟไลน์ กรุณาคลิกปุ่ม <strong>"⚙️ ตั้งค่า Web App"</strong> ด้านบนขวาเพื่อระบุ Web App Deployment URL
+      <strong>⚠️ ยังไม่ได้ตั้งค่า Apps Script URL:</strong> ระบบกำลังทำงานในโหมดออฟไลน์ กรุณาคลิกปุ่ม <strong>"⚙️
+        ตั้งค่า Web App"</strong> ด้านบนขวาเพื่อระบุ Web App Deployment URL
     </div>
 
     <!-- VIEW 1: Landing Page -->
@@ -37,7 +40,8 @@
         <span class="hero-badge">ระบบสารสนเทศโรงเรียนห้องสอนศึกษา</span>
         <h1 class="hero-title">HONGSON Information Hub</h1>
         <p class="hero-subtitle">
-          ศูนย์รวมการจัดเก็บ ตรวจสอบ และประมวลผลรายงานสารสนเทศโรงเรียน 11 หมวด สะดวก รวดเร็ว พร้อมระบบรวบรวมเอกสารและ Export PDF อัตโนมัติ
+          ศูนย์รวมการจัดเก็บ ตรวจสอบ และประมวลผลรายงานสารสนเทศโรงเรียน 11 หมวด สะดวก รวดเร็ว พร้อมระบบรวบรวมเอกสารและ
+          Export PDF อัตโนมัติ
         </p>
       </div>
 
@@ -81,7 +85,8 @@
       <!-- Step A: Category Selection -->
       <div id="category-select-section">
         <h3>📂 เลือกหมวดสารสนเทศที่ต้องการกรอกข้อมูล (11 หมวด)</h3>
-        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">กรุณาคลิกเลือกหมวดสารสนเทศที่คุณรับผิดชอบเพื่อเริ่มกรอกข้อมูลและแนบไฟล์หลักฐาน</p>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+          กรุณาคลิกเลือกหมวดสารสนเทศที่คุณรับผิดชอบเพื่อเริ่มกรอกข้อมูลและแนบไฟล์หลักฐาน</p>
         <div id="category-grid-container"></div>
       </div>
 
@@ -101,14 +106,18 @@
           <div class="form-section-card">
             <h4>👤 ข้อมูลผู้ส่งและหน่วยงาน</h4>
             <p class="form-help-text">กรอกข้อมูลผู้รับผิดชอบสำหรับอ้างอิงและสอบถามข้อมูลเพิ่มเติม</p>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem;">
+            <div
+              style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem;">
               <div class="form-group">
-                <label for="sender_name" class="form-label">ชื่อ-นามสกุล ผู้กรอก <span style="color:var(--danger)">*</span></label>
+                <label for="sender_name" class="form-label">ชื่อ-นามสกุล ผู้กรอก <span
+                    style="color:var(--danger)">*</span></label>
                 <input type="text" id="sender_name" class="form-control" placeholder="เช่น นายสมชาย ใจดี" required>
               </div>
               <div class="form-group">
-                <label for="sender_department" class="form-label">ฝ่าย / งาน / กลุ่มสาระ <span style="color:var(--danger)">*</span></label>
-                <input type="text" id="sender_department" class="form-control" placeholder="เช่น กลุ่มสาระการเรียนรู้วิทยาศาสตร์" required>
+                <label for="sender_department" class="form-label">ฝ่าย / งาน / กลุ่มสาระ <span
+                    style="color:var(--danger)">*</span></label>
+                <input type="text" id="sender_department" class="form-control"
+                  placeholder="เช่น กลุ่มสาระการเรียนรู้วิทยาศาสตร์" required>
               </div>
               <div class="form-group">
                 <label for="sender_phone" class="form-label">เบอร์โทรศัพท์ติดต่อ</label>
@@ -135,12 +144,13 @@
           <div class="form-section-card">
             <h4>📎 แนบไฟล์เอกสารและรูปภาพหลักฐาน</h4>
             <p class="form-help-text">รองรับไฟล์รูปภาพ (JPG, PNG) เอกสาร (PDF, DOCX, XLSX) ขนาดไม่เกิน 25MB ต่อไฟล์</p>
-            
+
             <div class="file-drop-zone" id="file-drop-zone">
               <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📁</div>
               <p>ลากไฟล์มาวางที่นี่ หรือ <strong>คลิกเพื่อเลือกไฟล์</strong></p>
               <small class="text-muted">เลือกได้หลายไฟล์พร้อมกัน</small>
-              <input type="file" id="file-input-hidden" multiple style="display: none;" accept="image/*,.pdf,.docx,.xlsx,.doc,.xls,.csv">
+              <input type="file" id="file-input-hidden" multiple style="display: none;"
+                accept="image/*,.pdf,.docx,.xlsx,.doc,.xls,.csv">
             </div>
 
             <div id="attached-files-list"></div>
@@ -148,7 +158,8 @@
 
           <!-- Form Action Submit -->
           <div style="text-align: right; margin-top: 2rem;">
-            <button type="submit" class="btn btn-accent btn-lg" id="btn-submit-contributor-data" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+            <button type="submit" class="btn btn-accent btn-lg" id="btn-submit-contributor-data"
+              style="font-size: 1.1rem; padding: 1rem 2.5rem;">
               💾 บันทึกและส่งข้อมูลสารสนเทศ
             </button>
           </div>
@@ -188,16 +199,19 @@
       </div>
 
       <!-- Submissions List & Filter Section -->
-      <div style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 2rem;">
-        <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <div
+        style="background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 2rem;">
+        <div
+          style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
           <h3>📥 รายการข้อมูลที่ถูกส่งเข้ามา (Submissions List)</h3>
           <span id="admin-filtered-count" style="color: var(--text-muted); font-size: 0.9rem;">แสดง 0 รายการ</span>
         </div>
 
         <!-- Filter Controls -->
         <div class="admin-filter-bar" style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem;">
-          <input type="text" id="admin-search-input" class="form-control" placeholder="🔍 ค้นหา Submission ID, ชื่อผู้ส่ง, หรือหน่วยงาน..." style="flex: 2; min-width: 240px;">
-          
+          <input type="text" id="admin-search-input" class="form-control"
+            placeholder="🔍 ค้นหา Submission ID, ชื่อผู้ส่ง, หรือหน่วยงาน..." style="flex: 2; min-width: 240px;">
+
           <select id="admin-filter-category" class="form-control" style="flex: 1; min-width: 180px;">
             <option value="all">📂 ทุกหมวดสารสนเทศ (11 หมวด)</option>
           </select>
@@ -239,7 +253,8 @@
       </div>
 
       <!-- System Management Accordion -->
-      <div style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 2rem;">
+      <div
+        style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 2rem;">
         <h4 style="margin-bottom: 0.5rem;">🛠️ ตั้งค่าโครงสร้างระบบ (System Admin)</h4>
         <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.85rem;">
           สร้างหรือรีเซ็ตหัวตาราง Google Sheets ทั้ง 6 Tab (CONFIG, CATEGORIES, SUBMISSIONS, DATA, FILES, EXPORTS)
@@ -272,21 +287,23 @@
         <button class="modal-close" onclick="AdminEngine.closeReportModal()">&times;</button>
       </div>
       <div class="modal-body" style="padding-top: 0.5rem;">
-        
+
         <!-- Report Configuration Controls -->
-        <div style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+        <div
+          style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
           <h4 style="margin-bottom: 1rem;">⚙️ ตั้งค่ารายละเอียดเอกสารรายงาน</h4>
           <div class="form-grid-2">
             <div class="form-group">
               <label for="report-input-title" class="form-label">ชื่อหัวข้อรายงาน</label>
-              <input type="text" id="report-input-title" class="form-control" value="รายงานสารสนเทศประจำปีการศึกษา 2569">
+              <input type="text" id="report-input-title" class="form-control"
+                value="รายงานสารสนเทศประจำปีการศึกษา 2568">
             </div>
             <div class="form-group">
               <label for="report-input-year" class="form-label">ปีการศึกษา</label>
               <select id="report-input-year" class="form-control">
-                <option value="2569" selected>ปีการศึกษา 2569</option>
-                <option value="2568">ปีการศึกษา 2568</option>
+                <option value="2568" selected>ปีการศึกษา 2568</option>
                 <option value="2567">ปีการศึกษา 2567</option>
+                <option value="2566">ปีการศึกษา 2566</option>
               </select>
             </div>
           </div>
@@ -305,7 +322,8 @@
         </div>
 
         <!-- 11 Categories Completeness Summary Card -->
-        <div style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+        <div
+          style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
             <h4>📊 สรุปความพร้อมข้อมูล 11 หมวดสำหรับรายงาน</h4>
             <span id="report-completeness-badge" class="badge badge-info">กำลังคำนวณ...</span>
@@ -317,10 +335,13 @@
         </div>
 
         <!-- Generate Progress Section -->
-        <div id="report-progress-box" style="display: none; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; text-align: center;">
-          <div style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+        <div id="report-progress-box"
+          style="display: none; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; text-align: center;">
+          <div
+            style="display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 0.75rem;">
             <span class="spinner"></span>
-            <strong id="report-status-text" style="color: var(--color-primary-light);">กำลังเตรียมการสร้างรายงาน...</strong>
+            <strong id="report-status-text"
+              style="color: var(--color-primary-light);">กำลังเตรียมการสร้างรายงาน...</strong>
           </div>
           <div class="progress-bar-container">
             <div id="report-progress-bar" class="progress-bar-fill" style="width: 15%;"></div>
@@ -332,14 +353,17 @@
 
         <!-- Action Button -->
         <div style="text-align: right; margin-bottom: 2rem;">
-          <button type="button" class="btn btn-secondary" onclick="AdminEngine.closeReportModal()" style="margin-right: 0.5rem;">ปิดหน้าต่าง</button>
-          <button type="button" class="btn btn-accent btn-lg" id="btn-start-generate-report" onclick="AdminEngine.startReportGeneration()">
+          <button type="button" class="btn btn-secondary" onclick="AdminEngine.closeReportModal()"
+            style="margin-right: 0.5rem;">ปิดหน้าต่าง</button>
+          <button type="button" class="btn btn-accent btn-lg" id="btn-start-generate-report"
+            onclick="AdminEngine.startReportGeneration()">
             🚀 เริ่มสร้าง Google Docs & Export PDF
           </button>
         </div>
 
         <!-- Export History Accordion -->
-        <div style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+        <div
+          style="background: var(--bg-card); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
             <h4>📜 ประวัติการสร้างรายงาน PDF ย้อนหลัง (EXPORTS Log)</h4>
             <button class="btn btn-secondary btn-sm" onclick="AdminEngine.loadExportHistory()">🔄 โหลดประวัติ</button>
@@ -394,7 +418,8 @@
         <div id="auth-alert" class="alert"></div>
         <div class="form-group">
           <label for="input-auth-code" class="form-label">กรอกรหัสผ่านเข้าใช้งาน (Secret Code)</label>
-          <input type="password" id="input-auth-code" class="form-control" placeholder="ระบุรหัสผ่าน..." autocomplete="current-password" required>
+          <input type="password" id="input-auth-code" class="form-control" placeholder="ระบุรหัสผ่าน..."
+            autocomplete="current-password" required>
         </div>
         <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
           <button type="button" class="btn btn-secondary modal-cancel" id="btn-cancel-auth">ยกเลิก</button>
@@ -414,7 +439,8 @@
       <form id="settings-form">
         <div class="form-group">
           <label for="input-webapp-url" class="form-label">Google Apps Script Web App URL</label>
-          <input type="url" id="input-webapp-url" class="form-control" placeholder="https://script.google.com/macros/s/.../exec" required>
+          <input type="url" id="input-webapp-url" class="form-control"
+            placeholder="https://script.google.com/macros/s/.../exec" required>
           <small style="color: var(--text-muted); display: block; margin-top: 0.5rem; font-size: 0.8rem;">
             ระบุ URL ที่ได้จากการกด Deploy -> Web App ใน Google Apps Script
           </small>
@@ -438,4 +464,5 @@
   <script src="assets/js/admin.js"></script>
   <script src="assets/js/app.js"></script>
 </body>
+
 </html>

@@ -21,7 +21,7 @@ const AuthManager = {
         role: result.role,
         sessionToken: result.sessionToken,
         schoolName: result.schoolName || 'โรงเรียนห้องสอนศึกษา',
-        academicYear: result.academicYear || '2569',
+        academicYear: result.academicYear || '2568',
         loggedInAt: new Date().getTime()
       };
       sessionStorage.setItem(this.SESSION_KEY, JSON.stringify(sessionData));

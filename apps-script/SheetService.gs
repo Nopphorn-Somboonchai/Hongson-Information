@@ -66,8 +66,8 @@ var SheetService = {
       createdSheets.push(sheetName);
     }
 
-    // Populate initial default 11 categories if CATEGORIES sheet has only headers
-    this.seedDefaultCategories(ss.getSheetByName("CATEGORIES"));
+    // Populate initial default 11 categories definitions
+    this.seedDefaultCategories(ss.getSheetByName("CATEGORIES"), true);
 
     return {
       success: true,
@@ -79,23 +79,29 @@ var SheetService = {
   /**
    * Seed default 11 categories definitions
    */
-  seedDefaultCategories: function(categoriesSheet) {
-    if (!categoriesSheet || categoriesSheet.getLastRow() > 1) return;
+  seedDefaultCategories: function(categoriesSheet, force) {
+    if (!categoriesSheet) return;
+    if (!force && categoriesSheet.getLastRow() >= 14) return;
 
+    categoriesSheet.clearContents();
+    var headers = [["category_id", "category_name", "section_id", "section_name", "field_id", "field_label", "field_type", "required", "help_text", "options", "sort_order", "active"]];
     var defaultCategories = [
-      ["cat_01", "1. ข้อมูลแม่บทและอัตลักษณ์สถานศึกษา", "sec_01", "ข้อมูลทั่วไป", "field_school_history", "ประวัติความเป็นมาและข้อมูลโรงเรียน", "textarea", "TRUE", "ระบุประวัติโดยย่อ", "", 1, "TRUE"],
-      ["cat_02", "2. ธรรมาภิบาล เครือข่าย และชุมชน", "sec_01", "เครือข่ายความร่วมมือ", "field_community_networks", "สรุปเครือข่ายความร่วมมือและชุมชน", "textarea", "TRUE", "ระบุความร่วมมือกับชุมชน", "", 2, "TRUE"],
-      ["cat_03", "3. ทะเบียนนักเรียนและโครงสร้างชั้นเรียน", "sec_01", "สถิตินักเรียน", "field_student_counts", "ตารางจำนวนนักเรียนแยกตามชั้นเรียน", "dynamic_table", "TRUE", "กรอกจำนวนนักเรียน", "", 3, "TRUE"],
-      ["cat_04", "4. ผลการเรียนและคุณภาพผู้เรียน", "sec_01", "ผลสัมฤทธิ์ทางการเรียน", "field_academic_performance", "ผลสัมฤทธิ์ทางการเรียนทุกกลุ่มสาระ", "dynamic_table", "TRUE", "กรอกเกรดเฉลี่ยแยกวิชา", "", 4, "TRUE"],
-      ["cat_05", "5. การทดสอบภายนอก การศึกษาต่อ และรางวัลนักเรียน", "sec_01", "รางวัลและความภาคภูมิใจ", "field_student_awards", "รายการรางวัลและความสำเร็จของนักเรียน", "textarea", "FALSE", "สรุปรายการรางวัล", "", 5, "TRUE"],
-      ["cat_06", "6. หลักสูตร แผนการเรียน และเวลาเรียน", "sec_01", "โครงสร้างหลักสูตร", "field_curriculum_summary", "สรุปหลักสูตรสถานศึกษา", "textarea", "TRUE", "ระบุรายละเอียดหลักสูตร", "", 6, "TRUE"],
-      ["cat_07", "7. นิเทศ การประเมิน และงานวิจัย", "sec_01", "งานวิจัยและพัฒนา", "field_research_list", "รายงานการวิจัยในชั้นเรียนและนวัตกรรม", "textarea", "FALSE", "ระบุผลงานวิจัย", "", 7, "TRUE"],
-      ["cat_08", "8. บุคลากรและการพัฒนาวิชาชีพ", "sec_01", "ข้อมูลครูและบุคลากร", "field_staff_stats", "จำนวนครูและจำแนกตามวิทยฐานะ", "dynamic_table", "TRUE", "กรอกจำนวนบุคลากร", "", 8, "TRUE"],
-      ["cat_09", "9. อาคาร สถานที่ และสภาพแวดล้อม", "sec_01", "อาคารสถานที่", "field_facility_summary", "สรุปอาคารสถานที่และห้องปฏิบัติการ", "textarea", "TRUE", "ระบุสภาพอาคารสถานที่", "", 9, "TRUE"],
-      ["cat_10", "10. ห้องสมุดและแหล่งเรียนรู้", "sec_01", "แหล่งเรียนรู้", "field_library_info", "ข้อมูลห้องสมุดและแหล่งเรียนรู้", "textarea", "TRUE", "ระบุสถิติและข้อมูลห้องสมุด", "", 10, "TRUE"],
-      ["cat_11", "11. ระบบดิจิทัลและหลักฐานสารสนเทศ", "sec_01", "โครงสร้างพื้นฐาน ICT", "field_ict_infrastructure", "ระบบดิจิทัล สื่อการเรียนรู้ และหลักฐานสารสนเทศ", "textarea", "TRUE", "ระบุระบบ ICT และลิงก์อ้างอิง", "", 11, "TRUE"]
+      ["cat_01", "1. ข้อมูลพื้นฐานและอัตลักษณ์สถานศึกษา", "sec_01", "ข้อมูลทั่วไป", "field_school_history", "ประวัติความเป็นมาและข้อมูลโรงเรียน", "textarea", "TRUE", "สรุปประวัติโรงเรียนและข้อมูลทั่วไป", "", 1, "TRUE"],
+      ["cat_01", "1. ข้อมูลพื้นฐานและอัตลักษณ์สถานศึกษา", "sec_01", "ข้อมูลทั่วไป", "field_vision_mission", "วิสัยทัศน์ พันธกิจ และเป้าประสงค์", "textarea", "TRUE", "ระบุวิสัยทัศน์และอัตลักษณ์สถานศึกษา", "", 2, "TRUE"],
+      ["cat_02", "2. ธรรมาภิบาล เครือข่าย และชุมชน", "sec_01", "เครือข่ายความร่วมมือ", "field_community_networks", "สรุปเครือข่ายความร่วมมือและชุมชน", "textarea", "TRUE", "ระบุโครงการความร่วมมือกับชุมชนและภาคีเครือข่าย", "", 3, "TRUE"],
+      ["cat_03", "3. ทะเบียนนักเรียนและโครงสร้างชั้นเรียน", "sec_01", "สถิตินักเรียน", "field_student_counts", "ตารางสถิติจำนวนนักเรียนแยกตามระดับชั้น", "dynamic_table", "TRUE", "กรอกจำนวนนักเรียนแยกตามระดับชั้น", "", 4, "TRUE"],
+      ["cat_04", "4. ผลการเรียนและคุณภาพผู้เรียน", "sec_01", "ผลสัมฤทธิ์ทางการเรียน", "field_academic_performance", "ตารางผลสัมฤทธิ์ทางการเรียนจำแนกตามกลุ่มสาระ", "dynamic_table", "TRUE", "กรอกผลสัมฤทธิ์ทางการเรียน", "", 5, "TRUE"],
+      ["cat_05", "5. การทดสอบภายนอก การศึกษาต่อ และรางวัลนักเรียน", "sec_01", "ผลทดสอบและการศึกษาต่อ", "field_onet_tcas_summary", "สรุปผลการทดสอบภายนอกและการศึกษาต่อ", "textarea", "FALSE", "สรุปผลการทดสอบ O-NET/TCAS", "", 6, "TRUE"],
+      ["cat_05", "5. การทดสอบภายนอก การศึกษาต่อ และรางวัลนักเรียน", "sec_01", "รางวัลและความภาคภูมิใจ", "field_student_awards", "รายการรางวัลและความภาคภูมิใจของนักเรียน", "textarea", "FALSE", "สรุปรายการรางวัลและความภาคภูมิใจ", "", 7, "TRUE"],
+      ["cat_06", "6. หลักสูตร แผนการเรียน และเวลาเรียน", "sec_01", "โครงสร้างหลักสูตร", "field_curriculum_summary", "สรุปโครงสร้างหลักสูตรสถานศึกษา", "textarea", "TRUE", "ระบุรายละเอียดหลักสูตร", "", 8, "TRUE"],
+      ["cat_07", "7. นิเทศ การประเมิน และงานวิจัย", "sec_01", "งานวิจัยและพัฒนา", "field_research_list", "รายงานการวิจัยในชั้นเรียนและนวัตกรรม", "textarea", "FALSE", "ระบุผลงานวิจัย", "", 9, "TRUE"],
+      ["cat_08", "8. บุคลากรและการพัฒนาวิชาชีพ", "sec_01", "ข้อมูลครูและบุคลากร", "field_staff_stats", "ตารางสถิติจำนวนครูและบุคลากร", "dynamic_table", "TRUE", "กรอกจำนวนบุคลากร", "", 10, "TRUE"],
+      ["cat_09", "9. อาคาร สถานที่ และสภาพแวดล้อม", "sec_01", "อาคารสถานที่", "field_facility_summary", "สรุปข้อมูลอาคารสถานที่และสิ่งอำนวยความสะดวก", "textarea", "TRUE", "ระบุสภาพอาคารสถานที่", "", 11, "TRUE"],
+      ["cat_10", "10. ห้องสมุดและแหล่งเรียนรู้", "sec_01", "แหล่งเรียนรู้", "field_library_info", "ข้อมูลห้องสมุด สถิติการใช้บริการ และแหล่งเรียนรู้", "textarea", "TRUE", "ระบุสถิติและข้อมูลห้องสมุด", "", 12, "TRUE"],
+      ["cat_11", "11. ระบบดิจิทัลและหลักฐานสารสนเทศ", "sec_01", "โครงสร้างพื้นฐาน ICT", "field_ict_infrastructure", "สรุประบบดิจิทัล สื่อ ICT และลิงก์หลักฐานอ้างอิง", "textarea", "TRUE", "ระบุระบบ ICT และลิงก์อ้างอิง", "", 13, "TRUE"]
     ];
 
+    categoriesSheet.getRange(1, 1, 1, headers[0].length).setValues(headers).setFontWeight("bold").setBackground("#f1f5f9");
     categoriesSheet.getRange(2, 1, defaultCategories.length, defaultCategories[0].length).setValues(defaultCategories);
   }
 };

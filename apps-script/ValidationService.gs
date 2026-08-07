@@ -27,7 +27,7 @@ var ValidationService = {
     // 2. Validate Academic Year
     var year = parseInt(payload.academicYear, 10);
     if (isNaN(year) || year < 2500 || year > 2700) {
-      errors.push("ปีการศึกษาต้องเป็นตัวเลข พ.ศ. ที่ถูกต้อง (เช่น 2569)");
+      errors.push("ปีการศึกษาต้องเป็นตัวเลข พ.ศ. ที่ถูกต้อง (เช่น 2568)");
     }
 
     // 3. Validate Category ID

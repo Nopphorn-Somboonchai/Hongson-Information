@@ -12,7 +12,7 @@ var FormEngine = {
   defaultCategories: [
     {
       id: "cat_01",
-      name: "1. ข้อมูลแม่บทและอัตลักษณ์สถานศึกษา",
+      name: "1. ข้อมูลพื้นฐานและอัตลักษณ์สถานศึกษา",
       fields: [
         { fieldId: "field_school_history", label: "ประวัติความเป็นมาและข้อมูลโรงเรียน", type: "textarea", required: true, helpText: "สรุปประวัติโรงเรียนและข้อมูลทั่วไป" },
         { fieldId: "field_vision_mission", label: "วิสัยทัศน์ พันธกิจ และเป้าประสงค์", type: "textarea", required: true, helpText: "ระบุวิสัยทัศน์และอัตลักษณ์สถานศึกษา" }
@@ -118,11 +118,20 @@ var FormEngine = {
     try {
       const res = await API.getCategories();
       if (res && res.success && Array.isArray(res.categories) && res.categories.length > 0) {
-        // Merge with default schema if fields are missing from API categories
+        // Merge with default schema to ensure all default fields are available
         this.categories = res.categories.map(cat => {
-          if (!cat.fields || cat.fields.length === 0) {
-            const def = this.defaultCategories.find(d => d.id === cat.id);
-            if (def && def.fields) cat.fields = def.fields;
+          const def = this.defaultCategories.find(d => d.id === cat.id);
+          if (def && def.fields) {
+            if (!cat.fields || cat.fields.length === 0) {
+              cat.fields = def.fields;
+            } else {
+              def.fields.forEach(defField => {
+                const exists = cat.fields.some(f => f.fieldId === defField.fieldId);
+                if (!exists) {
+                  cat.fields.push(defField);
+                }
+              });
+            }
           }
           return cat;
         });
@@ -640,7 +649,7 @@ var FormEngine = {
 
     const payload = {
       sessionToken: session.sessionToken,
-      academicYear: session.academicYear || '2569',
+      academicYear: session.academicYear || '2568',
       categoryId: this.activeCategory.id,
       senderName,
       senderDepartment,
