@@ -8,7 +8,7 @@ var FormEngine = {
   attachedFiles: [],
   dragAndDropBound: false,
 
-  // Default 11 Categories Schema Fallback
+  // Default 12 Categories Schema Fallback
   defaultCategories: [
     {
       id: "cat_01",
@@ -53,10 +53,9 @@ var FormEngine = {
     },
     {
       id: "cat_05",
-      name: "5. การทดสอบภายนอก การศึกษาต่อ และรางวัลนักเรียน",
+      name: "5. การทดสอบภายนอก และการศึกษาต่อ",
       fields: [
-        { fieldId: "field_onet_tcas_summary", label: "สรุปผลการทดสอบภายนอกและการศึกษาต่อ", type: "textarea", required: false },
-        { fieldId: "field_student_awards", label: "รายการรางวัลและความภาคภูมิใจของนักเรียน", type: "textarea", required: false }
+        { fieldId: "field_onet_tcas_summary", label: "สรุปผลการทดสอบภายนอกและการศึกษาต่อ", type: "textarea", required: false, helpText: "สรุปผลการทดสอบ O-NET/TCAS" }
       ]
     },
     {
@@ -105,6 +104,14 @@ var FormEngine = {
       name: "11. ระบบดิจิทัลและหลักฐานสารสนเทศ",
       fields: [
         { fieldId: "field_ict_infrastructure", label: "สรุประบบดิจิทัล สื่อ ICT และลิงก์หลักฐานอ้างอิง", type: "textarea", required: true }
+      ]
+    },
+    {
+      id: "cat_12",
+      name: "12. รางวัลครู และรางวัลนักเรียน",
+      fields: [
+        { fieldId: "field_teacher_awards", label: "รายการรางวัลและความภาคภูมิใจของครู", type: "textarea", required: false, helpText: "สรุปรายการรางวัลและผลงานดีเด่นของครูและบุคลากร" },
+        { fieldId: "field_student_awards", label: "รายการรางวัลและความภาคภูมิใจของนักเรียน", type: "textarea", required: false, helpText: "สรุปรายการรางวัลและความภาคภูมิใจของนักเรียน" }
       ]
     }
   ],

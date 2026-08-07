@@ -1,6 +1,6 @@
 /**
  * HONGSON Information Hub — Report Service
- * Generator for Google Docs Annual Report and PDF Export across all 11 categories.
+ * Generator for Google Docs Annual Report and PDF Export across all 12 categories.
  */
 
 var ReportService = {
@@ -203,13 +203,14 @@ var ReportService = {
       { category_id: "cat_02", category_name: "2. ธรรมาภิบาล เครือข่าย และชุมชน" },
       { category_id: "cat_03", category_name: "3. ทะเบียนนักเรียนและโครงสร้างชั้นเรียน" },
       { category_id: "cat_04", category_name: "4. ผลการเรียนและคุณภาพผู้เรียน" },
-      { category_id: "cat_05", category_name: "5. การทดสอบภายนอก การศึกษาต่อ และรางวัลนักเรียน" },
+      { category_id: "cat_05", category_name: "5. การทดสอบภายนอก และการศึกษาต่อ" },
       { category_id: "cat_06", category_name: "6. หลักสูตร แผนการเรียน และเวลาเรียน" },
       { category_id: "cat_07", category_name: "7. นิเทศ การประเมิน และงานวิจัย" },
       { category_id: "cat_08", category_name: "8. บุคลากรและการพัฒนาวิชาชีพ" },
       { category_id: "cat_09", category_name: "9. อาคาร สถานที่ และสภาพแวดล้อม" },
       { category_id: "cat_10", category_name: "10. ห้องสมุดและแหล่งเรียนรู้" },
-      { category_id: "cat_11", category_name: "11. ระบบดิจิทัลและหลักฐานสารสนเทศ" }
+      { category_id: "cat_11", category_name: "11. ระบบดิจิทัลและหลักฐานสารสนเทศ" },
+      { category_id: "cat_12", category_name: "12. รางวัลครู และรางวัลนักเรียน" }
     ];
 
     if (!catSheet || catSheet.getLastRow() <= 1) return defaultCategories;
@@ -364,7 +365,7 @@ var ReportService = {
     pPrefTitle.setForegroundColor("#0f172a");
 
     var pPrefBody = body.appendParagraph(
-      "เอกสารรายงานสารสนเทศประจำปีการศึกษา " + academicYear + " ฉบับนี้ จัดทำขึ้นโดยรวบรวมและประมวลผลข้อมูลจากทั้ง 11 หมวดสารสนเทศหลักของสถานศึกษา " +
+      "เอกสารรายงานสารสนเทศประจำปีการศึกษา " + academicYear + " ฉบับนี้ จัดทำขึ้นโดยรวบรวมและประมวลผลข้อมูลจากทั้ง 12 หมวดสารสนเทศหลักของสถานศึกษา " +
       "เพื่อใช้เป็นฐานข้อมูลกลางสำหรับการบริหารจัดการ การประกันคุณภาพการศึกษา และการวางแผนพัฒนาสถานศึกษาอย่างมีประสิทธิภาพ " +
       "ข้อมูลทั้งหมดผ่านการตรวจสอบความถูกต้องและการคัดเลือกโดยคณะทำงานผู้ดูแลระบบเรียบร้อยแล้ว"
     );

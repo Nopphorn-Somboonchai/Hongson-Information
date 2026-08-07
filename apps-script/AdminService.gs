@@ -25,7 +25,7 @@ var AdminService = {
     var submissionsList = [];
     var catStats = {};
 
-    // Initialize category stats for all 11 categories
+    // Initialize category stats for all 12 categories
     for (var i = 0; i < categories.length; i++) {
       var cat = categories[i];
       catStats[cat.id] = {

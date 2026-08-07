@@ -116,7 +116,7 @@ var AdminEngine = {
     var statsContainer = document.getElementById('admin-stats-overview');
     if (!statsContainer) return;
 
-    var m = metrics || { completenessPercentage: 0, submittedCategoriesCount: 0, totalCategories: 11, totalSubmissionsCount: 0, pendingReviewCount: 0 };
+    var m = metrics || { completenessPercentage: 0, submittedCategoriesCount: 0, totalCategories: 12, totalSubmissionsCount: 0, pendingReviewCount: 0 };
 
     statsContainer.innerHTML = `
       <div class="stat-card accent">
@@ -164,7 +164,7 @@ var AdminEngine = {
   },
 
   /**
-   * Render Grid Cards for 11 Categories
+   * Render Grid Cards for 12 Categories
    */
   renderCategoryCards: function (categoryStats) {
     var container = document.getElementById('admin-category-cards-grid');

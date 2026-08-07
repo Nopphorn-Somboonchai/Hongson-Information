@@ -19,6 +19,50 @@ var FileService = {
   },
 
   /**
+   * Get category folder name mapping
+   * @param {string} categoryId
+   * @returns {string} Category Subfolder name
+   */
+  getCategoryFolderName: function(categoryId) {
+    var catMap = {
+      "cat_01": "หมวดที่ 01 - ข้อมูลพื้นฐานและอัตลักษณ์สถานศึกษา",
+      "cat_02": "หมวดที่ 02 - ธรรมาภิบาล เครือข่าย และชุมชน",
+      "cat_03": "หมวดที่ 03 - ทะเบียนนักเรียนและโครงสร้างชั้นเรียน",
+      "cat_04": "หมวดที่ 04 - ผลการเรียนและคุณภาพผู้เรียน",
+      "cat_05": "หมวดที่ 05 - การทดสอบภายนอก และการศึกษาต่อ",
+      "cat_06": "หมวดที่ 06 - หลักสูตร แผนการเรียน และเวลาเรียน",
+      "cat_07": "หมวดที่ 07 - นิเทศ การประเมิน และงานวิจัย",
+      "cat_08": "หมวดที่ 08 - บุคลากรและการพัฒนาวิชาชีพ",
+      "cat_09": "หมวดที่ 09 - อาคาร สถานที่ และสภาพแวดล้อม",
+      "cat_10": "หมวดที่ 10 - ห้องสมุดและแหล่งเรียนรู้",
+      "cat_11": "หมวดที่ 11 - ระบบดิจิทัลและหลักฐานสารสนเทศ",
+      "cat_12": "หมวดที่ 12 - รางวัลครู และรางวัลนักเรียน"
+    };
+    return catMap[categoryId] || ("หมวด - " + (categoryId || "General"));
+  },
+
+  /**
+   * Get or create subfolder for a specific work category inside main upload folder
+   * @param {Folder} parentFolder
+   * @param {string} categoryId
+   * @returns {Folder}
+   */
+  getCategoryFolder: function(parentFolder, categoryId) {
+    if (!parentFolder) return DriveApp.getRootFolder();
+    var folderName = this.getCategoryFolderName(categoryId);
+    try {
+      var folders = parentFolder.getFoldersByName(folderName);
+      if (folders.hasNext()) {
+        return folders.next();
+      }
+      return parentFolder.createFolder(folderName);
+    } catch (e) {
+      Logger.log("Could not get/create category subfolder '" + folderName + "': " + e.toString());
+      return parentFolder;
+    }
+  },
+
+  /**
    * Save base64 file to Google Drive and return file metadata
    * @param {Object} fileObj - { name, mimeType, base64Data, caption, fieldId }
    * @param {string} submissionId
@@ -30,7 +74,8 @@ var FileService = {
       throw new Error("Missing file payload data");
     }
 
-    var folder = this.getUploadFolder();
+    var rootFolder = this.getUploadFolder();
+    var folder = this.getCategoryFolder(rootFolder, categoryId);
     var bytes = Utilities.base64Decode(fileObj.base64Data);
     var blob = Utilities.newBlob(bytes, fileObj.mimeType || "application/octet-stream", fileObj.name || "upload_file");
 
