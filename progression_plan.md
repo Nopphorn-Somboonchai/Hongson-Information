@@ -13,7 +13,7 @@
 - **Last Updated:** 2026-08-06
 - **Updated By:** AI Assistant (Session 008)
 - **Production Status:** All Engines (Contributor Form, Admin Dashboard, Review Engine, Report Builder, Data Validation & QA Suite) 100% Ready for Production Deployment
-- **Current Academic Year:** 2569 (Default)
+- **Current Academic Year:** 2568 (Default)
 - **Repository:** Workspace Local (`Hongson-Information`)
 - **GitHub Pages URL:** รอ Admin Deploy (`https://<username>.github.io/Hongson-Information`)
 - **Apps Script Deployment URL:** รอ Admin Deploy และใส่ URL ใน ⚙️ ตั้งค่า Web App

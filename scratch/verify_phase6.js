@@ -145,8 +145,8 @@ const validPayload = {
   senderName: 'สมชาย ใจดี',
   senderDepartment: 'กลุ่มสาระวิทยาศาสตร์',
   senderPhone: '0812345678',
-  academicYear: '2569',
-  dataAsOfDate: '2569-03-31',
+  academicYear: '2568',
+  dataAsOfDate: '2568-03-31',
   categoryId: 'cat_01',
   data: {
     school_vision: 'มุ่งมั่นพัฒนาการศึกษา',
