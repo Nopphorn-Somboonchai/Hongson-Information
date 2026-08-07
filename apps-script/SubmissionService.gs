@@ -56,6 +56,63 @@ var SubmissionService = {
       }
     }
 
+    // Default Fallback Categories Schema (12 Categories)
+    var defaultCategories = [
+      { id: "cat_01", name: "1. ข้อมูลพื้นฐานและอัตลักษณ์สถานศึกษา", sortOrder: 1, fields: [
+        { sectionId: "sec_01", sectionName: "ข้อมูลทั่วไป", fieldId: "field_school_history", label: "ประวัติความเป็นมาและข้อมูลโรงเรียน", type: "textarea", required: true, helpText: "สรุปประวัติโรงเรียนและข้อมูลทั่วไป", options: [] },
+        { sectionId: "sec_01", sectionName: "ข้อมูลทั่วไป", fieldId: "field_vision_mission", label: "วิสัยทัศน์ พันธกิจ และเป้าประสงค์", type: "textarea", required: true, helpText: "ระบุวิสัยทัศน์และอัตลักษณ์สถานศึกษา", options: [] }
+      ]},
+      { id: "cat_02", name: "2. ธรรมาภิบาล เครือข่าย และชุมชน", sortOrder: 2, fields: [
+        { sectionId: "sec_01", sectionName: "เครือข่ายความร่วมมือ", fieldId: "field_community_networks", label: "สรุปเครือข่ายความร่วมมือและชุมชน", type: "textarea", required: true, helpText: "ระบุโครงการความร่วมมือกับชุมชนและภาคีเครือข่าย", options: [] }
+      ]},
+      { id: "cat_03", name: "3. ทะเบียนนักเรียนและโครงสร้างชั้นเรียน", sortOrder: 3, fields: [
+        { sectionId: "sec_01", sectionName: "สถิตินักเรียน", fieldId: "field_student_counts", label: "ตารางสถิติจำนวนนักเรียนแยกตามระดับชั้น", type: "dynamic_table", required: true, helpText: "กรอกจำนวนนักเรียนแยกตามระดับชั้น", options: [] }
+      ]},
+      { id: "cat_04", name: "4. ผลการเรียนและคุณภาพผู้เรียน", sortOrder: 4, fields: [
+        { sectionId: "sec_01", sectionName: "ผลสัมฤทธิ์ทางการเรียน", fieldId: "field_academic_performance", label: "ตารางผลสัมฤทธิ์ทางการเรียนจำแนกตามกลุ่มสาระ", type: "dynamic_table", required: true, helpText: "กรอกผลสัมฤทธิ์ทางการเรียน", options: [] }
+      ]},
+      { id: "cat_05", name: "5. การทดสอบภายนอก และการศึกษาต่อ", sortOrder: 5, fields: [
+        { sectionId: "sec_01", sectionName: "ผลทดสอบและการศึกษาต่อ", fieldId: "field_onet_tcas_summary", label: "สรุปผลการทดสอบภายนอกและการศึกษาต่อ", type: "textarea", required: false, helpText: "สรุปผลการทดสอบ O-NET/TCAS", options: [] }
+      ]},
+      { id: "cat_06", name: "6. หลักสูตร แผนการเรียน และเวลาเรียน", sortOrder: 6, fields: [
+        { sectionId: "sec_01", sectionName: "โครงสร้างหลักสูตร", fieldId: "field_curriculum_summary", label: "สรุปโครงสร้างหลักสูตรสถานศึกษา", type: "textarea", required: true, helpText: "ระบุรายละเอียดหลักสูตร", options: [] }
+      ]},
+      { id: "cat_07", name: "7. นิเทศ การประเมิน และงานวิจัย", sortOrder: 7, fields: [
+        { sectionId: "sec_01", sectionName: "งานวิจัยและพัฒนา", fieldId: "field_research_list", label: "รายงานการวิจัยในชั้นเรียนและนวัตกรรม", type: "textarea", required: false, helpText: "ระบุผลงานวิจัย", options: [] }
+      ]},
+      { id: "cat_08", name: "8. บุคลากรและการพัฒนาวิชาชีพ", sortOrder: 8, fields: [
+        { sectionId: "sec_01", sectionName: "ข้อมูลครูและบุคลากร", fieldId: "field_staff_stats", label: "ตารางสถิติจำนวนครูและบุคลากร", type: "dynamic_table", required: true, helpText: "กรอกจำนวนบุคลากร", options: [] }
+      ]},
+      { id: "cat_09", name: "9. อาคาร สถานที่ และสภาพแวดล้อม", sortOrder: 9, fields: [
+        { sectionId: "sec_01", sectionName: "อาคารสถานที่", fieldId: "field_facility_summary", label: "สรุปข้อมูลอาคารสถานที่และสิ่งอำนวยความสะดวก", type: "textarea", required: true, helpText: "ระบุสภาพอาคารสถานที่", options: [] }
+      ]},
+      { id: "cat_10", name: "10. ห้องสมุดและแหล่งเรียนรู้", sortOrder: 10, fields: [
+        { sectionId: "sec_01", sectionName: "แหล่งเรียนรู้", fieldId: "field_library_info", label: "ข้อมูลห้องสมุด สถิติการใช้บริการ และแหล่งเรียนรู้", type: "textarea", required: true, helpText: "ระบุสถิติและข้อมูลห้องสมุด", options: [] }
+      ]},
+      { id: "cat_11", name: "11. ระบบดิจิทัลและหลักฐานสารสนเทศ", sortOrder: 11, fields: [
+        { sectionId: "sec_01", sectionName: "โครงสร้างพื้นฐาน ICT", fieldId: "field_ict_infrastructure", label: "สรุประบบดิจิทัล สื่อ ICT และลิงก์หลักฐานอ้างอิง", type: "textarea", required: true, helpText: "ระบุระบบ ICT และลิงก์อ้างอิง", options: [] }
+      ]},
+      { id: "cat_12", name: "12. รางวัลครู และรางวัลนักเรียน", sortOrder: 12, fields: [
+        { sectionId: "sec_01", sectionName: "รางวัลและความภาคภูมิใจของครู", fieldId: "field_teacher_awards", label: "รายการรางวัลและความภาคภูมิใจของครู", type: "textarea", required: false, helpText: "สรุปรายการรางวัลและผลงานดีเด่นของครูและบุคลากร", options: [] },
+        { sectionId: "sec_01", sectionName: "รางวัลและความภาคภูมิใจของนักเรียน", fieldId: "field_student_awards", label: "รายการรางวัลและความภาคภูมิใจของนักเรียน", type: "textarea", required: false, helpText: "สรุปรายการรางวัลและความภาคภูมิใจของนักเรียน", options: [] }
+      ]}
+    ];
+
+    // Merge missing default categories if not present in categoryList
+    for (var d = 0; d < defaultCategories.length; d++) {
+      var defCat = defaultCategories[d];
+      var found = false;
+      for (var c = 0; c < categoryList.length; c++) {
+        if (categoryList[c].id === defCat.id) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        categoryList.push(defCat);
+      }
+    }
+
     // Sort categories by sortOrder
     categoryList.sort(function(a, b) { return a.sortOrder - b.sortOrder; });
     return categoryList;

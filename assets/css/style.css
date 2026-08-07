@@ -542,6 +542,27 @@ body {
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
 }
 
+/* High contrast style for Date Picker icon */
+input[type="date"] {
+  color-scheme: dark;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+  opacity: 0.85;
+  transition: var(--transition);
+  padding: 2px;
+  border-radius: 4px;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.15);
+  filter: invert(1) drop-shadow(0 0 3px rgba(255, 255, 255, 0.5));
+}
+
+
 /* Dynamic Table Styling (In-form Excel style) */
 .dynamic-table-wrapper {
   overflow-x: auto;

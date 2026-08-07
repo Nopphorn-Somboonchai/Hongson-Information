@@ -142,6 +142,21 @@ var FormEngine = {
           }
           return cat;
         });
+
+        // Ensure any missing default categories (like cat_12) are appended
+        this.defaultCategories.forEach(defCat => {
+          const exists = this.categories.some(c => c.id === defCat.id);
+          if (!exists) {
+            this.categories.push(defCat);
+          }
+        });
+
+        // Sort categories by numeric ID suffix (e.g. cat_01 to cat_12)
+        this.categories.sort((a, b) => {
+          const numA = parseInt((a.id || '').replace('cat_', ''), 10) || 0;
+          const numB = parseInt((b.id || '').replace('cat_', ''), 10) || 0;
+          return numA - numB;
+        });
       } else {
         this.categories = this.defaultCategories;
       }

@@ -204,7 +204,7 @@ var AdminEngine = {
     if (!catSelect) return;
 
     var currentVal = catSelect.value || 'all';
-    var optionsHtml = `<option value="all">📂 ทุกหมวดสารสนเทศ (11 หมวด)</option>`;
+    var optionsHtml = `<option value="all">📂 ทุกหมวดสารสนเทศ (12 หมวด)</option>`;
     optionsHtml += categoryStats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
     catSelect.innerHTML = optionsHtml;
     catSelect.value = currentVal;
@@ -785,13 +785,14 @@ var AdminEngine = {
       { id: "cat_02", name: "2. ธรรมาภิบาล เครือข่าย และชุมชน" },
       { id: "cat_03", name: "3. ทะเบียนนักเรียนและโครงสร้างชั้นเรียน" },
       { id: "cat_04", name: "4. ผลการเรียนและคุณภาพผู้เรียน" },
-      { id: "cat_05", name: "5. การทดสอบภายนอก การศึกษาต่อ และรางวัลนักเรียน" },
+      { id: "cat_05", name: "5. การทดสอบภายนอก และการศึกษาต่อ" },
       { id: "cat_06", name: "6. หลักสูตร แผนการเรียน และเวลาเรียน" },
       { id: "cat_07", name: "7. นิเทศ การประเมิน และงานวิจัย" },
       { id: "cat_08", name: "8. บุคลากรและการพัฒนาวิชาชีพ" },
       { id: "cat_09", name: "9. อาคาร สถานที่ และสภาพแวดล้อม" },
       { id: "cat_10", name: "10. ห้องสมุดและแหล่งเรียนรู้" },
-      { id: "cat_11", name: "11. ระบบดิจิทัลและหลักฐานสารสนเทศ" }
+      { id: "cat_11", name: "11. ระบบดิจิทัลและหลักฐานสารสนเทศ" },
+      { id: "cat_12", name: "12. รางวัลครู และรางวัลนักเรียน" }
     ];
 
     var selectedCount = 0;
@@ -864,7 +865,7 @@ var AdminEngine = {
 
     if (progressBox) progressBox.style.display = 'block';
     if (progressBar) progressBar.style.width = '20%';
-    if (statusText) statusText.textContent = "กำลังรวบรวมข้อมูลสารสนเทศที่ถูกเลือกทั้ง 11 หมวด...";
+    if (statusText) statusText.textContent = "กำลังรวบรวมข้อมูลสารสนเทศที่ถูกเลือกทั้ง 12 หมวด...";
 
     var progressInterval;
     var currentPct = 20;

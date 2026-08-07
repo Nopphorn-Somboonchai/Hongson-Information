@@ -81,7 +81,27 @@ var SheetService = {
    */
   seedDefaultCategories: function(categoriesSheet, force) {
     if (!categoriesSheet) return;
-    if (!force && categoriesSheet.getLastRow() >= 15) return;
+    
+    // Check if cat_12 already exists in existing sheet
+    if (!force && categoriesSheet.getLastRow() > 1) {
+      var data = categoriesSheet.getDataRange().getValues();
+      var hasCat12 = false;
+      for (var i = 1; i < data.length; i++) {
+        if (data[i][0] === "cat_12") {
+          hasCat12 = true;
+          break;
+        }
+      }
+      if (hasCat12) return;
+      
+      // If cat_12 is missing, append cat_12 rows to existing sheet
+      var cat12Rows = [
+        ["cat_12", "12. รางวัลครู และรางวัลนักเรียน", "sec_01", "รางวัลและความภาคภูมิใจของครู", "field_teacher_awards", "รายการรางวัลและความภาคภูมิใจของครู", "textarea", "FALSE", "สรุปรายการรางวัลและผลงานดีเด่นของครูและบุคลากร", "", 13, "TRUE"],
+        ["cat_12", "12. รางวัลครู และรางวัลนักเรียน", "sec_01", "รางวัลและความภาคภูมิใจของนักเรียน", "field_student_awards", "รายการรางวัลและความภาคภูมิใจของนักเรียน", "textarea", "FALSE", "สรุปรายการรางวัลและความภาคภูมิใจของนักเรียน", "", 14, "TRUE"]
+      ];
+      categoriesSheet.getRange(categoriesSheet.getLastRow() + 1, 1, cat12Rows.length, cat12Rows[0].length).setValues(cat12Rows);
+      return;
+    }
 
     categoriesSheet.clearContents();
     var headers = [["category_id", "category_name", "section_id", "section_name", "field_id", "field_label", "field_type", "required", "help_text", "options", "sort_order", "active"]];
