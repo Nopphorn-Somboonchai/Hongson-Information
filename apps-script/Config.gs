@@ -15,7 +15,7 @@ var CONFIG = {
   getScriptProps: function() {
     var props = PropertiesService.getScriptProperties();
     var year = props.getProperty("CURRENT_ACADEMIC_YEAR");
-    if (!year || year === "2569") {
+    if (!year) {
       year = this.DEFAULT_ACADEMIC_YEAR;
     }
     return {
