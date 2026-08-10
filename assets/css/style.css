@@ -1180,4 +1180,52 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   .modal {
     padding: 1.5rem;
   }
+
+  .category-select-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-sample-report {
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}
+
+/* ==========================================================================
+   Category Select Header & Sample Report Link Button
+   ========================================================================== */
+.category-select-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.btn-sample-report {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: var(--transition);
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.btn-sample-report:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #ffffff;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  color: #ffffff;
 }
