@@ -23,20 +23,12 @@
     </a>
     <div class="nav-actions">
       <span class="hero-badge" id="academic-year-badge" style="margin-bottom: 0;">ปีการศึกษา 2568</span>
-      <button class="btn btn-secondary" id="btn-open-settings" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
-        ⚙️ ตั้งค่า Web App
-      </button>
     </div>
   </nav>
 
   <!-- Main App Container -->
   <main class="container">
 
-    <!-- Config Warning Banner -->
-    <div id="config-warning-banner" class="alert alert-danger" style="display: none; margin-bottom: 2rem;">
-      <strong>⚠️ ยังไม่ได้ตั้งค่า Apps Script URL:</strong> ระบบกำลังทำงานในโหมดออฟไลน์ กรุณาคลิกปุ่ม <strong>"⚙️
-        ตั้งค่า Web App"</strong> ด้านบนขวาเพื่อระบุ Web App Deployment URL
-    </div>
 
     <!-- VIEW 1: Landing Page -->
     <section id="view-landing" class="view-section active">
@@ -446,29 +438,7 @@
     </div>
   </div>
 
-  <!-- MODAL: Web App Settings -->
-  <div class="modal-overlay" id="settings-modal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>⚙️ ตั้งค่า Web App URL</h3>
-        <button class="modal-close" id="btn-close-settings-modal">&times;</button>
-      </div>
-      <form id="settings-form">
-        <div class="form-group">
-          <label for="input-webapp-url" class="form-label">Google Apps Script Web App URL</label>
-          <input type="url" id="input-webapp-url" class="form-control"
-            placeholder="https://script.google.com/macros/s/.../exec" required>
-          <small style="color: var(--text-muted); display: block; margin-top: 0.5rem; font-size: 0.8rem;">
-            ระบุ URL ที่ได้จากการกด Deploy -> Web App ใน Google Apps Script
-          </small>
-        </div>
-        <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
-          <button type="button" class="btn btn-secondary modal-cancel">ยกเลิก</button>
-          <button type="submit" class="btn btn-primary">บันทึกการตั้งค่า</button>
-        </div>
-      </form>
-    </div>
-  </div>
+
 
   <footer class="footer">
     <p>© 2026 HONGSON Information Hub — โรงเรียนห้องสอนศึกษา. All rights reserved.</p>

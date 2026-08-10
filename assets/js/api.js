@@ -3,24 +3,14 @@
  */
 
 const API = {
-  // Default URL or configured deployment URL
-  webAppUrl: localStorage.getItem('WEB_APP_URL') || '',
-
-  /**
-   * Set custom Web App URL
-   */
-  setWebAppUrl(url) {
-    if (url) {
-      this.webAppUrl = url.trim();
-      localStorage.setItem('WEB_APP_URL', this.webAppUrl);
-    }
-  },
+  // Locked Google Apps Script Web App Deployment URL
+  webAppUrl: 'https://script.google.com/macros/s/AKfycbz5tiStrFnyo4qHAxsN-PjVHDnmzLhasz4yPqVr5Opj4MI_S1ZPevJLIZ-4p4QWwDdF/exec',
 
   /**
    * Check if backend API URL is configured
    */
   isConfigured() {
-    return !!this.webAppUrl;
+    return true;
   },
 
   /**

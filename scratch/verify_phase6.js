@@ -116,11 +116,7 @@ const requiredIds = [
   'btn-open-report-builder',
   'btn-start-generate-report',
   'report-progress-bar',
-  'report-history-tbody',
-  'settings-modal',
-  'btn-open-settings',
-  'input-webapp-url',
-  'settings-form'
+  'report-history-tbody'
 ];
 
 requiredIds.forEach(id => {

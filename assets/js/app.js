@@ -36,15 +36,6 @@ const App = {
       this.handleLogin();
     });
 
-    // Settings Modal
-    document.getElementById('btn-open-settings')?.addEventListener('click', () => {
-      this.openSettingsModal();
-    });
-
-    document.getElementById('settings-form')?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      this.handleSaveSettings();
-    });
 
     // Logout
     document.querySelectorAll('.btn-logout').forEach(btn => {
@@ -58,13 +49,7 @@ const App = {
   },
 
   checkConfigStatus() {
-    const configNotice = document.getElementById('config-warning-banner');
-    if (!API.isConfigured()) {
-      if (configNotice) configNotice.style.display = 'block';
-    } else {
-      if (configNotice) configNotice.style.display = 'none';
-      this.loadPublicConfig();
-    }
+    this.loadPublicConfig();
   },
 
   async loadPublicConfig() {
@@ -97,12 +82,6 @@ const App = {
     input?.focus();
   },
 
-  openSettingsModal() {
-    const modal = document.getElementById('settings-modal');
-    const inputUrl = document.getElementById('input-webapp-url');
-    if (inputUrl) inputUrl.value = API.webAppUrl;
-    modal?.classList.add('active');
-  },
 
   closeModals() {
     document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
@@ -140,18 +119,6 @@ const App = {
     }
   },
 
-  handleSaveSettings() {
-    const inputUrl = document.getElementById('input-webapp-url');
-    const newUrl = inputUrl?.value || '';
-    if (newUrl.trim()) {
-      API.setWebAppUrl(newUrl);
-      this.closeModals();
-      this.checkConfigStatus();
-      alert('บันทึก Web App URL เรียบร้อยแล้ว');
-    } else {
-      alert('กรุณากรอก Web App URL ที่ถูกต้อง');
-    }
-  },
 
   handleLogout() {
     AuthManager.logout();
