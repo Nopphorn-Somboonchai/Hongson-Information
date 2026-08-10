@@ -99,11 +99,14 @@
 
       <!-- Step B: Dynamic Form & File Upload -->
       <div id="form-render-section" style="display: none;">
-        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-          <button type="button" class="btn btn-secondary btn-sm" onclick="FormEngine.backToCategorySelect()">
-            ⬅️ ย้อนกลับไปเลือกหมวด
-          </button>
-          <h3 id="selected-category-title" style="margin: 0; color: var(--accent-light);">ชื่อหมวด</h3>
+        <div class="form-header-bar">
+          <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="FormEngine.backToCategorySelect()">
+              ⬅️ ย้อนกลับไปเลือกหมวด
+            </button>
+            <h3 id="selected-category-title" style="margin: 0; color: var(--accent-light);">ชื่อหมวด</h3>
+          </div>
+          <div id="selected-category-template-container"></div>
         </div>
 
         <form id="contributor-submit-form" onsubmit="FormEngine.handleSubmit(event)">

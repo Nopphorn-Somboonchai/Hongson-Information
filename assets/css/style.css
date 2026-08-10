@@ -457,9 +457,38 @@ body {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
 }
 
+.category-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
 .category-card-icon {
   font-size: 1.75rem;
-  margin-bottom: 0.85rem;
+}
+
+.category-card-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--accent-light);
+  background: rgba(45, 212, 191, 0.1);
+  border: 1px solid rgba(45, 212, 191, 0.3);
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.category-card-download-btn:hover {
+  background: rgba(45, 212, 191, 0.25);
+  border-color: var(--accent-light);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(45, 212, 191, 0.2);
 }
 
 .category-card h4 {
@@ -474,6 +503,41 @@ body {
   font-size: 0.8rem;
   color: var(--accent-light);
   font-weight: 500;
+}
+
+.form-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--hairline-dark);
+}
+
+.btn-template-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.15rem;
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.2), rgba(45, 212, 191, 0.3));
+  border: 1px solid var(--accent-light);
+  color: #ffffff;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: var(--transition);
+  box-shadow: 0 0 15px rgba(45, 212, 191, 0.15);
+}
+
+.btn-template-download:hover {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.4), rgba(45, 212, 191, 0.55));
+  border-color: #ffffff;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(45, 212, 191, 0.3);
 }
 
 /* ==========================================================================

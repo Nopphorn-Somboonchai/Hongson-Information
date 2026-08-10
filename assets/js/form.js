@@ -13,6 +13,7 @@ var FormEngine = {
     {
       id: "cat_01",
       name: "1. ข้อมูลพื้นฐานและอัตลักษณ์สถานศึกษา",
+      templateUrl: "https://docs.google.com/document/d/1GRBeoQ7Xw6BEzVMSXTu4DI59-H1LO9iS/edit?usp=drive_link&ouid=104578217438039503060&rtpof=true&sd=true",
       fields: [
         { fieldId: "field_school_history", label: "ประวัติความเป็นมาและข้อมูลโรงเรียน", type: "textarea", required: true, helpText: "สรุปประวัติโรงเรียนและข้อมูลทั่วไป" },
         { fieldId: "field_vision_mission", label: "วิสัยทัศน์ พันธกิจ และเป้าประสงค์", type: "textarea", required: true, helpText: "ระบุวิสัยทัศน์และอัตลักษณ์สถานศึกษา" }
@@ -21,6 +22,7 @@ var FormEngine = {
     {
       id: "cat_02",
       name: "2. ธรรมาภิบาล เครือข่าย และชุมชน",
+      templateUrl: "https://docs.google.com/document/d/1t6ovMpu_MsXq8dhY4ybrr7vDoTAn3x6j/edit?usp=drive_link&ouid=104578217438039503060&rtpof=true&sd=true",
       fields: [
         { fieldId: "field_community_networks", label: "สรุปเครือข่ายความร่วมมือและชุมชน", type: "textarea", required: true, helpText: "ระบุโครงการความร่วมมือกับชุมชนและภาคีเครือข่าย" }
       ]
@@ -28,6 +30,7 @@ var FormEngine = {
     {
       id: "cat_03",
       name: "3. ทะเบียนนักเรียนและโครงสร้างชั้นเรียน",
+      templateUrl: "https://docs.google.com/document/d/19Z2Id4tE_CLUXLbmydwXKk_TR4vsRSqi/edit?usp=drive_link&ouid=104578217438039503060&rtpof=true&sd=true",
       fields: [
         {
           fieldId: "field_student_counts",
@@ -41,6 +44,7 @@ var FormEngine = {
     {
       id: "cat_04",
       name: "4. ผลการเรียนและคุณภาพผู้เรียน",
+      templateUrl: "https://docs.google.com/document/d/1NX8Z3ywBZSG0x58ilgb57HqmJ3F4x2ro/edit?usp=drive_link&ouid=104578217438039503060&rtpof=true&sd=true",
       fields: [
         {
           fieldId: "field_academic_performance",
@@ -54,6 +58,7 @@ var FormEngine = {
     {
       id: "cat_05",
       name: "5. การทดสอบภายนอก และการศึกษาต่อ",
+      templateUrl: "https://docs.google.com/document/d/1KedgVEPKR7dojF56SGjn6cjKO8Qqy1La/edit?usp=drive_link&ouid=104578217438039503060&rtpof=true&sd=true",
       fields: [
         { fieldId: "field_onet_tcas_summary", label: "สรุปผลการทดสอบภายนอกและการศึกษาต่อ", type: "textarea", required: false, helpText: "สรุปผลการทดสอบ O-NET/TCAS" }
       ]
@@ -61,6 +66,7 @@ var FormEngine = {
     {
       id: "cat_06",
       name: "6. หลักสูตร แผนการเรียน และเวลาเรียน",
+      templateUrl: "https://docs.google.com/document/d/1MPiLuul4B5-hAsjSY7lnt5lEVdPIlpYi/edit?usp=drive_link&ouid=104578217438039503060&rtpof=true&sd=true",
       fields: [
         { fieldId: "field_curriculum_summary", label: "สรุปโครงสร้างหลักสูตรสถานศึกษา", type: "textarea", required: true }
       ]
@@ -68,6 +74,7 @@ var FormEngine = {
     {
       id: "cat_07",
       name: "7. นิเทศ การประเมิน และงานวิจัย",
+      templateUrl: "https://docs.google.com/document/d/1lGL5SdV86pwjIJ4H_D7HQ2DjZcDHv6e1/edit?usp=drive_link&ouid=104578217438039503060&rtpof=true&sd=true",
       fields: [
         { fieldId: "field_research_list", label: "รายงานการวิจัยในชั้นเรียนและนวัตกรรม", type: "textarea", required: false }
       ]
@@ -75,6 +82,7 @@ var FormEngine = {
     {
       id: "cat_08",
       name: "8. บุคลากรและการพัฒนาวิชาชีพ",
+      templateUrl: "https://docs.google.com/document/d/1osIZdX3Ujf1VeCVEjS47DmunbdZGtjrp/edit?usp=drive_link&ouid=104578217438039503060&rtpof=true&sd=true",
       fields: [
         {
           fieldId: "field_staff_stats",
@@ -88,6 +96,7 @@ var FormEngine = {
     {
       id: "cat_09",
       name: "9. อาคาร สถานที่ และสภาพแวดล้อม",
+      templateUrl: "https://docs.google.com/document/d/1oN8UShgwXNtWY4qMCIKka0JxGD-UHiVv/edit?usp=drive_link&ouid=104578217438039503060&rtpof=true&sd=true",
       fields: [
         { fieldId: "field_facility_summary", label: "สรุปข้อมูลอาคารสถานที่และสิ่งอำนวยความสะดวก", type: "textarea", required: true }
       ]
@@ -95,6 +104,7 @@ var FormEngine = {
     {
       id: "cat_10",
       name: "10. ห้องสมุดและแหล่งเรียนรู้",
+      templateUrl: "https://docs.google.com/document/d/1B-DpbhDLzy4cwCM-O0xvV8OKnW0Nlqhz/edit?usp=drive_link&ouid=104578217438039503060&rtpof=true&sd=true",
       fields: [
         { fieldId: "field_library_info", label: "ข้อมูลห้องสมุด สถิติการใช้บริการ และแหล่งเรียนรู้", type: "textarea", required: true }
       ]
@@ -102,6 +112,7 @@ var FormEngine = {
     {
       id: "cat_11",
       name: "11. ระบบดิจิทัลและหลักฐานสารสนเทศ",
+      templateUrl: "https://docs.google.com/document/d/1IxwC7uZHBignPcoJpqyNsFMO6qbR2yeX/edit?usp=drive_link&ouid=104578217438039503060&rtpof=true&sd=true",
       fields: [
         { fieldId: "field_ict_infrastructure", label: "สรุประบบดิจิทัล สื่อ ICT และลิงก์หลักฐานอ้างอิง", type: "textarea", required: true }
       ]
@@ -109,6 +120,7 @@ var FormEngine = {
     {
       id: "cat_12",
       name: "12. รางวัลครู และรางวัลนักเรียน",
+      templateUrl: "https://docs.google.com/document/d/1mVBDVTAcFMzA0pt4Rw_LT5Lc4bcYU-6E/edit?usp=drive_link&ouid=104578217438039503060&rtpof=true&sd=true",
       fields: [
         { fieldId: "field_teacher_awards", label: "รายการรางวัลและความภาคภูมิใจของครู", type: "textarea", required: false, helpText: "สรุปรายการรางวัลและผลงานดีเด่นของครูและบุคลากร" },
         { fieldId: "field_student_awards", label: "รายการรางวัลและความภาคภูมิใจของนักเรียน", type: "textarea", required: false, helpText: "สรุปรายการรางวัลและความภาคภูมิใจของนักเรียน" }
@@ -125,19 +137,24 @@ var FormEngine = {
     try {
       const res = await API.getCategories();
       if (res && res.success && Array.isArray(res.categories) && res.categories.length > 0) {
-        // Merge with default schema to ensure all default fields are available
+        // Merge with default schema to ensure all default fields & templateUrls are available
         this.categories = res.categories.map(cat => {
           const def = this.defaultCategories.find(d => d.id === cat.id);
-          if (def && def.fields) {
-            if (!cat.fields || cat.fields.length === 0) {
-              cat.fields = def.fields;
-            } else {
-              def.fields.forEach(defField => {
-                const exists = cat.fields.some(f => f.fieldId === defField.fieldId);
-                if (!exists) {
-                  cat.fields.push(defField);
-                }
-              });
+          if (def) {
+            if (!cat.templateUrl && def.templateUrl) {
+              cat.templateUrl = def.templateUrl;
+            }
+            if (def.fields) {
+              if (!cat.fields || cat.fields.length === 0) {
+                cat.fields = def.fields;
+              } else {
+                def.fields.forEach(defField => {
+                  const exists = cat.fields.some(f => f.fieldId === defField.fieldId);
+                  if (!exists) {
+                    cat.fields.push(defField);
+                  }
+                });
+              }
             }
           }
           return cat;
@@ -172,9 +189,18 @@ var FormEngine = {
 
     let html = '<div class="category-grid">';
     this.categories.forEach(cat => {
+      const def = this.defaultCategories.find(d => d.id === cat.id) || {};
+      const tUrl = cat.templateUrl || def.templateUrl || '';
       html += `
         <div class="category-card" role="button" tabindex="0" onclick="FormEngine.selectCategory('${cat.id}')">
-          <div class="category-card-icon">📂</div>
+          <div class="category-card-header">
+            <div class="category-card-icon">📂</div>
+            ${tUrl ? `
+              <a href="${tUrl}" target="_blank" rel="noopener noreferrer" class="category-card-download-btn" title="เปิด Template เอกสาร Google Drive สำหรับนำไปกรอก" onclick="event.stopPropagation();">
+                📥 โหลด Template
+              </a>
+            ` : ''}
+          </div>
           <h4>${cat.name}</h4>
           <span class="category-status-badge">คลิกเพื่อเลือกกรอกข้อมูล ➔</span>
         </div>
@@ -223,6 +249,22 @@ var FormEngine = {
 
     const headerTitle = document.getElementById('selected-category-title');
     if (headerTitle) headerTitle.textContent = cat.name;
+
+    // Render Template Link Button for Active Category
+    const def = this.defaultCategories.find(d => d.id === cat.id) || {};
+    const tUrl = cat.templateUrl || def.templateUrl || '';
+    const templateContainer = document.getElementById('selected-category-template-container');
+    if (templateContainer) {
+      if (tUrl) {
+        templateContainer.innerHTML = `
+          <a href="${tUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-template-download">
+            📄 โหลดเอกสาร นำไปกรอก (Google Drive) ↗
+          </a>
+        `;
+      } else {
+        templateContainer.innerHTML = '';
+      }
+    }
 
     // Render Dynamic Form Fields
     this.renderFormFields(cat);
